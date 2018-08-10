@@ -1,0 +1,344 @@
+//====================================
+// HOME
+//====================================
+
+.Intro{
+	&--home{
+		
+		padding-top: $header_height_m;
+		background-image: url('../images/Intro--bg--mobile.png');
+		background-position: top center;
+		background-size: cover;
+		//background-attachment: fixed;
+
+		&:after{
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100px;
+			content:"";
+			left: 0px;
+			bottom: 0px;
+			background: linear-gradient(rgba(31,149,208,0), rgba(31,149,208,1) );
+		}
+
+		@media screen and (min-width: $break-sm){
+			background-image: url('../images/Intro--bg.png');
+			height: 100vh;
+
+			padding-top: $header_height;
+
+		}
+
+	}
+	
+	
+	&--page{
+
+		height: 110px;
+	
+		@media screen and (min-width: $break-sm){
+
+			height: $header_height;
+		
+			
+		}
+	}
+}
+.u-hasSideBar{
+	&.SiteMain{
+		& .SiteMain-main{}
+		& .SiteMain-sideBar{
+			& .Section{
+				&-header{
+					& i{
+						& svg{
+							font-size: 18px;
+						}
+					}
+					&-title{
+						font-size: 18px;
+					}
+				}
+				&--search{
+					& .Form{
+						& input{
+							height: 75px;
+							text-indent: 0px;
+						}
+						& input[type="submit"],
+						& button{
+							&.FigureIcon{
+								right: 15px;
+								top: 20px;
+								left: inherit;
+								color: $color_9;
+							}
+							//background-color: none !important;
+						}
+					}
+				}
+			}
+		}
+		@media screen and (min-width: $break-sm){
+			& .SiteMain-main{
+				margin-right: $h_spacing;
+			}
+			& .SiteMain-sideBar{}
+			}
+	}
+
+}
+
+
+
+.Breadcrumbs{
+	border-top: 1px solid $color_8;
+	border-bottom: 1px solid $color_8;
+	font-size: 13px;
+	& a{
+		font-weight: bold;
+		color: $color_2;
+		&:hover{
+			color: $color_3;
+		}
+	}
+	& .u-icon{
+		font-size: 13px;
+	}
+}
+
+.SiteMain{
+
+	
+
+	&-main{
+		position: relative;
+		width: 90%;
+		margin-left: 5%;
+		margin-right: 5%;
+		display: block;
+		//top: calc( -100vh + 120px);
+		
+
+
+		.Article{
+			&--promocoes{
+				background: $color_1;
+				& .Section{
+					&--destaque{
+						&-thumbnail{}
+						&-content{
+							background: $color_8;
+							& .entry{
+								&-header{}
+								&-title{
+									font-size: 16px;
+									color: $color_2;
+								}
+							}
+
+							& .Meta{
+								border-top: 1px solid $color_9;
+								border-bottom: 1px solid $color_9;
+									& .Price{
+										&--natural{
+											color: $color_10;
+											font-size: 16px;
+											& span{ 
+												&:before{
+													position: absolute;
+													display: block;
+													width: 100%;
+													height: 1px;
+													content: "";
+													background: $color_10;
+													top: 50%;
+													left: 0px;
+													transform: translateY(-50%);
+												}
+											}
+										}
+										&--offer{
+											color: $color_12;
+											font-size: 20px;
+											font-weight: bold;
+											border-left: 1px solid $color_9;
+										}
+									}
+								}
+						}
+					}
+
+					&-subSection{
+						&--cta{
+							& .Button{
+								&--background{
+									background: $color_12;
+									color: $color_1;
+								}
+							&--border{
+								border-color: $color_12;
+							}
+							}
+						}
+					}
+
+					&--dataBar{
+							border-bottom: 1px solid $color_11;
+							& .Section{
+								&-items{
+									&-item{
+										//min-width: 280px;
+										&-title{
+											font-size: 12px;
+											font-weight: normal;
+											color: $color_2;
+										}
+										&-content{
+											font-size: 16px;
+											color: $color_3;
+											font-weight: bold;
+										}
+										&--desconto,
+										&--economia{
+											& .Value{
+												color: $color_12;
+											}
+										}
+										&--quantidade{
+											& .Value{
+												color: $color_10;
+												& .Disponivel{
+													color: $color_12;
+												}
+												
+											}
+										}
+									}
+								}
+							}
+						}
+					&--texts{
+						& .Section{
+							&-subSection{
+								&-header{
+									&-title{
+										font-weight: normal;
+										color: $color_2;
+										font-size: 20px;
+										&:before{
+											position: absolute;
+											display: block;
+											width: 70px;
+											height: 2px;
+											content: "";
+											background: $color_2;
+											bottom: 0px;
+										}
+									}
+								}
+								&-content{
+									&-p{
+										color: $color_10;
+										font-size: 14px;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} //.Article
+	} //.SiteMain-main
+	@media screen and (min-width: $break-sm){
+
+
+		&-main{
+		
+			//top: calc( -100vh + #{$header_height} + 25px);
+
+			.Article{
+				&--promocoes{
+					& .Section{
+						&--destaque{
+							&-thumbnail{}
+							&-content{
+								& .entry{
+									&-header{}
+									&-title{
+										font-size: 24px;
+										text-align: left;
+									}
+								}
+
+								& .Meta{
+									& .Price{
+										&--natural{
+											font-size: 20px;
+										}
+										&--offer{
+											font-size: 30px;
+										}
+									}
+								}
+
+							}
+						}
+						&-subSection{
+							&--cta{
+								& .Button{
+									&--background{
+										background: $color_12;
+										color: $color_1;
+									}
+									&--border{
+										&.hover:hover{
+											background: none;
+											color: $color_12;
+										}
+									}
+								}
+							}
+						}
+
+						&--dataBar{
+							border-bottom: 1px solid $color_11;
+							& .Section{
+								&-items{
+									margin-top: 0px;
+									&-item{
+										margin: 0px !important;
+										&-title{
+											font-size: 12px;
+										}
+										&-content{
+											font-size: 20px;
+										}
+									}
+								}
+							}
+						}
+
+					}
+				}
+			} //.Article
+		}
+	}
+} //.SiteMain
+
+
+
+
+body{ 
+	
+	background: $color_1;
+
+	&.single{
+		background: $color_1;
+		
+		@media screen and (min-width: $break-sm){
+			
+		}
+	}
+}

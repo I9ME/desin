@@ -1,0 +1,44 @@
+.Site-header{
+
+	height: $header_height_m;
+
+	@media screen and (min-width: $break-sm){
+		
+		height: $header_height;
+	}
+	
+
+}
+
+	
+	// ===================
+	// CUSTOMIZER
+	// ===================
+	body{
+		&.page .Site-header,
+		&.single .Site-header{
+				-moz-background: linear-gradient(to right, $color_2, $color_4);
+				-webkit-background: linear-gradient(to right, $color_2, $color_4);
+				background: linear-gradient(to right, $color_2, $color_4);
+			}
+			
+	}
+	
+
+
+
+	// ===================
+	// CUSTOMIZER - END
+	// ===================
+
+	
+
+
+
+
+.Branding{
+	&--img{
+	
+	}
+	
+}

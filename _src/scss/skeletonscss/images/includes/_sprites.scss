@@ -1,0 +1,211 @@
+// SCSS variables are information about icon's compiled state, stored under its original file name
+//
+// .icon-home {
+//   width: $icon-home-width;
+// }
+//
+// The large array-like variables contain all information about a single icon
+// $icon-home: x y offset_x offset_y width height total_width total_height image_path;
+//
+// At the bottom of this section, we provide information about the spritesheet itself
+// $spritesheet: width height image $spritesheet-sprites;
+$-figure-icon-facebook-hover-name: 'FigureIcon--facebook--hover';
+$-figure-icon-facebook-hover-x: 196px;
+$-figure-icon-facebook-hover-y: 65px;
+$-figure-icon-facebook-hover-offset-x: -196px;
+$-figure-icon-facebook-hover-offset-y: -65px;
+$-figure-icon-facebook-hover-width: 73px;
+$-figure-icon-facebook-hover-height: 71px;
+$-figure-icon-facebook-hover-total-width: 305px;
+$-figure-icon-facebook-hover-total-height: 305px;
+$-figure-icon-facebook-hover-image: '../images/sprite.png';
+$-figure-icon-facebook-hover: (196px, 65px, -196px, -65px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--facebook--hover', );
+$-figure-icon-facebook-name: 'FigureIcon--facebook';
+$-figure-icon-facebook-x: 146px;
+$-figure-icon-facebook-y: 163px;
+$-figure-icon-facebook-offset-x: -146px;
+$-figure-icon-facebook-offset-y: -163px;
+$-figure-icon-facebook-width: 73px;
+$-figure-icon-facebook-height: 71px;
+$-figure-icon-facebook-total-width: 305px;
+$-figure-icon-facebook-total-height: 305px;
+$-figure-icon-facebook-image: '../images/sprite.png';
+$-figure-icon-facebook: (146px, 163px, -146px, -163px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--facebook', );
+$-figure-icon-instagram-hover-name: 'FigureIcon--instagram--hover';
+$-figure-icon-instagram-hover-x: 219px;
+$-figure-icon-instagram-hover-y: 163px;
+$-figure-icon-instagram-hover-offset-x: -219px;
+$-figure-icon-instagram-hover-offset-y: -163px;
+$-figure-icon-instagram-hover-width: 73px;
+$-figure-icon-instagram-hover-height: 71px;
+$-figure-icon-instagram-hover-total-width: 305px;
+$-figure-icon-instagram-hover-total-height: 305px;
+$-figure-icon-instagram-hover-image: '../images/sprite.png';
+$-figure-icon-instagram-hover: (219px, 163px, -219px, -163px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--instagram--hover', );
+$-figure-icon-instagram-name: 'FigureIcon--instagram';
+$-figure-icon-instagram-x: 0px;
+$-figure-icon-instagram-y: 234px;
+$-figure-icon-instagram-offset-x: 0px;
+$-figure-icon-instagram-offset-y: -234px;
+$-figure-icon-instagram-width: 73px;
+$-figure-icon-instagram-height: 71px;
+$-figure-icon-instagram-total-width: 305px;
+$-figure-icon-instagram-total-height: 305px;
+$-figure-icon-instagram-image: '../images/sprite.png';
+$-figure-icon-instagram: (0px, 234px, 0px, -234px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--instagram', );
+$-figure-icon-newsletter-trilha-name: 'FigureIcon--newsletter--trilha';
+$-figure-icon-newsletter-trilha-x: 0px;
+$-figure-icon-newsletter-trilha-y: 0px;
+$-figure-icon-newsletter-trilha-offset-x: 0px;
+$-figure-icon-newsletter-trilha-offset-y: 0px;
+$-figure-icon-newsletter-trilha-width: 305px;
+$-figure-icon-newsletter-trilha-height: 65px;
+$-figure-icon-newsletter-trilha-total-width: 305px;
+$-figure-icon-newsletter-trilha-total-height: 305px;
+$-figure-icon-newsletter-trilha-image: '../images/sprite.png';
+$-figure-icon-newsletter-trilha: (0px, 0px, 0px, 0px, 305px, 65px, 305px, 305px, '../images/sprite.png', 'FigureIcon--newsletter--trilha', );
+$-figure-icon-newsletter-name: 'FigureIcon--newsletter';
+$-figure-icon-newsletter-x: 158px;
+$-figure-icon-newsletter-y: 234px;
+$-figure-icon-newsletter-offset-x: -158px;
+$-figure-icon-newsletter-offset-y: -234px;
+$-figure-icon-newsletter-width: 53px;
+$-figure-icon-newsletter-height: 50px;
+$-figure-icon-newsletter-total-width: 305px;
+$-figure-icon-newsletter-total-height: 305px;
+$-figure-icon-newsletter-image: '../images/sprite.png';
+$-figure-icon-newsletter: (158px, 234px, -158px, -234px, 53px, 50px, 305px, 305px, '../images/sprite.png', 'FigureIcon--newsletter', );
+$-figure-icon-pdf-name: 'FigureIcon--pdf';
+$-figure-icon-pdf-x: 196px;
+$-figure-icon-pdf-y: 136px;
+$-figure-icon-pdf-offset-x: -196px;
+$-figure-icon-pdf-offset-y: -136px;
+$-figure-icon-pdf-width: 67px;
+$-figure-icon-pdf-height: 25px;
+$-figure-icon-pdf-total-width: 305px;
+$-figure-icon-pdf-total-height: 305px;
+$-figure-icon-pdf-image: '../images/sprite.png';
+$-figure-icon-pdf: (196px, 136px, -196px, -136px, 67px, 25px, 305px, 305px, '../images/sprite.png', 'FigureIcon--pdf', );
+$-figure-icon-send-name: 'FigureIcon--send';
+$-figure-icon-send-x: 73px;
+$-figure-icon-send-y: 234px;
+$-figure-icon-send-offset-x: -73px;
+$-figure-icon-send-offset-y: -234px;
+$-figure-icon-send-width: 85px;
+$-figure-icon-send-height: 52px;
+$-figure-icon-send-total-width: 305px;
+$-figure-icon-send-total-height: 305px;
+$-figure-icon-send-image: '../images/sprite.png';
+$-figure-icon-send: (73px, 234px, -73px, -234px, 85px, 52px, 305px, 305px, '../images/sprite.png', 'FigureIcon--send', );
+$-figure-icon-site-hover-name: 'FigureIcon--site--hover';
+$-figure-icon-site-hover-x: 98px;
+$-figure-icon-site-hover-y: 65px;
+$-figure-icon-site-hover-offset-x: -98px;
+$-figure-icon-site-hover-offset-y: -65px;
+$-figure-icon-site-hover-width: 98px;
+$-figure-icon-site-hover-height: 98px;
+$-figure-icon-site-hover-total-width: 305px;
+$-figure-icon-site-hover-total-height: 305px;
+$-figure-icon-site-hover-image: '../images/sprite.png';
+$-figure-icon-site-hover: (98px, 65px, -98px, -65px, 98px, 98px, 305px, 305px, '../images/sprite.png', 'FigureIcon--site--hover', );
+$-figure-icon-site-name: 'FigureIcon--site';
+$-figure-icon-site-x: 0px;
+$-figure-icon-site-y: 65px;
+$-figure-icon-site-offset-x: 0px;
+$-figure-icon-site-offset-y: -65px;
+$-figure-icon-site-width: 98px;
+$-figure-icon-site-height: 98px;
+$-figure-icon-site-total-width: 305px;
+$-figure-icon-site-total-height: 305px;
+$-figure-icon-site-image: '../images/sprite.png';
+$-figure-icon-site: (0px, 65px, 0px, -65px, 98px, 98px, 305px, 305px, '../images/sprite.png', 'FigureIcon--site', );
+$-figure-icon-youtube-hover-name: 'FigureIcon--youtube--hover';
+$-figure-icon-youtube-hover-x: 73px;
+$-figure-icon-youtube-hover-y: 163px;
+$-figure-icon-youtube-hover-offset-x: -73px;
+$-figure-icon-youtube-hover-offset-y: -163px;
+$-figure-icon-youtube-hover-width: 73px;
+$-figure-icon-youtube-hover-height: 71px;
+$-figure-icon-youtube-hover-total-width: 305px;
+$-figure-icon-youtube-hover-total-height: 305px;
+$-figure-icon-youtube-hover-image: '../images/sprite.png';
+$-figure-icon-youtube-hover: (73px, 163px, -73px, -163px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--youtube--hover', );
+$-figure-icon-youtube-name: 'FigureIcon--youtube';
+$-figure-icon-youtube-x: 0px;
+$-figure-icon-youtube-y: 163px;
+$-figure-icon-youtube-offset-x: 0px;
+$-figure-icon-youtube-offset-y: -163px;
+$-figure-icon-youtube-width: 73px;
+$-figure-icon-youtube-height: 71px;
+$-figure-icon-youtube-total-width: 305px;
+$-figure-icon-youtube-total-height: 305px;
+$-figure-icon-youtube-image: '../images/sprite.png';
+$-figure-icon-youtube: (0px, 163px, 0px, -163px, 73px, 71px, 305px, 305px, '../images/sprite.png', 'FigureIcon--youtube', );
+$spritesheet-width: 305px;
+$spritesheet-height: 305px;
+$spritesheet-image: '../images/sprite.png';
+$spritesheet-sprites: ($-figure-icon-facebook-hover, $-figure-icon-facebook, $-figure-icon-instagram-hover, $-figure-icon-instagram, $-figure-icon-newsletter-trilha, $-figure-icon-newsletter, $-figure-icon-pdf, $-figure-icon-send, $-figure-icon-site-hover, $-figure-icon-site, $-figure-icon-youtube-hover, $-figure-icon-youtube, );
+$spritesheet: (305px, 305px, '../images/sprite.png', $spritesheet-sprites, );
+
+// The provided mixins are intended to be used with the array-like variables
+//
+// .icon-home {
+//   @include sprite-width($icon-home);
+// }
+//
+// .icon-email {
+//   @include sprite($icon-email);
+// }
+//
+// Example usage in HTML:
+//
+// `display: block` sprite:
+// <div class="icon-home"></div>
+//
+// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+//
+// // CSS
+// .icon {
+//   display: inline-block;
+// }
+//
+// // HTML
+// <i class="icon icon-home"></i>
+@mixin sprite-width($sprite) {
+  width: nth($sprite, 5);
+}
+
+@mixin sprite-height($sprite) {
+  height: nth($sprite, 6);
+}
+
+@mixin sprite-position($sprite) {
+  $sprite-offset-x: nth($sprite, 3);
+  $sprite-offset-y: nth($sprite, 4);
+  background-position: $sprite-offset-x  $sprite-offset-y;
+}
+
+@mixin sprite-image($sprite) {
+  $sprite-image: nth($sprite, 9);
+  background-image: url(#{$sprite-image});
+}
+
+@mixin sprite($sprite) {
+  @include sprite-image($sprite);
+  @include sprite-position($sprite);
+  @include sprite-width($sprite);
+  @include sprite-height($sprite);
+}
+
+// The `sprites` mixin generates identical output to the CSS template
+//   but can be overridden inside of SCSS
+//
+// @include sprites($spritesheet-sprites);
+@mixin sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .#{$sprite-name} {
+      @include sprite($sprite);
+    }
+  }
+}

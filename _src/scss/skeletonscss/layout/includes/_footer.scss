@@ -1,0 +1,142 @@
+.Site-footer{
+	background-color: $color_2;
+	background-image: url('../images/Intro--bg--mobile.png');
+	background-position: top center;
+	background-size: 150%;
+	background-repeat: no-repeat;
+	& .Section{
+		background: none !important;
+		color: $color_1;
+	}
+	& .Site-info{
+		color: $color_1;
+		&-copyright{
+			text-align: center;
+			margin-top: 25px;
+			@media screen and (min-width: $break-sm){
+				text-align: left;
+				margin-top: 0px;
+			}
+		}
+	}
+
+	& .Section--footer{
+
+
+
+		&Content{
+			& .Section{
+
+				&-header{
+					& .FigureIcon{
+						&--newsletter{
+							&--trilha{
+								display: none;
+							}
+						}
+					}
+					&-title{
+						font-size: 16px;
+					}
+				}
+
+				&-content{
+
+					
+				}
+
+				@media screen and (min-width: $break-sm){
+
+					&-container{
+						margin-bottom: 100px;
+					}
+					&-header{
+						justify-content: flex-end;
+						margin-right: $h_spacing * 2;
+
+						& .FigureIcon{
+							&--newsletter{
+								&--trilha{
+									display: block;
+									position: absolute;
+									bottom: -70px;
+									right: -80px;
+								}
+							}
+						}
+					}
+					&-content{
+						margin-top: 0px;
+					}
+				}
+
+			}
+		}
+		&Info{
+			font-size: 14px;
+			& .SocialMediaBar{
+				& .LinkHover{
+					& .FigureIcon{
+						&--a{ display: block; }
+						&--b{ display: none; }
+					}
+					&:hover{
+						& .FigureIcon{
+							&--a{ display: none; }
+							&--b{ display: block; }
+						}
+					}
+				}
+			}
+			& .Section{
+				&-subSection{
+					&--bio{
+						& p{
+							line-height: 150%;
+							font-size: 13px;
+						}
+					}
+					@media screen and (min-width: $break-sm){
+						&--bio{
+							& p{
+								text-align: left;
+							}
+						}
+						&--author{
+							text-align: right;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	@media screen and (min-width: $break-sm){
+		background-image: url('../images/Intro--bg.png');
+		background-size: 130%;
+	}
+
+
+}
+
+
+.Newsletter{
+	&--container{
+	text-align: center;
+	@media screen and (min-width: $break-sm){
+		border-right: 1px solid rgba(255,255,255,0.10);
+		padding-right: $v_spacing;
+		padding-bottom: 0px !important;
+		text-align: left;
+	}
+}
+	& legend{
+		color: $color_1;
+	}
+	& .Button{
+		padding-left: 40px !important;
+		padding-right: 40px !important;
+	}
+}
+
+
