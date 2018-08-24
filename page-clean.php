@@ -13,12 +13,7 @@
 //get_header();
 ?>
 
-
-
-<script src="https://cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
-<script type="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-
-<div class="Page Page--cupom u-paddingTop--inter--half u-absoluteTopLeft">
+<div class="Page Page--cupom u-sizeFull u-paddingTop--inter--half u-absoluteCenterMiddle">
 
 <?php if ( have_posts() ) : while ( have_posts() ) : the_post();
 
@@ -30,52 +25,94 @@
 	$url_get_ = explode('/cupom-gerado/', $url_get);
 	$id_promocao = $url_get_[1];
 	$title_promocao = get_the_title($id_promocao);
+	$user_id = get_current_user_id();
+
+	/*$meta_query = array(
+					'relation' => 'AND',
+            					
+						    array(
+						        'key'   => '_id_promo',
+						        'value' => $id_promocao,
+						        'compare' => '='
+						    ),
+						    array(
+						        'key'   => '_status_coupon',
+						        'value' => 1,
+						        'compare' => '>'
+						    )	
+				);*/
+
+
+			$coupons_Args = array( 
+					'post_type' => 'coupons',
+					'posts_per_page' => 1000,					
+					'meta_query' => array( 
+										array(
+										'relation' => 'AND',
+					            					
+											    array(
+											        'key'   => '_id_promo',
+											        'value' => $id_promocao,
+											        'compare' => '='
+											    ),
+											    array(
+											        'key'   => '_status_coupon',
+											        'value' => 1,
+											        'compare' => '>'
+											    ),	
+									),
+						 ),
+					'order' => 'ASC');
+			
+			
+			
+			$coupons_Loop = new WP_Query( $coupons_Args );
+			$quantGerado = $coupons_Loop->post_count;
+
+			//wp_reset_postdata();
+
+			$promo_args = array('post_type' => 'promocoes', 'p' => $id_promocao);
+
+			$newsLoop = new WP_Query( $promo_args );
+
+			if ( $newsLoop->have_posts() ): 
+
+				while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
+					
+					$quantTotal = get_post_meta( get_the_ID(), 'value_line_3', true );
+
+					if( $quantTotal > $quantGerado ) {
+
 
 	?>
 	
-	<?php save_coupon_data( $code_coupon, $id_promocao, $title_promocao ); ?>
+	<?php save_coupon_data( $code_coupon, $id_promocao, $user_id, $title_promocao ); ?>
 
 <section class="Section Section--style1 Section--couponData u-alignCenter">
-	<div id="renderPDF" class="u-positionRelative u-displayBlock">
+
 	<header class="Section-header u-displayFlex u-flexDirectionRow u-flexJustifyContentCenter">
 		<h2 class="Send-header-title Section-header-title--beforeTitleLine u-paddingBottom--inter--half u-marginBottom--inter--half"><?php echo get_the_title(); ?></h2>
 	</header>
 	<div class="Section-content">
-		<p class="Section-subSection Section-subSection--content u-marginBottom--inter u-paddingVertical--inter--px">
+		<div class="Section-subSection Section-subSection--content u-marginBottom--inter u-paddingVertical--inter--px">
 			<?php echo get_the_content(); ?>
-		</p>
+		</div>
 		<div class="Section-subSection Section-subSection--code u-marginBottom--inter">
 			<div class="Code u-paddingHorizontal--inter--half u-paddingVertical--inter--px u-positionRelative u-displayInlineFlex u-flexDirectionRow u-flexAlignItemsCenter">
 				<span class="Code-content u-displayBlock"><?php echo $code_coupon; // BNS000000001 ?></span>
-				<a href="javascript:getPDF();" class="Code-button Code-button--pdf u-borderRadius5 u-displayBlock u-marginLeft--inter--half--px Button Button--background Button--smallSize is-animating"><i class="FigureIcon FigureIcon--pdf u-displayBlock"></i></a>
+				<a href="<?php echo get_home_url() . '/coupons/' . $code_coupon; ?>" target="_blank" class="Code-button Code-button--pdf u-borderRadius5 u-displayBlock u-marginLeft--inter--half--px Button Button--background Button--smallSize is-animating">
+					<i class="u-inlineFlex">
+						<svg class="iconPrint u-icon is-animating">
+							<use xlink:href="#iconPrint"></use>
+						</svg>
+					</i>
+				</a>
 			</div>
 		</div>
 	</div> 
-</div> <!-- #renderPDF -->
-	<script language="javascript"> 
-        var cache_width = jQuery('#renderPDF').width(); //Criado um cache do CSS
-        var a4  =[ 595.28,  841.89]; // Widht e Height de uma folha a4
 
-        function getPDF(){
-        // Setar o width da div no formato a4
-        jQuery("#renderPDF").width((a4[0]*1.33333) -80).css('max-width','none');
-
-        // Aqui ele cria a imagem e cria o pdf
-        html2canvas(jQuery('#renderPDF'), {
-          onrendered: function(canvas) {
-            var img = canvas.toDataURL("image/png",1.0);  
-            var doc = new jsPDF({unit:'px', format:'a4'});
-            doc.addImage(img, 'JPEG', 20, 20);
-            doc.save('CUPOM-<?php echo $code_coupon; ?>.pdf');
-            //Retorna ao CSS normal
-            jQuery('#renderPDF').width(cache_width);
-          }
-        });
-        }
-    </script>
-	
 		
-		<div class="Section-subSection Section-subSection--send u-displayFlex u-flexDirectionColumn u-flexSwitchRow">
+		<!-- <div class="Section-subSection Section-subSection--send u-displayFlex u-flexDirectionColumn u-flexSwitchRow">
 			<div class="Section-subSection Section-subSection-whatsapp u-paddingHorizontal--inter u-paddingVertical--inter--half--px u-size12of24">
 				<div class=" Section-subSection-header u-displayFlex u-flexDirectionRow u-alignLeft">
 					<i class="u-icon u-icon--envelope">
@@ -83,7 +120,7 @@
 							<use xlink:href="#iconWhatsapp"></use>
 						</svg>
 					</i>
-					<h5 class="Section-subSection-header-title u-marginLeft--inter--half--px">RECEBA O CÓDIGO<br/>NO SEU <strong>WHATSAPP</strong></h5>
+					<h5 class="Section-subSection-header-title u-marginLeft--inter--half--px">RECEBA O CUPOM<br/>NO SEU <strong>WHATSAPP</strong></h5>
 				</div>
 				<div class="Section-subSection-content u-marginTop--inter--half">
 					<form class="Section-subSection-content-form Form Form--style3">
@@ -105,7 +142,7 @@
 							<use xlink:href="#iconEnvelope"></use>
 						</svg>
 					</i>
-					<h5 class="Section-subSection-header-title u-marginLeft--inter--half--px">RECEBA O CÓDIGO<br />NO SEU <strong>E-MAIL</strong></h5>
+					<h5 class="Section-subSection-header-title u-marginLeft--inter--half--px">RECEBA O CUPOM<br />NO SEU <strong>E-MAIL</strong></h5>
 				</div>
 				<div class="Section-subSection-content u-marginTop--inter--half">
 					<form class="Section-subSection-content-form Form Form--style3">
@@ -120,15 +157,25 @@
 					</form>
 				</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 	</div>
 </section>
 <?php
-endwhile; else: ?>
+} else {
+?>
+<div class="u-displayBlock u-alignCenter u-paddingVertical--hzt">
+	<h2>Desculpe-nos, os CUPONS para esta promoção já estão esgotados!</h2>
+</div>
+
+<?php
+}
+endwhile; endif;
+
+endwhile; else: 
+?>
 <p>Desculpe, mas não foi encontrado nenhum conteúdo.</p>
 <?php endif; ?>
 
 </div>
-

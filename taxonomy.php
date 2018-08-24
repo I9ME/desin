@@ -2,6 +2,7 @@
 get_header(); ?>
 
 <div id="main" class="SiteMain u-hasSideBar" role="main">
+	<?php  get_template_part('template-parts/plugins/plugin','lightbox'); ?>
 	<?php get_template_part('template-parts/page/intro','page');?>
 	
 	<div class="u-maxSize--container u-alignCenterBox u-paddingVertical--hzt u-flex u-flexDirectionRow u-flexSwitchReverse--mobile u-flex ">

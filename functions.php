@@ -17,7 +17,10 @@
 
 
 function skeleton_setup() {
-	load_theme_textdomain( 'ingressos-eventos' );
+
+	
+
+	load_theme_textdomain( 'promo-vigno' );
 
 
 
@@ -69,24 +72,27 @@ add_action( 'after_setup_theme', 'skeleton_setup' );
  */
 function skeleton_scripts() {
 
+	$skeleton_version = '1.0';
+
 	// Add custom fonts, used in the main stylesheet.
 
 	// Theme stylesheet.
-	wp_enqueue_style('css-main', get_template_directory_uri() . '/assets/css/main.min.css', array(), null);
+	wp_enqueue_style('css-main', get_template_directory_uri() . '/assets/css/main.min.css', array(), $skeleton_version, 'all');
+	wp_enqueue_script( 'js-main', get_template_directory_uri() . '/assets/js/main.min.js', array(), $skeleton_version, true );
 
 
-	wp_enqueue_script( 'js-main', get_theme_file_uri( '/assets/js/jquery-3.2.1.js' ), array(), null );
 
-	wp_enqueue_script( 'js-jquery', get_theme_file_uri( '/assets/js/main.min.js' ), array(), null );
+?>
 
-	//wp_enqueue_script( 'js-stellar', get_theme_file_uri( '/assets/js/stellar.min.js' ), array(), null );
-	//wp_enqueue_script( 'js-stellar', get_theme_file_uri( '/assets/js/jquery.paroller.min.js' ), array(), null );
+<?php
 
-	
-   
+}
+add_action( 'wp_enqueue_scripts', 'skeleton_scripts' );
 
-    wp_enqueue_script('main');
 
+
+// Add scripts to wp_footer()
+function theme_footer_script() {
 
 //SVG
 
@@ -181,15 +187,31 @@ echo'<svg style="position: absolute; width: 0; height: 0; overflow: hidden;" ver
 <symbol id="iconTime" viewBox="0 0 20 20">
 <path d="M10 0.4c-5.302 0-9.6 4.298-9.6 9.6s4.298 9.6 9.6 9.6c5.301 0 9.6-4.298 9.6-9.601 0-5.301-4.299-9.599-9.6-9.599zM10 17.599c-4.197 0-7.6-3.402-7.6-7.6 0-4.197 3.402-7.6 7.6-7.6v0 7.601l6.792-3.396c0.513 1.023 0.808 2.173 0.808 3.396 0 4.197-3.403 7.599-7.6 7.599z"></path>
 </symbol>
+<symbol id="iconPrint" viewBox="0 0 26 28">
+<path d="M6 24h14v-4h-14v4zM6 14h14v-6h-2.5c-0.828 0-1.5-0.672-1.5-1.5v-2.5h-10v10zM24 15c0-0.547-0.453-1-1-1s-1 0.453-1 1 0.453 1 1 1 1-0.453 1-1zM26 15v6.5c0 0.266-0.234 0.5-0.5 0.5h-3.5v2.5c0 0.828-0.672 1.5-1.5 1.5h-15c-0.828 0-1.5-0.672-1.5-1.5v-2.5h-3.5c-0.266 0-0.5-0.234-0.5-0.5v-6.5c0-1.641 1.359-3 3-3h1v-8.5c0-0.828 0.672-1.5 1.5-1.5h10.5c0.828 0 1.969 0.469 2.562 1.062l2.375 2.375c0.594 0.594 1.062 1.734 1.062 2.562v4h1c1.641 0 3 1.359 3 3z"></path>
+</symbol>
 </defs>
 </svg>';
 
+
 ?>
+ <link rel="stylesheet"  type="text/css" href="<?php echo get_template_directory_uri(); ?>/assets/css/owl.carousel.min.css" />
+ 
+
+ <script src="<?php echo get_template_directory_uri(); ?>/assets/js/jquery-3.2.1.min.js"></script>
+ <script src="<?php echo get_template_directory_uri(); ?>/assets/js/jquery.paroller.min.js"></script>
+ <script src="<?php echo get_template_directory_uri(); ?>/assets/js/owl.carousel.min.js"></script>
 
 <?php
-
 }
-add_action( 'wp_enqueue_scripts', 'skeleton_scripts' );
+add_action( 'wp_footer', 'theme_footer_script' );
+
+
+// Less Admin Bar
+function my_function_admin_bar($content) {
+    return ( current_user_can("administrator") ) ? $content : false;
+}
+add_filter( 'show_admin_bar' , 'my_function_admin_bar');
 
 
 
@@ -226,90 +248,85 @@ function my_body_classes( $classes ) {
 
 
 //========================================================
-// eventos
+// CUSTOM POST TYPES
 //========================================================
 
-function projectsCandidate($number){
 
-	switch ( $number ) {
-		case 1 : 
-			$varContent = 'emprego';
-			break;
-		
-		case 2 : 
-			$varContent = 'educacao';
-			break;
-
-		case 3 : 
-			$varContent = 'saude';
-			break;
-
-		case 4 : 
-			$varContent = 'transparencia';
-			break;
-
-		case 5 : 
-			$varContent = 'infraestrutura';
-			break;
-
-		case 6 : 
-			$varContent = 'economia';
-			break;
-
-		case 7 : 
-			$varContent = 'assistenciaSocial';
-			break;
-
-		case 8 : 
-			$varContent = 'habitacao';
-			break;
-	}
-
-	echo $varContent;
-
-}
-
-
-
-
-// Legado Zoeweb
-
-
-
-class Custom_Post_Type_Image_Upload {
-	
-	
-	public function __construct() {
-		
-		add_action( 'init', array( &$this, 'init' ) );
-		
-		if ( is_admin() ) {
-			add_action( 'admin_init', array( &$this, 'admin_init' ) );
-		}
-	}
-	
-	
-	/** Frontend methods ******************************************************/
-	
-	//===========================================================================
-	// CUSTOM POST TYPES
-	//===========================================================================
 
 	/**
 	 * Register the custom post type
 	 */
-	public function init() {
-		
-	// eventos
+	
+
+add_action( 'init', 'register_custom_post_types' );
+
+function register_custom_post_types() {
+
+  
+
+
+
+	
+
+	// Cidades
+	$labels_cidade = array(
+		"name" => __( "Cidades", "" ),
+		"singular_name" => __( "Cidade", "" ),
+		"menu_name" => __( "Cidades", "" ),
+		"all_items" => __( "Todas", "" ),
+		"add_new" => __( "Adicionar nova", "" ),
+		"add_new_item" => __( "Adicionar nova", "" ),
+		"edit_item" => __( "Editar", "" ),
+		"new_item" => __( "Nova", "" ),
+		"view_item" => __( "Visualizar", "" ),
+		"view_items" => __( "Visualizar", "" ),
+		"search_items" => __( "Pesquisar", "" ),
+		"not_found" => __( "Sem resultados", "" ),
+		"not_found_in_trash" => __( "Sem resultados", "" ),
+		"parent_item_colon" => __( "Relacionados", "" ),
+		"featured_image" => __( "Imagem destacada", "" ),
+		"set_featured_image" => __( "Editar imagem destacada", "" ),
+		"remove_featured_image" => __( "Remover imagem destacada", "" ),
+		"parent_item_colon" => __( "Relacionados", "" ),
+	);
+
+	$args_cidades = array(
+		"label" => __( "Cidades", "" ),
+		"labels" => $labels_cidade,
+		"description" => "",
+		"public" => true,
+		"publicly_queryable" => true,
+		"show_ui" => true,
+		"show_in_rest" => false,
+		"rest_base" => "",
+		"has_archive" => false,
+		"show_in_menu" => true,
+		"exclude_from_search" => false,
+		"capability_type" => "post",
+		"map_meta_cap" => true,
+		"hierarchical" => false,
+		"rewrite" => array( "slug" => "cidade", "with_front" => true ),
+		"query_var" => true,
+		"menu_icon" => "dashicons-location-alt",
+		"supports" => array( "title", "excerpt", "thumbnail"),
+		//'register_meta_box_cb' => 'noticias_meta_box'
+	);
+
+	register_post_type( "cidade", $args_cidades );
+
+
+	
+
+	// Eventos
 	$labels_eventos = array(
 		"name" => __( "Eventos", "" ),
 		"singular_name" => __( "Evento", "" ),
 		"menu_name" => __( "Eventos", "" ),
-		"all_items" => __( "Todas as Eventos", "" ),
+		"all_items" => __( "Todos", "" ),
 		"add_new" => __( "Adicionar novo", "" ),
 		"add_new_item" => __( "Adicionar novo", "" ),
 		"edit_item" => __( "Editar", "" ),
-		"new_item" => __( "Novo Ingresso", "" ),
+		"new_item" => __( "Novo", "" ),
 		"view_item" => __( "Visualizar", "" ),
 		"view_items" => __( "Visualizar", "" ),
 		"search_items" => __( "Pesquisar", "" ),
@@ -333,7 +350,7 @@ class Custom_Post_Type_Image_Upload {
 		"rest_base" => "",
 		"has_archive" => false,
 		"show_in_menu" => true,
-		"exclude_from_search" => true,
+		"exclude_from_search" => false,
 		"capability_type" => "post",
 		"map_meta_cap" => true,
 		"hierarchical" => false,
@@ -349,15 +366,15 @@ class Custom_Post_Type_Image_Upload {
 
 
 	// Ingressos
-	$labels_ingressos = array(
+	$labels_ingresso = array(
 		"name" => __( "Ingressos", "" ),
 		"singular_name" => __( "Ingresso", "" ),
 		"menu_name" => __( "Ingressos", "" ),
-		"all_items" => __( "Todos os ingressos", "" ),
+		"all_items" => __( "Todos", "" ),
 		"add_new" => __( "Adicionar novo", "" ),
 		"add_new_item" => __( "Adicionar novo", "" ),
 		"edit_item" => __( "Editar", "" ),
-		"new_item" => __( "Novo clipping", "" ),
+		"new_item" => __( "Novo", "" ),
 		"view_item" => __( "Visualizar", "" ),
 		"view_items" => __( "Visualizar", "" ),
 		"search_items" => __( "Pesquisar", "" ),
@@ -370,104 +387,9 @@ class Custom_Post_Type_Image_Upload {
 		"parent_item_colon" => __( "Relacionados", "" ),
 	);
 
-	$args_ingressos = array(
+	$args_ingresso = array(
 		"label" => __( "Ingressos", "" ),
-		"labels" => $labels_ingressos,
-		"description" => "",
-		"public" => true,
-		"publicly_queryable" => true,
-		"show_ui" => true,
-		"show_in_rest" => false,
-		"rest_base" => "",
-		"has_archive" => false,
-		"show_in_menu" => true,
-		"exclude_from_search" => true,
-		"capability_type" => "post",
-		"map_meta_cap" => true,
-		"hierarchical" => false,
-		"rewrite" => array( "slug" => "ingressos", "with_front" => true ),
-		"query_var" => true,
-		"menu_icon" => "dashicons-paperclip",
-		"supports" => array( "title"),
-		//'register_meta_box_cb' => 'noticias_meta_box'
-	);
-
-	register_post_type( "ingressos", $args_ingressos );
-
-/*
-	
-	// Depoimentos
-	$labels_depoimentos = array(
-		"name" => __( "Depoimentos", "" ),
-		"singular_name" => __( "Depoimento", "" ),
-		"menu_name" => __( "Depoimentos", "" ),
-		"all_items" => __( "Todos os depoimentos", "" ),
-		"add_new" => __( "Adicionar novo", "" ),
-		"add_new_item" => __( "Adicionar novo", "" ),
-		"edit_item" => __( "Editar", "" ),
-		"new_item" => __( "Novo projeto", "" ),
-		"view_item" => __( "Visualizar", "" ),
-		"view_items" => __( "Visualizar", "" ),
-		"search_items" => __( "Pesquisar", "" ),
-		"not_found" => __( "Sem resultados", "" ),
-		"not_found_in_trash" => __( "Sem resultados", "" ),
-		"parent_item_colon" => __( "Relacionados", "" ),
-		"featured_image" => __( "Imagem destacada", "" ),
-		"set_featured_image" => __( "Editar imagem destacada", "" ),
-		"remove_featured_image" => __( "Remover imagem destacada", "" ),
-		"parent_item_colon" => __( "Relacionados", "" ),
-	);
-
-	$args_depoimentos = array(
-		"label" => __( "Depoimentos", "" ),
-		"labels" => $labels_depoimentos,
-		"description" => "",
-		"public" => true,
-		"publicly_queryable" => true,
-		"show_ui" => true,
-		"show_in_rest" => false,
-		"rest_base" => "",
-		"has_archive" => false,
-		"show_in_menu" => true,
-		"exclude_from_search" => true,
-		"capability_type" => "post",
-		"map_meta_cap" => true,
-		"hierarchical" => false,
-		"rewrite" => array( "slug" => "depoimentos", "with_front" => true ),
-		"query_var" => true,
-		"menu_icon" => "dashicons-format-quote",
-		"supports" => array( "title", "excerpt", "thumbnail"),
-		//'register_meta_box_cb' => 'noticias_meta_box'
-	);
-
-	register_post_type( "depoimentos", $args_depoimentos );
-
-*/
-/*	// MATERIAIS
-	$labels_materiais = array(
-		"name" => __( "Materiais", "" ),
-		"singular_name" => __( "Material", "" ),
-		"menu_name" => __( "Materiais de sucesso", "" ),
-		"all_items" => __( "Todos os materiais", "" ),
-		"add_new" => __( "Adicionar novo material", "" ),
-		"add_new_item" => __( "Adicionar novo material", "" ),
-		"edit_item" => __( "Editar material", "" ),
-		"new_item" => __( "Novo material", "" ),
-		"view_item" => __( "Visualizar material", "" ),
-		"view_items" => __( "Visualizar materiais", "" ),
-		"search_items" => __( "Pesquisar materiais", "" ),
-		"not_found" => __( "Sem resultados", "" ),
-		"not_found_in_trash" => __( "Sem resultados", "" ),
-		"parent_item_colon" => __( "Relacionados", "" ),
-		"featured_image" => __( "Imagem destacada", "" ),
-		"set_featured_image" => __( "Editar imagem destacada", "" ),
-		"remove_featured_image" => __( "Remover imagem destacada", "" ),
-		"parent_item_colon" => __( "Relacionados", "" ),
-	);*/
-
-	/*$args_materiais = array(
-		"label" => __( "Materiais", "" ),
-		"labels" => $labels_materiais,
+		"labels" => $labels_ingresso,
 		"description" => "",
 		"public" => true,
 		"publicly_queryable" => true,
@@ -480,30 +402,29 @@ class Custom_Post_Type_Image_Upload {
 		"capability_type" => "post",
 		"map_meta_cap" => true,
 		"hierarchical" => false,
-		"rewrite" => array( "slug" => "material", "with_front" => true ),
+		"rewrite" => array( "slug" => "ingresso", "with_front" => true ),
 		"query_var" => true,
-		"menu_icon" => "dashicons-welcome-learn-more",
-		"supports" => array( "title", "editor", "thumbnail"),
+		"menu_icon" => "dashicons-cart",
+		"supports" => array( "title", "excerpt", "thumbnail"),
+		//'register_meta_box_cb' => 'noticias_meta_box'
 	);
 
-	register_post_type( "material", $args_materiais );*/
+	register_post_type( "ingresso", $args_ingresso );
 
 
-
-	// VÍDEOS
-	/*
-	$labels_videos = array(
-		"name" => __( "Vídeos", "" ),
-		"singular_name" => __( "Vídeos", "" ),
-		"menu_name" => __( "Vídeos", "" ),
-		"all_items" => __( "Todos os vídeos", "" ),
-		"add_new" => __( "Adicionar novo vídeo", "" ),
-		"add_new_item" => __( "Adicionar novo vídeo", "" ),
-		"edit_item" => __( "Editar vídeo", "" ),
-		"new_item" => __( "Novo vídeo", "" ),
-		"view_item" => __( "Visualizar vídeo", "" ),
-		"view_items" => __( "Visualizar vídeos", "" ),
-		"search_items" => __( "Pesquisar vídeos", "" ),
+	// Negociações
+	$labels_negociacao = array(
+		"name" => __( "Negociações", "" ),
+		"singular_name" => __( "Negociação", "" ),
+		"menu_name" => __( "Negociações", "" ),
+		"all_items" => __( "Todos", "" ),
+		"add_new" => __( "Adicionar nova", "" ),
+		"add_new_item" => __( "Adicionar nova", "" ),
+		"edit_item" => __( "Editar", "" ),
+		"new_item" => __( "Nova", "" ),
+		"view_item" => __( "Visualizar", "" ),
+		"view_items" => __( "Visualizar", "" ),
+		"search_items" => __( "Pesquisar", "" ),
 		"not_found" => __( "Sem resultados", "" ),
 		"not_found_in_trash" => __( "Sem resultados", "" ),
 		"parent_item_colon" => __( "Relacionados", "" ),
@@ -513,843 +434,1470 @@ class Custom_Post_Type_Image_Upload {
 		"parent_item_colon" => __( "Relacionados", "" ),
 	);
 
-	$args_videos = array(
-		"label" => __( "Materiais", "" ),
-		"labels" => $labels_videos,
+	$args_nogociacao = array(
+		"label" => __( "Negociações", "" ),
+		"labels" => $labels_negociacao,
 		"description" => "",
 		"public" => true,
 		"publicly_queryable" => true,
 		"show_ui" => true,
 		"show_in_rest" => false,
 		"rest_base" => "",
-		"has_archive" => true,
+		"has_archive" => false,
 		"show_in_menu" => true,
 		"exclude_from_search" => true,
 		"capability_type" => "post",
 		"map_meta_cap" => true,
-		"hierarchical" => true,
-		"rewrite" => array( "slug" => "video", "with_front" => true ),
+		"hierarchical" => false,
+		"rewrite" => array( "slug" => "negociacao", "with_front" => true ),
 		"query_var" => true,
-		"menu_icon" => "dashicons-video-alt",
-		"supports" => array("title", "excerpt", "thumbnail"),
+		"menu_icon" => "dashicons-tickets",
+		"supports" => array( "title", "excerpt"),
+		//'register_meta_box_cb' => 'noticias_meta_box'
 	);
 
-	register_post_type( "video", $args_videos );
-*/
+	register_post_type( "negociacao", $args_nogociacao );
+
+
+
+	// Eventos cadastrados pelo Usuário
+	$labels_eventos_usuario = array(
+		"name" => __( "Eventos do usuário", "" ),
+		"singular_name" => __( "Evento do usuário", "" ),
+		"menu_name" => __( "Eventos do usuário", "" ),
+		"all_items" => __( "Todos", "" ),
+		"add_new" => __( "Adicionar novo", "" ),
+		"add_new_item" => __( "Adicionar novo", "" ),
+		"edit_item" => __( "Editar", "" ),
+		"new_item" => __( "Novo", "" ),
+		"view_item" => __( "Visualizar", "" ),
+		"view_items" => __( "Visualizar", "" ),
+		"search_items" => __( "Pesquisar", "" ),
+		"not_found" => __( "Sem resultados", "" ),
+		"not_found_in_trash" => __( "Sem resultados", "" ),
+		"parent_item_colon" => __( "Relacionados", "" ),
+		"featured_image" => __( "Imagem destacada", "" ),
+		"set_featured_image" => __( "Editar imagem destacada", "" ),
+		"remove_featured_image" => __( "Remover imagem destacada", "" ),
+		"parent_item_colon" => __( "Relacionados", "" ),
+	);
+
+	$args_eventos_usuario = array(
+		"label" => __( "Eventos", "" ),
+		"labels" => $labels_eventos_usuario,
+		"description" => "",
+		"public" => true,
+		"publicly_queryable" => true,
+		"show_ui" => true,
+		"show_in_rest" => false,
+		"rest_base" => "",
+		"has_archive" => false,
+		"show_in_menu" => true,
+		"exclude_from_search" => true,
+		"capability_type" => "post",
+		"map_meta_cap" => true,
+		"hierarchical" => false,
+		"rewrite" => array( "slug" => "eventos-usuario", "with_front" => true ),
+		"query_var" => true,
+		"menu_icon" => "dashicons-welcome-write-blog",
+		"supports" => array( "title", "excerpt", "thumbnail"),
+		//'register_meta_box_cb' => 'noticias_meta_box'
+	);
+
+	register_post_type( "eventos-usuario", $args_eventos_usuario );
+
+
+
 	}
+
+//=========================
+// ADMIN - Get Current Post Type
+// =======================
+
+/**
+ * gets the current post type in the WordPress Admin
+ */
+function get_current_post_type() {
+  global $post, $typenow, $current_screen;
+	
+  //we have a post so we can just get the post type from that
+  if ( $post && $post->post_type )
+    return $post->post_type;
+    
+  //check the global $typenow - set in admin.php
+  elseif( $typenow )
+    return $typenow;
+    
+  //check the global $current_screen object - set in sceen.php
+  elseif( $current_screen && $current_screen->post_type )
+    return $current_screen->post_type;
+  
+  //lastly check the post_type querystring
+  elseif( isset( $_REQUEST['post_type'] ) )
+    return sanitize_key( $_REQUEST['post_type'] );
+	
+  //we do not know the post type!
+  return null;
+}
+
 
 //==========================================
 // METABOX
 //========================================
 
 
+//===================
+//EVENTOS METABOX && EVENTOS DO USUÁRIO METABOX
+//===================
 
-
-//================================
-// eventos
-//================================
-	
-	
-	/** Admin methods ******************************************************/
-	
-	
-	/**
-	 * Initialize the admin, adding actions to properly display and handle 
-	 * the Book custom post type add/edit page
-	 */
-	public function admin_init() {
-		global $pagenow;
-		
-		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' || $pagenow == 'edit.php' ) {
-			
-			add_action( 'add_meta_boxes', array( &$this, 'meta_boxes' ) );
-			add_filter( 'enter_title_here', array( &$this, 'enter_title_here' ), 1, 2 );
-			add_action( 'save_post', array( &$this, 'meta_boxes_save' ), 1, 2 );
-		}
-	}
-	
-	
-	/**
-	 * Save meta boxes
-	 * 
-	 * Runs when a post is saved and does an action which the write panel save scripts can hook into.
-	 */
-	public function meta_boxes_save( $post_id, $post ) {
-		if ( empty( $post_id ) || empty( $post ) || empty( $_POST ) ) return;
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-		if ( is_int( wp_is_post_revision( $post ) ) ) return;
-		if ( is_int( wp_is_post_autosave( $post ) ) ) return;
-		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
-		if ( $post->post_type != 'eventos' ) return;
-			
-		$this->process_book_meta( $post_id, $post );
-	}
-	
-	
-	/**
-	 * Function for processing and storing all book data.
-	 */
-	private function process_book_meta( $post_id, $post ) {
-		update_post_meta( $post_id, '_image_id', $_POST['upload_image_id'] );
-		//update_post_meta( $post_id, 'iframe_video', $_POST['multimidia_iframe_video'] );
-		update_post_meta( $post_id, 'var_tipo', $_POST['multimidia_tipo'] );
-
-		update_post_meta( $post_id, 'value_line_1', $_POST['multimidia_value_line_1'] );
-		update_post_meta( $post_id, 'value_line_2', $_POST['multimidia_value_line_2'] );
-		
-		update_post_meta( $post_id, 'value_line_3', $_POST['multimidia_value_line_3'] );
-		update_post_meta( $post_id, 'value_line_4', $_POST['multimidia_value_line_4'] );
-
-		update_post_meta( $post_id, 'value_line_5', $_POST['multimidia_value_line_5'] );
-		update_post_meta( $post_id, 'value_line_6', $_POST['multimidia_value_line_6'] );
-
-		update_post_meta( $post_id, 'value_line_7', $_POST['multimidia_value_line_7'] );
-		update_post_meta( $post_id, 'value_line_8', $_POST['multimidia_value_line_8'] );
-	}
-	
-	
-	/**
-	 * Set a more appropriate placeholder text for the New Book title field
-	 */
-	public function enter_title_here( $text, $post ) {
-		if ( $post->post_type == 'eventos' ) return __( 'Título do Projeto' );
-		return $text;
-	}
-	
-	
-	/**
-	 * Add and remove meta boxes from the edit page
-	 */
-	public function meta_boxes() {
-		add_meta_box( 'book-image', __( 'Multimidia' ), array( &$this, 'book_image_meta_box' ), 'eventos', 'normal', 'high' );
-	}
-	
-	
-	/**
-	 * Display the image meta box
-	 */
-	public function book_image_meta_box() {
-		global $post;
-
-		$var_tipo = intval( get_post_meta( $post->ID, 'var_tipo', true ) );
-		//$iframe_video = esc_html( get_post_meta( $post->ID, 'iframe_video', true ) );
-    	$value_line_1 = esc_html( get_post_meta( $post->ID, 'value_line_1', true ) );
-    	$value_line_2 = esc_html( get_post_meta( $post->ID, 'value_line_2', true ) );
-
-    	$value_line_3 = esc_html( get_post_meta( $post->ID, 'value_line_3', true ) );
-    	$value_line_4 = esc_html( get_post_meta( $post->ID, 'value_line_4', true ) );
-
-    	$value_line_5 = esc_html( get_post_meta( $post->ID, 'value_line_5', true ) );
-    	$value_line_6 = esc_html( get_post_meta( $post->ID, 'value_line_6', true ) );
-
-    	$value_line_7 = esc_html( get_post_meta( $post->ID, 'value_line_7', true ) );
-    	$value_line_8 = esc_html( get_post_meta( $post->ID, 'value_line_8', true ) );
-		
-		$image_src = '';
-		
-		$image_id = get_post_meta( $post->ID, '_image_id', true );
-		$image_src = wp_get_attachment_url( $image_id );
-		
-		?>
-
-		<table>
-		 <tr>
-            <td style="width: 100%;"><strong>Recorrência</strong></td>
-            <td>
-                <select id="tipoCase" style="width: 200px" name="multimidia_tipo" onchange="showdiv()">
-                <?php
-                // Generate all items of drop-down list
-                for ( $tipo = 3; $tipo >= 1; $tipo -- ) {
-                	
-                	switch ( $tipo ) {
-                		case 1 : 
-                			$titleOption = 'Semanal';
-                			break;
-                		
-                		case 2 : 
-                			$titleOption = 'Mensal';
-                			break;
-
-                		case 3 : 
-                			$titleOption = 'Eventual';
-                			break;
-
-                	}
-
-
-                ?>
-                    <option value="<?php echo $tipo; ?>" <?php echo selected( $tipo, $var_tipo ) ?>  data-div="Div<?php echo $tipo; ?>">
-                    	<?php echo $titleOption; ?>  
-					</option>
-                    <?php } ?>
-                </select>
-            </td>
-        </tr>
-
-       <!--  <tr id="Div1" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7" style="display: none;">
-           <td style="width: 100%"><strong>Iframe ou Embed do vídeo</strong></td>
-           <td><input type="text" size="80" name="multimidia_iframe_video" value="<?php //echo $iframe_video; ?>" placeholder="Cole o código HTML do iframe ou embed do vídeo" /></td>
-       </tr> -->
-    	 <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Data da Oferta</strong></td>
-            <td><input type="date" size="80" name="multimidia_value_line_1" value="<?php echo $value_line_1; ?>" /></td>
-        </tr>
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Data Final</strong></td>
-            <td><input type="date" size="80" name="multimidia_value_line_2" value="<?php echo $value_line_2; ?>" /></td>
-        </tr>
-
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Quantidade Total</strong></td>
-            <td><input type="number" size="80" name="multimidia_value_line_3" value="<?php echo $value_line_3; ?>" /></td>
-        </tr>
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Quantidade Gerada</strong></td>
-            <td><input type="number" size="80" name="multimidia_value_line_4" disabled="disabled" value="<?php echo $value_line_4; ?>" /></td>
-        </tr>
-
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Valor Normal</strong></td>
-            <td><input type="text" size="80" name="multimidia_value_line_5" value="<?php echo $value_line_5; ?>" /></td>
-        </tr>
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Valor Promocional</strong></td>
-            <td><input type="text" size="80" name="multimidia_value_line_6" value="<?php echo $value_line_6; ?>" /></td>
-        </tr>
-
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Descrição</strong></td>
-            <td><textarea style="width: 100%" rows="7" name="multimidia_value_line_7" /><?php echo $value_line_7; ?></textarea></td>
-        </tr>
-         <tr id="Div2" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Regras Gerais</strong></td>
-            <td><textarea style="width: 100%" rows="7" name="multimidia_value_line_8" /><?php echo $value_line_8; ?></textarea></td>
-        </tr>
-
-         <tr id="Div1" class="contentTipo Div1 Div2 Div3 Div4 Div5 Div6 Div7 Div8 Div9 Div10 Div11 Div12" style="display: none;">
-            <td style="width: 100%"><strong>Imagem de capa</strong></td>
-            <td>
-            	<img id="book_image" src="<?php echo $image_src ?>" style="max-width:280px;" />
-		<input type="hidden" name="upload_image_id" id="upload_image_id" value="<?php echo $image_id; ?>" />
-		<p>
-			<a title="<?php esc_attr_e( 'Incluir / Alterar imagem' ) ?>" href="#" id="set-book-image"><?php _e( 'Incluir / Alterar imagem' ) ?></a>
-			<a title="<?php esc_attr_e( 'Remover imagem' ) ?>" href="#" id="remove-book-image" style="<?php echo ( ! $image_id ? 'display:none;' : '' ); ?>"><?php _e( 'Remover imagem' ) ?></a>
-		</p>
-            </td>
-        </tr>
-    </table>
-		
-		<script type="text/javascript">
-			
-			function showdiv()
-				{
-				   var divID = $("#tipoCase option:selected").attr("data-div");
-				   divID = divID.replace(" ","");
-				   // $("tr#"+divID).show();
-				   // $("tr#"+divID).siblings().hide();
-   					$("tr.contentTipo").hide();
-   					$("tr."+divID).show();
-				}
-
-		jQuery(document).ready(function($) {
-
-			// Hide Or show by Tipo
-			var divID = $("#tipoCase option:selected").attr("data-div");
-			$("tr."+divID).show();
-			
-			// save the send_to_editor handler function
-			window.send_to_editor_default = window.send_to_editor;
-	
-			$('#set-book-image').click(function(){
-				
-				// replace the default send_to_editor handler function with our own
-				window.send_to_editor = window.attach_image;
-				tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
-				
-				return false;
-			});
-			
-			$('#remove-book-image').click(function() {
-				
-				$('#upload_image_id').val('');
-				$('img').attr('src', '');
-				$(this).hide();
-				
-				return false;
-			});
-			
-			// handler function which is invoked after the user selects an image from the gallery popup.
-			// this function displays the image and sets the id so it can be persisted to the post meta
-			window.attach_image = function(html) {
-				
-				// turn the returned image html into a hidden image element so we can easily pull the relevant attributes we need
-				$('body').append('<div id="temp_image">' + html + '</div>');
-					
-				var img = $('#temp_image').find('img');
-				
-				imgurl   = img.attr('src');
-				imgclass = img.attr('class');
-				imgid    = parseInt(imgclass.replace(/\D/g, ''), 10);
-	
-				$('#upload_image_id').val(imgid);
-				$('#remove-book-image').show();
-	
-				$('img#book_image').attr('src', imgurl);
-				try{tb_remove();}catch(e){};
-				$('#temp_image').remove();
-				
-				// restore the send_to_editor handler function
-				window.send_to_editor = window.send_to_editor_default;
-				
-			}
-	
-		});
-		</script>
-		<?php
-	}
+// Box: Dados do Evento //
+function add_custom_meta_box()
+{
+    add_meta_box("demo-meta-box", "Dados do Evento", "custom_meta_box_markup", array("eventos", "eventos-usuario"), "normal", "high", null);
 }
 
-// finally instantiate our plugin class and add it to the set of globals
-$GLOBALS['custom_post_type_image_upload'] = new Custom_Post_Type_Image_Upload();
+add_action("add_meta_boxes", "add_custom_meta_box");
+
+// View
+function custom_meta_box_markup($object)
+{
+    wp_nonce_field(basename(__FILE__), "meta-box-nonce");
+
+    ?>
+        <table width="100%" cellpadding="0" cellspacing="0">
+        	<tr>
+        		<td width="30%">
+            		<h4>Cidade</h4>
+        		</td>
+        		<td>
+		           
+		    				
+		    			<?php 
+		    				$meta_box_cidade_evento  = get_post_meta( $object->ID, 'meta_box-cidade_evento', true );
+						?>
+		    			<select id="meta_box-cidade_evento" style="width: 320px" name="meta_box-cidade_evento" required="required">
+		    				<option></option>
+						<?php 
+							$args = array( 'post_type' => 'cidade', 'order' => 'ASC');
+							
+							//$newsLoop = new WP_Query( $newsArgs );
+
+							$posts = get_posts( $args );
+							
+							foreach( $posts as $post ) : setup_postdata( $post );
+								
+								?>
+						        <option value="<?php echo $post->ID; ?>" <?php if( $post->ID == $meta_box_cidade_evento ) { echo 'selected'; } ?>>
+						        	<?php echo $post->post_title; ?>  
+								</option>
+
+					 
+					       <?php 
+					       wp_reset_postdata(); endforeach;
+					       ?>
 
 
+					   </select>
+
+		    				
+		        </td>
+		    </tr>
+        	<tr>
+        		<td width="30%">
+            		<h4>Períodicidade do Evento</h4>
+        		</td>
+        		<td>
+		            <select name="meta_box-tipo_evento" style="width: 220px;">
+		                <?php 
+		                    $option_values = array(1, 2, 3);
+
+		                    foreach($option_values as $key => $value) {
+
+		                    	switch ($value) {
+		                    		case 1:
+		                    			$value_label = 'Eventual';
+		                			break;
+		                			case 2:
+		                    			$value_label = 'Semanal';
+		                			break;
+		                			case 3:
+		                    			$value_label = 'Mensal';
+		                			break;
+		                		}
 
 
-//================================
-// MATERIAIS e VÍDEOS
-//================================
+		                        if($value == get_post_meta($object->ID, "meta_box-tipo_evento", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td>
+		    		<h4>Data do Evento</h4>
+		    	</td>
+		    	<td>
+		    		 <input name="meta_box-date" type="date" value="<?php echo get_post_meta($object->ID, "meta_box-date", true); ?>" />
+		    	</td>
+		    </tr>
+		     <tr>
+		    	<td>
+		    		<h4>Aceita meia Entrada?</h4>
+		    	</td>
+		    	<td>
+		    		<?php $meta_box_radio_meia_value =  get_post_meta($object->ID, "meta_box-ingresso_meia", true); ?>
+		    		 <input name="meta_box-ingresso_meia" type="radio" value="1" <?php if ( $meta_box_radio_meia_value == 1 ) { echo 'checked'; } ?> />
+		    		 <label>Sim</label>
+		    		 <br />
+		    		 <input name="meta_box-ingresso_meia" type="radio" value="2" <?php if ( $meta_box_radio_meia_value == 2 ) { echo 'checked'; } ?> />
+		    		 <label>Não</label>
+
+		    	</td>
+		    </tr>
+		   
+		     <tr>
+        		<td width="30%">
+            		<h4>Status do Evento</h4>
+        		</td>
+        		<td>
+		            <select name="meta_box-status_evento" style="width: 220px;">
+		            	<option></option>
+		                <?php 
+		                
+		               		// Aplica um array específico para o post type "eventos-usuario"
+		                	if( get_current_post_type() == 'eventos-usuario' ){
+
+		                		$options_status_eventos = array(4,5,6);
+
+		                	} else {
+		                		// Aplica um array específico para os demais post types
+		                		$options_status_eventos = array(1,2,3);
+
+		                	}
 
 
+		                    foreach($options_status_eventos as $key => $status_evento_value) {
+		                    	
+		                    	switch ($status_evento_value) {
+		                    		case 1:
+		                    			$value_label = 'Ativo';
+		                			break;
 
-// Cria a meta_box
-function conteudo_metabox() {
-	
-	// Tipos de post para a metabox
-	$screens = array( 'clipping', 'video', 'depoimentos' );
+		                			case 2:
+		                    			$value_label = 'Suspenso';
+		                			break;
 
-	foreach ( $screens as $screen ) {
+		                			case 3:
+		                    			$value_label = 'Inativo';
+		                			break;
 
-		add_meta_box(
-			'conteudo_meta_box',          // ID da Meta Box 
-			'Campos adicionais do conteúdo',   // Título
-			'conteudo_metabox_callback',  // Função de callback
-			$screen,                    // Local onde ela vai aparecer
-			'normal',                   // Contexto
-			'high'                      // Prioridade
-		);
-		
-	} // foreach
-	
-} 
+		                			case 4:
+		                    			$value_label = 'Pendente';
+		                			break;
 
-// Cria a meta_box
-add_action( 'add_meta_boxes', 'conteudo_metabox', 1 );
+		                			case 5:
+		                    			$value_label = 'Em edição';
+		                			break;
 
-// Essa é a função que vai exibir os dados para o usuário
-function conteudo_metabox_callback( $post ) {
+		                			case 6:
+		                    			$value_label = 'Aprovado';
+		                			break;
+		                		}
 
-	// Adiciona um campo para verificação posterior
-	wp_nonce_field( 'conteudo_custom_metabox', 'conteudo_custom_metabox_nonce' );
-	
-	$_urlswitch = get_post_meta( $post->ID, '_urlswitch', true );
 
-	if ( 'clipping' == get_post_type() ) {
-		$placeholder = 'Código do Ingresso';
-		$title = 'CÓDIGO';
-	}
-	elseif ( 'video' == get_post_type() ) {
-		$placeholder = 'Cole aqui embed ou iframe do Vídeo';
-		$title = 'EMBED DO VÍDEO';
-	}
-	elseif ( 'depoimentos' == get_post_type() ) {
-		$placeholder = 'Digite aqui o cargo';
-		$title = 'CARGO';
-	}
+		                        if($status_evento_value == get_post_meta($object->ID, "meta_box-status_evento", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $status_evento_value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $status_evento_value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        </td>
+		    </tr>
+		     <?php if( get_current_post_type() == 'eventos-usuario' ){ ?>
+		    <tr>
+		    	<td><h4>Usuário:</h4>
+		    		<td>
+		    			<?php 
+		    				$meta_box_idUser_evento  = get_post_meta( $object->ID, 'meta_box-usuario_evento', true );
+		    				
+		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
 
-	
-	echo '<h4>' . $title . '</h4>';
-	echo '<input type="text" name="_urlswitch" class="widefat" value="' . esc_html( $_urlswitch ) . '" placeholder="' . $placeholder . '" />';
+		    				if( $meta_box_idUser_evento != '' && $edit_field == 'false' ){
+
+		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+		    					$user_info = get_userdata($meta_box_idUser_evento);
+		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
+					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
+					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=true">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta_box-usuario_evento" value="' . $meta_box_idUser_evento . '" />';
+
+		    				} else {
+		    					
+		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+
+		    					echo '<select required="required" name="meta_box-usuario_evento" style="width: 220px;" >';
+		    					echo '<option></option>';
+
+								foreach($option_values as $value){
+								        //print_r(get_user_meta ( $user_id->ID));
+								        if( $value->ID == get_post_meta($object->ID, "meta_box-usuario_evento", true) ) {
+
+								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+								        
+								        } else {
+								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+								       	}
+								    }
+								    echo '</select>';
+		    				}
+		    			 ?>						 
+		    		</td>
+		    </tr>
+		   
+		<?php } ?>
+		    
+		</table>
+    <?php  
 }
 
-function conteudo_save_custom_metabox_data( $post_id ) {
+// Save in Data Base
+function save_custom_meta_box($post_id, $post, $update)
+{
+    if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
+        return $post_id;
 
-	// Verifica o campo nonce
-	if ( ! isset( $_POST['conteudo_custom_metabox_nonce'] ) ) {
-		return;
-	}
+    if(!current_user_can("edit_post", $post_id))
+        return $post_id;
 
-	// Verifica se o campo nonce é válido
-	if ( ! wp_verify_nonce( $_POST['conteudo_custom_metabox_nonce'], 'conteudo_custom_metabox' ) ) {
-		return;
-	}
+    if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
+        return $post_id;
 
-	// Se o formulário ainda não foi enviado (estiver fazendo autosave) 
-	// não faremos nada
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-
-	// Verifica as permissões do usuário (mínimo: editar post).
-	if ( isset( $_POST['post_type'] ) && 'contato' == $_POST['post_type'] ) {
-
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-	}
-
-	/* Perfeito, agora vamos aos campos. */
-	
-	$_urlswitch = isset( $_POST['_urlswitch'] ) ? $_POST['_urlswitch'] : null;
-
-	// Atualiza os dados no BD
-	
-	update_post_meta( $post_id, '_urlswitch', $_urlswitch );
-}
-add_action( 'save_post', 'conteudo_save_custom_metabox_data' );
-
-
-
-
-
-
-
-
-
-//======================
-// Taxonomies
-//=====================
-
-add_action( 'init', 'create_my_taxonomies', 0 );
-
-function create_my_taxonomies() {
-    register_taxonomy(
-        'categoria-material',
-        'material',
-        array(
-            'labels' => array(
-                'name' => 'Categoria de Material',
-                'add_new_item' => 'Adicionar nova Categoria',
-                'new_item_name' => "Nova Categoria"
-            ),
-            'show_ui'           => true,
-	        'show_admin_column' => true,
-	        'query_var'         => true,
-	        'rewrite'           => array( 'slug' => 'categoria-material' ),
-	        'public' => true,
-	        'hierarchical' => true,
-	        'show_ui' => true,
-	        'show_in_nav_menus' => true,
-	        'query_var' => true,
-	        'publicly_queryable' => true,
-	        'capability_type' => 'post',
-	        'hierarchical' => true,
-	        'has_archive' => true
-        )
-    );
-    register_taxonomy(
-        'categoria-video',
-        'video',
-        array(
-            'labels' => array(
-                'name' => 'Categoria de Vídeo',
-                'add_new_item' => 'Adicionar nova Categoria',
-                'new_item_name' => "Nova Categoria"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'show_admin_column' => true,
-			'query_var'         => true,
-			'rewrite' => array( 'slug' => 'categoria-video' ),
-			'hierarchical' => true,
-        )
-    );
-}
-
-//==================================
-// Filter and Columns in postTypes
-//==================================
-
-add_filter( 'manage_edit-cases_sucesso_columns', 'my_columns' );
-
-function my_columns( $columns ) {
-    $columns['var_tipo'] = 'Tipo';
-    unset( $columns['comments'] );
-    return $columns;
-}
-
-add_action( 'manage_posts_custom_column', 'populate_columns' );
-
-function populate_columns( $column ) {
-    if ( 'var_tipo' == $column ) {
-        $tipo = get_post_meta( get_the_ID(), 'var_tipo', true );
-        
-        switch ($tipo) {
-        	case 1:
-        		echo 'Vídeo';
-        		break;
-        	case 2:
-        		echo 'Depoimento';
-        		break;
-        	case 3:
-        		echo 'Apenas logotipo';
-        		break;
-        	
-        }
-    }
-}
-
-add_filter( 'manage_edit-cases_sucesso_sortable_columns', 'sort_me' );
-
-function sort_me( $columns ) {
-    $columns['var_tipo'] = 'var_tipo';
- 
-    return $columns;
-}
-
-
-//add_filter( 'request', 'column_ordering' );
- 
-add_filter( 'request', 'column_orderby' );
- 
-function column_orderby ( $vars ) {
-    if ( !is_admin() )
-        return $vars;
     
-    if ( isset( $vars['orderby'] ) && 'var_tipo' == $vars['orderby'] ) {
-        $vars = array_merge( $vars, array( 'meta_key' => 'var_tipo', 'orderby' => 'meta_value_num' ) );
+    if( "eventos" != $post->post_type && "eventos-usuario" != $post->post_type)
+        return $post_id;
+
+    $meta_box_cidade_evento_value = "";
+    $meta_box_date_value = "";
+    $meta_box_tipo_evento_value = "";
+    $meta_box_checkbox_value = "";
+    $meta_box_radio_meia_value = "";
+    $meta_box_status_evento_value = "";
+    if( get_current_post_type() == 'eventos-usuario' ){ 
+    	$meta_box_idUser_evento_ = "";
     }
-    return $vars;
+
+    if(isset($_POST["meta_box-cidade_evento"]))
+    {
+        $meta_box_cidade_evento_value = $_POST["meta_box-cidade_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-cidade_evento", $meta_box_cidade_evento_value);
+
+    if(isset($_POST["meta_box-date"]))
+    {
+        $meta_box_date_value = $_POST["meta_box-date"];
+    }   
+    update_post_meta($post_id, "meta_box-date", $meta_box_date_value);
+
+    if(isset($_POST["meta_box-ingresso_meia"]))
+    {
+        $meta_box_radio_meia_value = $_POST["meta_box-ingresso_meia"];
+    }   
+    update_post_meta($post_id, "meta_box-ingresso_meia", $meta_box_radio_meia_value);
+
+    if(isset($_POST["meta_box-status_evento"]))
+    {
+        $meta_box_status_evento_value = $_POST["meta_box-status_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-status_evento", $meta_box_status_evento_value);
+
+    if(isset($_POST["meta_box-tipo_evento"]))
+    {
+        $meta_box_tipo_evento_value = $_POST["meta_box-tipo_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-tipo_evento", $meta_box_tipo_evento_value);
+
+     if(isset($_POST["meta_box-usuario_evento"]))
+    {
+        $meta_box_idUser_evento_ = $_POST["meta_box-usuario_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-usuario_evento", $meta_box_idUser_evento_);
+
 }
 
-
-//=============================
-// Trata as páginas de conteúdo
-//=============================
+add_action("save_post", "save_custom_meta_box", 10, 3);
 
 
-// POST_TYPE no Search
-function get_post_type_search($variable_compare) {
+// Box: Tipo de Ingresso //
 
-	if( isset( $_GET['post_type'] ) ) {
-		
-		$get_post_type = $_GET['post_type'];
-		
-		if( !empty($get_post_type) && $get_post_type  == $variable_compare ){
+add_action( 'add_meta_boxes', 'add_custom_box' );
 
-			return true;
-
-		} 
-
-		
-	}
-
-}
+    function add_custom_box( $post ) {
 
 
-//==================================
-//Paginação BLOG
-//==================================
+		if( get_current_post_type() == 'eventos' || get_current_post_type() == 'eventos-usuario' ){
 
-function pagination_bar( $custom_query ) {
+			$title_checkBox_box = 'Tipos de Ingresso';
 
-    $total_pages = $custom_query->max_num_pages;
-    $big = 999999999; // need an unlikely integer
-
-    if ($total_pages > 1){
-        $current_page = max(4, get_query_var('paged'));
-
-        $pagination =  paginate_links(array(
-            'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-            'format' => '?paged=%#%',
-            'prev_next' => false,
-            'current' => $current_page,
-            'total' => $total_pages,
-            'before_page_number' => '<span class="navController navController--center navController--left navController--all navController--button  navController--tabs ReadMore  Button ButtonLink u-lineHeight0 hover is-animating u-marginRight--inter u-flex"><span class="ShowText">',
-            'after_page_number' => '</span></span>',
-            'prev_text' => '<span class="ShowText">%1$s</span>',
-            'next_text' => '<span class="ShowText">%1$s</span>',
-        ));
-
-
-
-        echo $pagination;
-
-
-    }
-}
-
-// Páginas de Orçamento
-
-
-function is_page_budget(){
-
-global $post;     // if outside the loop
-
-if( is_page() ) { 
-
-	if ( $post->post_parent) {
-
-		$pageParent = '';
-		$hasChild = 'yes';
-		/* is it a page */
-	
-		//global $post;
-	        /* Get an array of Ancestors and Parents if they exist */
-		$parents = get_post_ancestors( $post->ID );
-	        /* Get the top Level page->ID count base 1, array base 0 so -1 */ 
-		$id = ($parents) ? $parents[count($parents)-1]: $post->ID;
-		/* Get the parent and set the $class with the page slug (post_name) */
-	    $parent = get_post( $id );
-		$pageParent = $parent->post_name;
-
-		if( $pageParent == 'orcamentos') {
-
-			return array('verify' => 'yes', 'hasChild' => $hasChild );
-
-		}
-	}
-	elseif ( is_page('orcamentos') ) {
-
-		$hasChild = 'no';
-
-		return array('verify' => 'yes', 'hasChild' => $hasChild );
-
-		}
-
-	}
-}
-
-
-
-function link_for_budgets($slug_page, $slug_custom){
-
-//global $post;     // if outside the loop
-
-	if( is_page() ) { 
-
-		if ( $slug_custom != '' ){
-
-			$page = get_page_by_path( $slug_custom );
-		
 		} else {
 
-			$page = get_page_by_path( $slug_page );
+			$title_checkBox_box = 'Meta Box';
 
 		}
 
+        add_meta_box(
+            'Meta Box', // ID, should be a string.
+            $title_checkBox_box, // Meta Box Title.
+            'view_meta_box', // Your call back function, this is where your form field will go.
+            array('eventos','eventos-usuario'), // The post type you want this to show up on, can be post, page, or custom post type.
+            'normal', // The placement of your meta box, can be normal or side.
+            'high' // The priority in which this will be displayed.
+        );
+}
+// View
+function view_meta_box($post) {
+    wp_nonce_field( 'my_awesome_nonce', 'awesome_nonce' );    
+    $checkboxMeta = get_post_meta( $post->ID );
+    ?>
+    <input type="checkbox" name="masculino" id="masculino" value="yes" <?php if ( isset ( $checkboxMeta['masculino'] ) ) checked( $checkboxMeta['masculino'][0], 'yes' ); ?> />Masculino<br />
+    <input type="checkbox" name="feminino" id="feminino" value="yes" <?php if ( isset ( $checkboxMeta['feminino'] ) ) checked( $checkboxMeta['feminino'][0], 'yes' ); ?> />Feminino<br />
+    <input type="checkbox" name="pista" id="pista" value="yes" <?php if ( isset ( $checkboxMeta['pista'] ) ) checked( $checkboxMeta['pista'][0], 'yes' ); ?> />Pista<br />
+     <input type="checkbox" name="front" id="front" value="yes" <?php if ( isset ( $checkboxMeta['front'] ) ) checked( $checkboxMeta['front'][0], 'yes' ); ?> />Front<br />
+    <input type="checkbox" name="vip" id="vip" value="yes" <?php if ( isset ( $checkboxMeta['vip'] ) ) checked( $checkboxMeta['vip'][0], 'yes' ); ?> />Vip<br />
+    <input type="checkbox" name="camarote" id="camarote" value="yes" <?php if ( isset ( $checkboxMeta['camarote'] ) ) checked( $checkboxMeta['camarote'][0], 'yes' ); ?> />Camarote<br />
+    <input type="checkbox" name="geral" id="geral" value="yes" <?php if ( isset ( $checkboxMeta['geral'] ) ) checked( $checkboxMeta['geral'][0], 'yes' ); ?> />Geral (ingressos sem distinção de lugar ou gênero. ex: abadá, ...)<br />
+<?php }
 
-		if ( isset($page) ) {
+// Save in DB
+add_action( 'save_post', 'save_people_checkboxes' );
+    function save_people_checkboxes( $post_id ) {
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+            return;
+        if ( ( isset ( $_POST['my_awesome_nonce'] ) ) && ( ! wp_verify_nonce( $_POST['my_awesome_nonce'], plugin_basename( __FILE__ ) ) ) )
+            return;
+        if ( ( isset ( $_POST['post_type'] ) ) && ( 'eventos' == $_POST['post_type'] )  ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+                return;
+            }    
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return;
+            }
+        }
 
-			return get_permalink($page);
-		}
-		else {
+        //saves value
+        if( isset( $_POST[ 'masculino' ] ) ) {
+            update_post_meta( $post_id, 'masculino', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'masculino', 'no' );
+        }
 
-			return get_permalink( get_page_by_path( 'orcamentos' ) );
-		}
-	
-	}
+        //saves  value
+        if( isset( $_POST[ 'feminino' ] ) ) {
+            update_post_meta( $post_id, 'feminino', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'feminino', 'no' );
+        }
+
+        //saves  value
+        if( isset( $_POST[ 'pista' ] ) ) {
+            update_post_meta( $post_id, 'pista', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'pista', 'no' );
+        } 
+         //saves value
+        if( isset( $_POST[ 'front' ] ) ) {
+            update_post_meta( $post_id, 'front', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'front', 'no' );
+        }
+
+        //saves  value
+        if( isset( $_POST[ 'vip' ] ) ) {
+            update_post_meta( $post_id, 'vip', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'vip', 'no' );
+        }
+
+        //saves  value
+        if( isset( $_POST[ 'camarote' ] ) ) {
+            update_post_meta( $post_id, 'camarote', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'camarote', 'no' );
+        } 
+        //saves  value
+        if( isset( $_POST[ 'geral' ] ) ) {
+            update_post_meta( $post_id, 'geral', 'yes' );
+        } else {
+            update_post_meta( $post_id, 'geral', 'no' );
+        }  
 }
 
-// Pega o Slug da Página Corrente
-function get_slug_current_page(){
-	
-	if( is_page() ) {
 
-		global $post;
-    	
-    	return $post->post_name;
-	
-	} 
+//==================================
+// INGRESSOS META BOX
+// =================================
+
+// BOX: Dados do Ingresso //
+function add_custom_meta_box_2()
+{
+    add_meta_box("demo-meta-box", "Dados do Ingresso", "custom_meta_box_markup_2", "ingresso", "normal", "high", null);
 }
 
-// Gera o código do INGRESSO
-function generateRandomString($length = 10) {
+add_action("add_meta_boxes", "add_custom_meta_box_2");
 
-			    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			    $charactersLength = strlen($characters);
-			    $randomString = '';
-			    for ($i = 0; $i < $length; $i++) {
-			        $randomString .= $characters[rand(0, $charactersLength - 1)];
-			    }
-			    return $randomString;
-			}
+// View
+function custom_meta_box_markup_2($object)
+{
+    wp_nonce_field(basename(__FILE__), "meta-box-nonce");
 
+    ?>
+        <table width="100%" cellpadding="0" cellspacing="0">
+        	<tr>
+        		<td width="25%">
+            		<h4>Tipo de Oferta:</h4>
+        		</td>
+        		<td>
+        			<?php 
 
+						$meta_box_tipo_oferta_  = get_post_meta($object->ID, "meta_box-tipo_oferta", true);
 
+						if( !empty( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
 
+						if( $meta_box_tipo_oferta_ != '' && $edit_field != 'tipo_oferta' ){
 
-//================================
-// METABOX - INGRESSOS
-//================================
+	                    	switch ($meta_box_tipo_oferta_) {
+	                    		
+	                    		case 1:
+	                    			$value_label = 'Quero Vender';
+	                			break;
 
+	                			case 2:
+	                    			$value_label = 'Quero Comprar';
+	                			break;
 
+	                		}
 
-// Cria a meta_box
-function coupon_metabox() {
-	
-	// Tipos de post para a metabox
-	$screens = array( 'ingressos', 'video', 'depoimentos' );
+	                		$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    				
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>' . $value_label .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=tipo_oferta">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-tipo_oferta" value="' . $meta_box_tipo_oferta_ . '" />';
 
-	foreach ( $screens as $screen ) {
+						} elseif( $meta_box_tipo_oferta_ == '' ||  $edit_field == 'tipo_oferta'  ){
+					?>
+		            <select name="meta_box-tipo_oferta" required="required" style="width: 220px;">
+		            	<option></option>
+		                <?php 
+		                    $option_values = array(1, 2);
 
-		add_meta_box(
-			'coupon_meta_box',          // ID da Meta Box 
-			'Campos adicionais do conteúdo',   // Título
-			'coupon_metabox_callback',  // Função de callback
-			$screen,                    // Local onde ela vai aparecer
-			'normal',                   // Contexto
-			'high'                      // Prioridade
-		);
-		
-	} // foreach
-	
-} 
+		                    foreach($option_values as $key => $value) {
 
-// Cria a meta_box
-add_action( 'add_meta_boxes', 'coupon_metabox', 1 );
+		                    	switch ($value) {
+		                    		
+		                    		case 1:
+		                    			$value_label = 'Quero Vender';
+		                			break;
 
-// Essa é a função que vai exibir os dados para o usuário
-function coupon_metabox_callback( $post ) {
+		                			case 2:
+		                    			$value_label = 'Quero Comprar';
+		                			break;
 
-	// Adiciona um campo para verificação posterior
-	wp_nonce_field( 'coupon_custom_metabox', 'coupon_custom_metabox_nonce' );
-	
-	$_id_promo = get_post_meta( $post->ID, '_id_promo', true );
-	$_titulo_promo = get_post_meta( $post->ID, '_titulo_promo', true );
-	$_status_coupon = get_post_meta( $post->ID, '_status_coupon', true );
-
-
-	
-	
-	echo '<h4>PROMOÇÃO</h4>';
-?>
-
-<select id="evento" style="width: 100%" name="evento">
-                
-<?php 
-
-	$newsArgs = array( 'post_type' => 'eventos', 'meta_key' => 'value_line_2', 'orderby' => 'meta_value_num', 'order' => 'ASC');
-	$newsLoop = new WP_Query( $newsArgs );
-			
-		if ( $newsLoop->have_posts() ):
-			 while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
- ?>
-
-               
-        <option value="<?php echo get_the_ID(); ?>" <?php if( get_the_ID() == $_id_promo ) { echo 'selected'; } ?>>
-        	<?php echo get_the_title(); ?>  
-		</option>
-
-       <?php endwhile; ?>
-
-       <?php 
-			endif; 
-			wp_reset_postdata(); 
-		?>
-
-</select>
-
-<?php
+		                		}
 
 
-	echo '<h4>STATUS DO INGRESSO</h4>';
+		                        if($value == get_post_meta($object->ID, "meta_box-tipo_oferta", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        <?php } ?>
+		        </td>
+		    </tr>
+		    <tr>
+        		<td width="25%">
+            		<h4>Tipo do Ingresso:</h4>
+        		</td>
+        		<td>
+        			<?php 
 
-	?>
+						$meta_box_tipo_ingresso_  = get_post_meta($object->ID, "meta_box-tipo_ingresso", true);
+
+						if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+						if( $meta_box_tipo_ingresso_ != '' && $edit_field != 'tipo_ingresso' ){
+
+	                    	switch ($meta_box_tipo_ingresso_) {
+	                    		
+	                    		case 1:
+	                    			$value_label = 'Masculino';
+	                			break;
+	                			case 2:
+	                    			$value_label = 'Feminino';
+	                			break;
+	                			case 3:
+	                    			$value_label = 'Pista';
+	                			break;
+	                			case 4:
+	                    			$value_label = 'Front';
+	                			break;
+	                			case 5:
+	                    			$value_label = 'Vip';
+	                			break;
+	                			case 6:
+	                    			$value_label = 'Camarote';
+	                			break;
+	                			case 7:
+	                    			$value_label = 'Geral';
+	                			break;
+
+	                		}
 
 
-<select style="width: 200px" name="_status_coupon">
-	<?php
-	// Generate all items of drop-down list
-	for ( $_status_coupon_opt = 4; $_status_coupon_opt >= 1; $_status_coupon_opt -- ) {
-		
-		switch ( $_status_coupon_opt ) {
-			case 1 : 
-				$titleOption = 'Cancelado';
-				break;
-			
-			case 2 : 
-				$titleOption = 'Expirado';
-				break;
+	                		$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>' . $value_label .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=tipo_ingresso">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-tipo_ingresso" value="' . $meta_box_tipo_ingresso_ . '" />';
 
-			case 3 : 
-				$titleOption = 'Utilizado';
-				break;
+						} elseif( $meta_box_tipo_ingresso_ == '' || $edit_field == 'tipo_ingresso'  ){
+					?>
+		            <select name="meta_box-tipo_ingresso" required="required" style="width: 220px;">
+		            	<option></option>
+		                <?php 
+		                    $option_values = array(1, 2, 3, 4, 5, 6, 7);
 
-			case 4 : 
-				$titleOption = 'Ativo';
-				break;
-		}
+		                    foreach($option_values as $key => $value) {
 
-	?>
-    <option value="<?php echo $_status_coupon_opt; ?>" <?php echo selected( $_status_coupon_opt, $_status_coupon ) ?>>
-    	<?php echo $titleOption; ?>  
-	</option>
-    <?php } ?>
-</select>
+		                    	switch ($value) {
+		                    		case 1:
+		                    			$value_label = 'Masculino';
+		                			break;
+		                			case 2:
+		                    			$value_label = 'Feminino';
+		                			break;
+		                			case 3:
+		                    			$value_label = 'Pista';
+		                			break;
+		                			case 4:
+		                    			$value_label = 'Front';
+		                			break;
+		                			case 5:
+		                    			$value_label = 'Vip';
+		                			break;
+		                			case 6:
+		                    			$value_label = 'Camarote';
+		                			break;
+		                			case 7:
+		                    			$value_label = 'Geral';
+		                			break;
+		                		}
 
 
-	<?php
-	
+		                        if($value == get_post_meta($object->ID, "meta_box-tipo_ingresso", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        <?php } ?>
+		        </td>
+		    </tr>
+		    <tr>
+		    	<td><h4>Evento:</h4>
+		    		<td>
+		    			<?php 
+
+							$meta_box_idEvento  = get_post_meta( $object->ID, 'meta_box-id_evento', true );
+
+							if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+							if( $meta_box_idEvento != '' && $edit_field != 'id_evento'  ){
+
+								$post_id = $meta_box_idEvento;
+								$queried_post = get_post($post_id);
+								$title = $queried_post->post_title;
+
+								$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+								echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID: ' . $post_id .'</h4>'."\n";
+					      		echo '<p>Nome: <strong>' . $title .'</strong></p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=id_evento">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta_box-id_evento" value="' . $post_id . '" />';
+
+							} elseif( $meta_box_idEvento == '' || $edit_field == 'id_evento'  ) {
+						?>
+		    			<select id="meta_box-id_evento" style="width: 100%" name="meta_box-id_evento" required="required">
+		    				<option></option>
+						<?php 
+							$newsArgs = array( 'post_type' => 'eventos', 'order' => 'ASC');
+							
+							$newsLoop = new WP_Query( $newsArgs );
+									
+								if ( $newsLoop->have_posts() ): while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
+								
+								?>
+						        <option value="<?php echo get_the_ID(); ?>" <?php if( get_the_ID() == $meta_box_idEvento ) { echo 'selected'; } ?>>
+						        	<?php echo get_the_title(); ?>  
+								</option>
+
+					       <?php endwhile; ?>
+					       <?php endif; wp_reset_postdata(); ?>
+
+					   </select>
+
+					<?php } ?>
+
+		    		</td>
+		    </tr>
+		    <tr>
+		    	<td>
+		    		<h4>Valor do Ingresso:</h4>
+		    	</td>
+		    	<td>
+		    		<?php 
+
+						$meta_box_valor_ingresso_  = get_post_meta($object->ID, "meta_box-valor_ingresso", true);
+
+						if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+						if( $meta_box_valor_ingresso_ != '' && $edit_field != 'valor_ingresso'  ){
+
+							$value_label = $meta_box_valor_ingresso_;
+
+							$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>R$ ' . $value_label .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=valor_ingresso">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-valor_ingresso" value="' . $meta_box_valor_ingresso_ . '" />';
+
+						} elseif( $meta_box_valor_ingresso_ == '' || $edit_field == 'valor_ingresso' ) {
+					?>
+		    		 <input name="meta_box-valor_ingresso" type="number" required="required" value="<?php echo get_post_meta($object->ID, "meta_box-valor_ingresso", true); ?>" />
+		    		<?php } ?>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td>
+		    		<h4>Endereço:</h4>
+		    	</td>
+		    	<td>
+		    		<?php 
+
+						$meta_box_endereco_ingresso_  = get_post_meta($object->ID, "meta_box-endereco_ingresso", true);
+
+						if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+						if( $meta_box_endereco_ingresso_ != '' && $edit_field != 'endereco_ingresso'  ){
+
+							$value_label = $meta_box_endereco_ingresso_;
+
+							$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>' . $value_label .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=endereco_ingresso">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-endereco_ingresso" value="' . $meta_box_endereco_ingresso_ . '" />';
+
+						} elseif( $meta_box_endereco_ingresso_ == '' || $edit_field == 'endereco_ingresso' ) {
+					?>
+		    		 <input name="meta_box-endereco_ingresso" type="text" style="width: 100%;" required="required" value="<?php echo get_post_meta($object->ID, "meta_box-endereco_ingresso", true); ?>" />
+		    		<?php } ?>
+		    	</td>
+		    </tr>
+		     <tr>
+		    	<td><h4>Vendedor:</h4>
+		    		<td>
+		    			<?php 
+		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
+
+		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+		    				if( $meta_box_idUser != '' && $edit_field != 'vendedor_ingresso'  ){
+
+		    					$user_info = get_userdata($meta_box_idUser);
+
+		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
+					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
+					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta-box-vendedor_ingresso" value="' . $meta_box_idUser . '" />';
+
+		    				} elseif( $meta_box_idUser == '' || $edit_field == 'vendedor_ingresso' ) {
+		    					
+		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+
+		    					echo '<select required="required" name="meta-box-vendedor_ingresso" style="width: 220px;" >';
+		    					echo '<option></option>';
+
+								foreach($option_values as $value){
+								        //print_r(get_user_meta ( $user_id->ID));
+								        if( $value->ID == get_post_meta($object->ID, "meta-box-vendedor_ingresso", true) ) {
+
+								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+								        
+								        } else {
+								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+								       	}
+								    }
+								    echo '</select>';
+		    				}
+		    			 ?>						 
+		    		</td>
+		    </tr>
+
+
+		    <tr>
+        		<td width="25%">
+            		<h4>Status do Ingresso:</h4>
+        		</td>
+        		<td>
+		            <select name="meta_box-status_ingresso" required="required" style="width: 220px;">
+		            	<option></option>
+		                <?php 
+		                    $option_values = array(1, 2, 3, 4);
+
+		                    foreach($option_values as $key => $value) {
+
+		                    	switch ($value) {
+		                    		case 1:
+		                    			$value_label = 'Disponível';
+		                			break;
+		                			case 2:
+		                    			$value_label = 'Vendido';
+		                			break;
+		                			case 3:
+		                    			$value_label = 'Suspenso';
+		                			break;
+		                			case 4:
+		                    			$value_label = 'Cancelado';
+		                			break;
+		                		}
+
+
+		                        if($value == get_post_meta($object->ID, "meta_box-status_ingresso", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        </td>
+		    </tr>
+
+		</table>
+    <?php  
 }
 
-function coupon_save_custom_metabox_data( $post_id ) {
+// Save in Data Base
+function save_custom_meta_box_2($post_id, $post, $update)
+{
+    if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
+        return $post_id;
 
-	// Verifica o campo nonce
-	if ( ! isset( $_POST['coupon_custom_metabox_nonce'] ) ) {
-		return;
-	}
+    if(!current_user_can("edit_post", $post_id))
+        return $post_id;
 
-	// Verifica se o campo nonce é válido
-	if ( ! wp_verify_nonce( $_POST['coupon_custom_metabox_nonce'], 'coupon_custom_metabox' ) ) {
-		return;
-	}
+    if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
+        return $post_id;
 
-	// Se o formulário ainda não foi enviado (estiver fazendo autosave) 
-	// não faremos nada
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
+    $slug = "ingresso";
+    if($slug != $post->post_type)
+        return $post_id;
 
-	
+    $meta_box_tipo_oferta = "";
+    $meta_box_tipo_ingresso_value = "";
+    $meta_box_idEvento = "";
+    $meta_box_valor_ingresso = "";
+    $meta_box_endereco_ingresso = "";
+    $meta_box_vendedor_ingresso = "";
+    $meta_box_status_ingresso = "";
 
-	/* Perfeito, agora vamos aos campos. */
-	
-	$_id_promo = isset( $_POST['_id_promo'] ) ? $_POST['_id_promo'] : null;
 
-	$_titulo_promo = isset( $_POST['_titulo_promo'] ) ? $_POST['_titulo_promo'] : null;
+    
+    if(isset($_POST["meta_box-tipo_oferta"]))
+    {
+        $meta_box_tipo_oferta = $_POST["meta_box-tipo_oferta"];
+    }   
+    update_post_meta($post_id, "meta_box-tipo_oferta", $meta_box_tipo_oferta);
 
-	$_status_coupon = isset( $_POST['_status_coupon'] ) ? $_POST['_status_coupon'] : null;
+    if(isset($_POST["meta_box-tipo_ingresso"]))
+    {
+        $meta_box_tipo_ingresso_value = $_POST["meta_box-tipo_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-tipo_ingresso", $meta_box_tipo_ingresso_value);
 
-	// Atualiza os dados no BD
-	
-	update_post_meta( $post_id, '_id_promo', $_id_promo );
+    if(isset($_POST["meta_box-id_evento"]))
+    {
+        $meta_box_idEvento = $_POST["meta_box-id_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-id_evento", $meta_box_idEvento);
 
-	update_post_meta( $post_id, '_titulo_promo', $_titulo_promo );
+    if(isset($_POST["meta_box-valor_ingresso"]))
+    {
+        $meta_box_valor_ingresso = $_POST["meta_box-valor_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-valor_ingresso", $meta_box_valor_ingresso);
 
-	update_post_meta( $post_id, '_status_coupon', $_status_coupon );
+    if(isset($_POST["meta_box-endereco_ingresso"]))
+    {
+        $meta_box_endereco_ingresso = $_POST["meta_box-endereco_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-endereco_ingresso", $meta_box_endereco_ingresso);
+
+     if(isset($_POST["meta_box-status_ingresso"]))
+    {
+        $meta_box_status_ingresso = $_POST["meta_box-status_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-status_ingresso", $meta_box_status_ingresso);
+
+     if(isset($_POST["meta-box-vendedor_ingresso"]))
+    {
+        $meta_box_vendedor_ingresso = $_POST["meta-box-vendedor_ingresso"];
+    }   
+    update_post_meta($post_id, "meta-box-vendedor_ingresso", $meta_box_vendedor_ingresso);
+
 }
-add_action( 'save_post', 'coupon_save_custom_metabox_data' );
+
+add_action("save_post", "save_custom_meta_box_2", 10, 3);
 
 
 
 
-// Salva os ingressos gerados por usuários
 
-function save_coupon_data( $code_coupon, $promocao_id, $promocao_title ) {
-
-
-       $args = array(
-         'post_type' => 'ingressos',
-         'post_status'=>'publish',
-         'post_title'=>$code_coupon,
-       );
+//==================================
+// NEGOCIAÇÕES META BOX
+// =================================
+// negociacao
 
 
-       $post_id = wp_insert_post($args);
 
-        update_post_meta($post_id, '_id_promo', $promocao_id);
-        update_post_meta($post_id, '_titulo_promo', $promocao_title);
-        update_post_meta($post_id, '_status_coupon', 'ativo');
+// BOX: Dados do Ingresso //
+function add_custom_meta_box_3()
+{
+    add_meta_box("demo-meta-box", "Dados da negociação", "custom_meta_box_markup_3", "negociacao", "normal", "high", null);
+}
 
- }
+add_action("add_meta_boxes", "add_custom_meta_box_3");
+
+// View
+function custom_meta_box_markup_3($object)
+{
+    wp_nonce_field(basename(__FILE__), "meta-box-nonce");
+
+    ?>
+        <table width="100%" cellpadding="0" cellspacing="0">
+        	 <tr>
+		    	<td><h4>Evento:</h4>
+		    		<td>
+		    			<?php 
+
+							$meta_box_idEvento  = get_post_meta( $object->ID, 'meta_box-id_evento', true );
+
+							if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+							if( $meta_box_idEvento != '' && $edit_field != 'id_evento'  ){
+
+								$post_id = $meta_box_idEvento;
+								$queried_post = get_post($post_id);
+								$title = $queried_post->post_title;
+
+								$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+								echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID: ' . $post_id .'</h4>'."\n";
+					      		echo '<p>Nome: <strong>' . $title .'</strong></p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=id_evento">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta_box-id_evento" value="' . $post_id . '" />';
+
+							} elseif( $meta_box_idEvento == '' || $edit_field == 'id_evento'  ) {
+						?>
+		    			<select id="meta_box-id_evento" style="width: 100%" name="meta_box-id_evento" required="required">
+		    				<option></option>
+						<?php 
+							$newsArgs = array( 'post_type' => 'eventos', 'order' => 'ASC', 'posts_per_page' => 12);
+							
+							$newsLoop = new WP_Query( $newsArgs );
+									
+								if ( $newsLoop->have_posts() ): while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
+								
+								?>
+						        <option value="<?php echo get_the_ID(); ?>" <?php if( get_the_ID() == $meta_box_idEvento ) { echo 'selected'; } ?>>
+						        	<?php echo get_the_title(); ?>  
+								</option>
+
+					       <?php endwhile; ?>
+					       <?php endif; wp_reset_postdata(); ?>
+
+					   </select>
+
+					<?php } ?>
+
+		    		</td>
+		    </tr>
+        	
+		    <tr>
+        		<td width="25%">
+            		<h4>Ingresso negociado:</h4>
+        		</td>
+        		<td>
+        			<?php 
+
+							$meta_box_id_ingresso  = get_post_meta( $object->ID, 'meta_box-id_ingresso', true );
+
+							if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+							if( $meta_box_id_ingresso != '' && $edit_field != 'id_ingresso'  ){
+
+								$post_id = $meta_box_id_ingresso;
+								$queried_post = get_post($post_id);
+								$title = $queried_post->post_title;
+
+								$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+								echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID: ' . $post_id .'</h4>'."\n";
+					      		echo '<p>Nome: <strong>' . $title .'</strong></p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=id_ingresso">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta_box-id_ingresso" value="' . $post_id . '" />';
+
+							} elseif( $meta_box_id_ingresso == '' || $edit_field == 'id_ingresso'  ) {
+						?>
+		    			<select id="meta_box-id_ingresso" style="width: 100%" name="meta_box-id_ingresso" required="required">
+		    				<option></option>
+						<?php 
+							$newsArgs = array( 'post_type' => 'ingresso', 'order' => 'ASC', 'posts_per_page' => 12);
+							
+							$newsLoop = new WP_Query( $newsArgs );
+									
+								if ( $newsLoop->have_posts() ): while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
+								
+								?>
+						        <option value="<?php echo get_the_ID(); ?>" <?php if( get_the_ID() == $meta_box_id_ingresso ) { echo 'selected'; } ?>>
+						        	<?php echo get_the_title(); ?>  
+								</option>
+
+					       <?php endwhile; ?>
+					       <?php endif; wp_reset_postdata(); ?>
+
+					   </select>
+
+					<?php } ?>
+
+		        </td>
+		    </tr>
+		   
+		    <tr>
+		    	<td>
+		    		<h4>Valor do Ingresso:</h4>
+		    	</td>
+		    	<td>
+		    		<?php 
+
+						$meta_box_valor_ingresso_  = get_post_meta($object->ID, "meta_box-valor_ingresso", true);
+
+						if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+						if( $meta_box_valor_ingresso_ != '' && $edit_field != 'valor_ingresso'  ){
+
+							$value_label = $meta_box_valor_ingresso_;
+
+							$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>R$ ' . $value_label .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=valor_ingresso">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-valor_ingresso" value="' . $meta_box_valor_ingresso_ . '" />';
+
+						} elseif( $meta_box_valor_ingresso_ == '' || $edit_field == 'valor_ingresso' ) {
+					?>
+		    		 <input name="meta_box-valor_ingresso" type="number" required="required" value="<?php echo get_post_meta($object->ID, "meta_box-valor_ingresso", true); ?>" />
+		    		<?php } ?>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td>
+		    		<h4>Data da Negociação:</h4>
+		    	</td>
+		    	<td>
+		    		<?php 
+
+						$meta_box_date_negociacao_  = get_post_meta($object->ID, "meta_box-date_negociacao", true);
+
+						if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+						if( $meta_box_date_negociacao_ != '' && $edit_field != 'date_negociacao'  ){
+
+							$value_label = $meta_box_date_negociacao_;
+
+							$date = new DateTime($meta_box_date_negociacao_);
+							$date =  $date->format('d/m/Y');
+
+							$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+				      		echo '<h4>' . $date .'</h4>'."\n";
+				      		echo '<p><a href="' . $current_url_uri . '&edit_field=date_negociacao">Editar este campo</a>'. "\n";
+				      		echo '</div>';
+				      		echo '<input type="hidden" name="meta_box-date_negociacao" value="' . $meta_box_date_negociacao_ . '" />';
+
+						} elseif( $meta_box_date_negociacao_ == '' || $edit_field == 'date_negociacao' ) {
+					?>
+		    		 <input name="meta_box-date_negociacao" type="date" required="required" value="<?php echo $meta_box_date_negociacao_; ?>" />
+		    		<?php } ?>
+		    	</td>
+		    </tr>
+		     <tr>
+		    	<td><h4>Vendedor:</h4>
+		    		<td>
+		    			<?php 
+		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
+
+		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+		    				if( $meta_box_idUser != '' && $edit_field != 'vendedor_ingresso'  ){
+
+		    					$user_info = get_userdata($meta_box_idUser);
+
+		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
+					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
+					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta-box-vendedor_ingresso" value="' . $meta_box_idUser . '" />';
+
+		    				} elseif( $meta_box_idUser == '' || $edit_field == 'vendedor_ingresso' ) {
+		    					
+		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+
+		    					echo '<select required="required" name="meta-box-vendedor_ingresso" style="width: 220px;" >';
+		    					echo '<option></option>';
+
+								foreach($option_values as $value){
+								        //print_r(get_user_meta ( $user_id->ID));
+								        if( $value->ID == get_post_meta($object->ID, "meta-box-vendedor_ingresso", true) ) {
+
+								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+								        
+								        } else {
+								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+								       	}
+								    }
+								    echo '</select>';
+		    				}
+		    			 ?>						 
+		    		</td>
+		    </tr>
+		    <tr>
+		    	<td><h4>Comprador:</h4>
+		    		<td>
+		    			<?php 
+		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-comprador_ingresso', true );
+
+		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+		    					$edit_field = $_GET[ 'edit_field' ];
+		    				} else {
+		    					$edit_field = 'false';
+		    				}
+
+		    				if( $meta_box_idUser != '' && $edit_field != 'comprador_ingresso'  ){
+
+		    					$user_info = get_userdata($meta_box_idUser);
+
+		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		    					
+
+		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
+					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
+					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
+					      		echo '</div>';
+					      		echo '<input type="hidden" name="meta-box-comprador_ingresso" value="' . $meta_box_idUser . '" />';
+
+		    				} elseif( $meta_box_idUser == '' || $edit_field == 'comprador_ingresso' ) {
+		    					
+		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+
+		    					echo '<select required="required" name="meta-box-comprador_ingresso" style="width: 220px;" >';
+		    					echo '<option></option>';
+
+								foreach($option_values as $value){
+								        //print_r(get_user_meta ( $user_id->ID));
+								        if( $value->ID == get_post_meta($object->ID, "meta-box-comprador_ingresso", true) ) {
+
+								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+								        
+								        } else {
+								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+								       	}
+								    }
+								    echo '</select>';
+		    				}
+		    			 ?>						 
+		    		</td>
+		    </tr>
+		    <tr>
+        		<td width="25%">
+            		<h4>Status do Ingresso:</h4>
+        		</td>
+        		<td>
+		            <select name="meta_box-status_ingresso" required="required" style="width: 220px;">
+		            	<option></option>
+		                <?php 
+		                    $option_values = array(1, 2, 3, 4);
+
+		                    foreach($option_values as $key => $value) {
+
+		                    	switch ($value) {
+		                    		case 1:
+		                    			$value_label = 'Em negociação';
+		                			break;
+		                			case 2:
+		                    			$value_label = 'Negociação Concluída';
+		                			break;
+		                			case 3:
+		                    			$value_label = 'Negociação Suspensa';
+		                			break;
+		                			case 4:
+		                    			$value_label = 'Negociação Cancelado';
+		                			break;
+		                		}
+
+
+		                        if($value == get_post_meta($object->ID, "meta_box-status_ingresso", true))
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                            <?php    
+		                        }
+		                        else
+		                        {
+		                            ?>
+		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                            <?php
+		                        }
+		                    }
+		                ?>
+		            </select>
+		        </td>
+		    </tr>
+
+		</table>
+    <?php  
+}
+
+// Save in Data Base
+function save_custom_meta_box_3($post_id, $post, $update)
+{
+    if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
+        return $post_id;
+
+    if(!current_user_can("edit_post", $post_id))
+        return $post_id;
+
+    if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
+        return $post_id;
+
+    $slug = "negociacao";
+    if($slug != $post->post_type)
+        return $post_id;
+
+    $meta_box_tipo_oferta = "";
+    $meta_box_id_ingresso_value = "";
+    $meta_box_idEvento = "";
+    $meta_box_valor_ingresso = "";
+    $meta_box_date_negociacao = "";
+    $meta_box_vendedor_ingresso = "";
+     $meta_box_comprador_ingresso_value = "";
+    $meta_box_status_ingresso = "";
+
+
+    
+    if(isset($_POST["meta_box-tipo_oferta"]))
+    {
+        $meta_box_tipo_oferta = $_POST["meta_box-tipo_oferta"];
+    }   
+    update_post_meta($post_id, "meta_box-tipo_oferta", $meta_box_tipo_oferta);
+
+    if(isset($_POST["meta_box-id_ingresso"]))
+    {
+        $meta_box_id_ingresso_value = $_POST["meta_box-id_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-id_ingresso", $meta_box_id_ingresso_value);
+
+    if(isset($_POST["meta_box-id_evento"]))
+    {
+        $meta_box_idEvento = $_POST["meta_box-id_evento"];
+    }   
+    update_post_meta($post_id, "meta_box-id_evento", $meta_box_idEvento);
+
+     if(isset($_POST["meta_box-valor_ingresso"]))
+    {
+        $meta_box_valor_ingresso = $_POST["meta_box-valor_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-valor_ingresso", $meta_box_valor_ingresso);
+
+     if(isset($_POST["meta_box-date_negociacao"]))
+    {
+        $meta_box_date_negociacao = $_POST["meta_box-date_negociacao"];
+    }   
+    update_post_meta($post_id, "meta_box-date_negociacao", $meta_box_date_negociacao);
+
+    if(isset($_POST["meta-box-vendedor_ingresso"]))
+    {
+        $meta_box_vendedor_ingresso = $_POST["meta-box-vendedor_ingresso"];
+    }   
+    update_post_meta($post_id, "meta-box-vendedor_ingresso", $meta_box_vendedor_ingresso);
+
+    if(isset($_POST["meta-box-comprador_ingresso"]))
+    {
+        $meta_box_comprador_ingresso_value = $_POST["meta-box-comprador_ingresso"];
+    }   
+
+     if(isset($_POST["meta_box-status_ingresso"]))
+    {
+        $meta_box_status_ingresso = $_POST["meta_box-status_ingresso"];
+    }   
+    update_post_meta($post_id, "meta_box-status_ingresso", $meta_box_status_ingresso);
+
+
+    update_post_meta($post_id, "meta-box-comprador_ingresso", $meta_box_comprador_ingresso_value);
+
+}
+
+add_action("save_post", "save_custom_meta_box_3", 10, 3);
+
+
+
 

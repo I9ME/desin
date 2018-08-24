@@ -13,6 +13,7 @@
 get_header(); ?>
 
 <div id="main" class="SiteMain u-hasSideBar" role="main">
+	<?php  get_template_part('template-parts/plugins/plugin','lightbox'); ?>
 	<?php // get_template_part('template-parts/page/intro','page');?>
 	<?php
 		if ( function_exists('yoast_breadcrumb') ) {

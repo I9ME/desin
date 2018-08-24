@@ -14,11 +14,11 @@ get_header(); ?>
 
 
 <div id="main" class="SiteMain SiteMain--inter" role="main">
-	<?php  get_template_part('template-parts/plugins/plugin','lightbox'); ?>
 	<?php get_template_part('template-parts/page/intro','page'); ?>
 	
 	<main class="SiteMain-main u-marginTop--inter">
-		<?php get_template_part('template-parts/promocoes/section-coupons','single');?>
+		<?php  get_template_part('template-parts/plugins/plugin','lightbox'); ?>
+		<?php get_template_part('template-parts/eventos/section-eventos','single'); ?>
 	</main>
 
 

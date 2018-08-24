@@ -30,7 +30,7 @@
 				$urlThumbnail = '';
 			}
 
-			/*// MetaBoxes
+			// MetaBoxes
 	      	$recorrencia = get_post_meta( get_the_ID(), 'var_tipo', true );
 	      	$data_inicial = get_post_meta( get_the_ID(), 'value_line_1', true );
 	      	$data_final = get_post_meta( get_the_ID(), 'value_line_2', true );
@@ -39,7 +39,7 @@
 	      	$valor_normal = get_post_meta( get_the_ID(), 'value_line_5', true );
 	      	$valor_promocional = get_post_meta( get_the_ID(), 'value_line_6', true );
 	      	$descricao = get_post_meta( get_the_ID(), 'value_line_7', true );
-	      	$regras_gerais = get_post_meta( get_the_ID(), 'value_line_8', true );*/
+	      	$regras_gerais = get_post_meta( get_the_ID(), 'value_line_8', true );
   		?>
 	
 		<li class="Section-items-item u-marginBottom--inter u-flex u-flexDirectionColumn u-alignCenter u-size7of24">
@@ -50,8 +50,8 @@
 					<div class="Section-items-item-texts u-paddingHorizontal--vrt--inter--half--px">
 						<h4 class="Section-items-item-title u-alignCenter u-positionRelative"><?php echo get_the_title(); ?></h4>
 						<div class="Section-items-item-meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half">
-							<div class="Price u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A partir de:</span></div>
-							<div class="Price Price--offer u-size12of24 u-alignCenter">R$ R$ 99,00</div>
+							<div class="Price Price--natural u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">R$ <?php echo $valor_normal; ?></span></div>
+							<div class="Price Price--offer u-size12of24 u-alignCenter">R$ <?php echo $valor_promocional ; ?></div>
 						</div>
 					</div>		
 			</a>
