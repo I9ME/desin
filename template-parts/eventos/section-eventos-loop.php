@@ -59,6 +59,15 @@
 		<?php endwhile; ?>
 
 	</ul>
+
+	<div class="u-displayFlex u-flexDirectionColumn u-positionRelative u-marginTop--inter u-flexAlignItemsCenter u-flexJustifyContentCenter">
+				<p class="u-paddingBottom--inter--half">
+					Você não encontrou o seu evento?
+				</p>
+				<a href="#" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
+					ADICIONE UM EVENTO!
+				</a>
+			</div>
 	<?php else: ?>
 		<div class="u-displayBlock u-positionRelative u-alignCenter u-marginHorizontal--vrt"><h3>Não encontramos nenhum evento.</h3></div>
 	<?php 
