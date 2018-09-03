@@ -98,6 +98,8 @@
 				} else {
 				$urlThumbnail = get_template_directory_uri() . '/assets/images/lessThumbnail.png';
 				}
+
+				
 			 ?>
 
 			 <img class="u-maxSize100 u-minWith100" src="<?php echo $urlThumbnail ?>" alt="<?php echo get_the_title(); ?>">
@@ -108,26 +110,76 @@
 			</header><!-- .entry-header -->
 
 			<div class="Meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half u-marginBottom--inter u-marginVertical--inter--px">
-				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE <?php // echo $valor_normal; ?></span></div>
-				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px">R$ 100,00<?php // echo $valor_promocional ; ?></div>
+				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
+				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px">
+					
+					 <?php 
+					 	$valorArgs = array( 
+				      		'post_type' => 'ingresso',
+				      		'meta_query' => array(
+
+				      						'relation' => 'AND',
+		            					
+										    array(
+										        'key'   => 'meta_box-id_evento',
+										        'value' => get_the_ID(),
+										        'compare' => '='
+										    ),
+										    array(
+										        'key'   => 'meta_box-tipo_oferta',
+										        'value' => 1,
+										        'compare' => '='
+										    )
+										),
+				      		'posts_per_page' => 1,
+				      		 'meta_key' => 'meta_box-valor_ingresso',
+			           		 'orderby' => 'meta_value_num',
+							'order' => 'ASC');
+
+
+							$valorLoop = new WP_Query( $valorArgs );
+
+							if ( $valorLoop->have_posts() ): while ( $valorLoop->have_posts() ) : $valorLoop->the_post();
+
+								$menor_valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
+
+						
+
+						echo 'R$ ' . $menor_valor_ingresso;
+			  ?>
+			 <?php endwhile; ?>
+			<?php endif; wp_reset_postdata(); ?>
+
+			<?php 
+			// Continunando a Ler o Evento Corrente
+			
+			$data_evento = get_post_meta( get_the_ID(), 'meta_box-date', true ); 
+			
+			?>
+				</div>
 			</div>			
 			<ul class="u-paddingVertical--inter--px">
 				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
 					<h4>DATA:</h4>
 					<p>
-						<span>29/09/2018</span> - <span>FALTAM <span>30</span> DIAS!</span>
+						<span>
+							<?php
+								$date = date_create($data_evento);
+								echo date_format($date,"d/m/Y");
+							?>			
+						</span>
 					</p>
 				</li>
-				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
+				<!-- <li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
 					<h4>INGRESSOS CADASTRADOS:</h4>
 					<p>
 						<span>30</span> INGRESSOS CADASTRADOS</span>
 					</p>
-				</li>
+				</li> -->
 				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
 					<h4>DESCRIÇÃO GERAL:</h4>
 					<p>
-						Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI,
+						<?php echo get_the_excerpt(); ?>
 					</p>
 				</li>
 			</ul>
@@ -138,10 +190,81 @@
 		<h4>INGRESSOS DISPONÍVEIS</h4>
 	</section>
 
-	<section class="Section Section--texts u-marginVertical--inter--half--px">
+	<section class="Section Section--texts">
 		
-		<div class="Section-subSection Section-subSection--descricao u-marginHorizontal--inter">
-			
+		<div class="Section-subSection Section-subSection--table u-marginHorizontal--inter">
+			<table class="Table Table--ingressos" width="100%" cellpadding="0" cellpadding="0">
+				<thead>
+					<tr>
+						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter">
+							<strong><?php if( wp_is_mobile() ) { echo 'Tipos'; } else { echo 'Tipos de Ingresso'; } ?></strong>
+						</h4></td>
+						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter"><strong>Valor</strong></h4></td>
+						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter"><strong>Negociar com o Vendedor</strong></h4></td>
+					</tr>
+				</thead>
+				<tbody>
+				<?php 
+
+					$newsArgs = array( 
+		      		'post_type' => 'ingresso',
+		      		'meta_query' => array(
+
+		      						'relation' => 'AND',
+            					
+								    array(
+								        'key'   => 'meta_box-id_evento',
+								        'value' => get_the_ID(),
+								        'compare' => '='
+								    ),
+								    array(
+								        'key'   => 'meta_box-tipo_oferta',
+								        'value' => 1,
+								        'compare' => '='
+								    )
+								),
+		      		'posts_per_page' => 1000,
+		      		'meta_key' => 'meta_box-valor_ingresso',
+	           		 'orderby' => 'meta_value_num',
+					'order' => 'ASC');
+
+
+					$newsLoop = new WP_Query( $newsArgs );
+
+					if ( $newsLoop->have_posts() ): while ( $newsLoop->have_posts() ) : $newsLoop->the_post();
+
+						$tipos_ingresso = get_post_meta( get_the_ID(), 'meta_box-tipo_ingresso', true );
+						$valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
+				 ?>				
+					<tr>
+						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter">
+							<span>
+								<?php echo tipos_de_ingresso($tipos_ingresso); ?>
+							</span>
+						</td>
+						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter">
+							<span>
+								R$ <?php echo $valor_ingresso; ?>
+							</span>
+						</td>
+						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter u-displayFlex u-flexAlignItemsCenter u-flexJustifyContentCenter">
+							<a href="#" class="Button Button--border Button--background style1 hover Button--mediumSize u-borderRadius5 is-animating">
+								<?php if( wp_is_mobile() ) { echo 'IR'; } else { echo 'NEGOCIAR COM VENDEDOR'; } ?>
+							</a>
+						</td>
+					</tr>
+					 <?php endwhile; ?>
+					 <?php endif; wp_reset_postdata(); ?>
+				</tbody>
+			</table>
+			<div class="u-displayFlex u-flexDirectionColumn u-positionRelative u-marginTop--inter u-flexAlignItemsCenter u-flexJustifyContentCenter">
+				<p class="u-paddingBottom--inter--half">
+					Você não gostou dos preços?
+				</p>
+				<a href="#" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
+					ADICIONE UMA OFERTA DE COMPRA!
+				</a>
+			</div>
 		</div>
 		
 	</section>

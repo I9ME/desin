@@ -6,13 +6,26 @@
 		border-width:2px;
 		border-style: solid;
 		&.style1{
-			border-color: $color_2;
-			color: $color_2;
+			border-color: $color_4;
+			color: $color_4;
 			background: none;
 			&.hover{
 				&:hover{
-					background: $color_2;
+					background: $color_4;
 					color: $color_1;
+					border-color: $color_4;
+				}
+			}
+		}
+		&.style2{
+			border-color: $color_1;
+			color: $color_1;
+			background: none;
+			&.hover{
+				&:hover{
+					background: $color_1;
+					color: $color_2;
+					border-color: $color_1;
 				}
 			}
 		}

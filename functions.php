@@ -965,6 +965,36 @@ add_action( 'save_post', 'save_people_checkboxes' );
 //==================================
 // INGRESSOS META BOX
 // =================================
+// 
+
+// Funções para impre~ssão de Valores
+
+function tipos_de_ingresso($value){
+	switch ($value) {
+		case 1:
+			$value_label = 'Masculino';
+		break;
+		case 2:
+			$value_label = 'Feminino';
+		break;
+		case 3:
+			$value_label = 'Pista';
+		break;
+		case 4:
+			$value_label = 'Front';
+		break;
+		case 5:
+			$value_label = 'Vip';
+		break;
+		case 6:
+			$value_label = 'Camarote';
+		break;
+		case 7:
+			$value_label = 'Geral';
+		break;
+	}
+	return $value_label;
+}
 
 // BOX: Dados do Ingresso //
 function add_custom_meta_box_2()
@@ -1075,7 +1105,7 @@ function custom_meta_box_markup_2($object)
 
 						if( $meta_box_tipo_ingresso_ != '' && $edit_field != 'tipo_ingresso' ){
 
-	                    	switch ($meta_box_tipo_ingresso_) {
+	                    	/*switch ($meta_box_tipo_ingresso_) {
 	                    		
 	                    		case 1:
 	                    			$value_label = 'Masculino';
@@ -1099,13 +1129,13 @@ function custom_meta_box_markup_2($object)
 	                    			$value_label = 'Geral';
 	                			break;
 
-	                		}
+	                		}*/
 
 
 	                		$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		    					
 							echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
-				      		echo '<h4>' . $value_label .'</h4>'."\n";
+				      		echo '<h4>' . tipos_de_ingresso($meta_box_tipo_ingresso_) .'</h4>'."\n";
 				      		echo '<p><a href="' . $current_url_uri . '&edit_field=tipo_ingresso">Editar este campo</a>'. "\n";
 				      		echo '</div>';
 				      		echo '<input type="hidden" name="meta_box-tipo_ingresso" value="' . $meta_box_tipo_ingresso_ . '" />';
@@ -1119,7 +1149,7 @@ function custom_meta_box_markup_2($object)
 
 		                    foreach($option_values as $key => $value) {
 
-		                    	switch ($value) {
+		                    	/*switch ($value) {
 		                    		case 1:
 		                    			$value_label = 'Masculino';
 		                			break;
@@ -1141,19 +1171,19 @@ function custom_meta_box_markup_2($object)
 		                			case 7:
 		                    			$value_label = 'Geral';
 		                			break;
-		                		}
+		                		}*/
 
 
 		                        if($value == get_post_meta($object->ID, "meta_box-tipo_ingresso", true))
 		                        {
 		                            ?>
-		                                <option value="<?php echo $value; ?>" selected><?php echo $value_label; ?></option>
+		                                <option value="<?php echo $value; ?>" selected><?php echo tipos_de_ingresso($value); ?></option>
 		                            <?php    
 		                        }
 		                        else
 		                        {
 		                            ?>
-		                                <option value="<?php echo $value; ?>"><?php echo $value_label; ?></option>
+		                                <option value="<?php echo $value; ?>"><?php echo tipos_de_ingresso($value); ?></option>
 		                            <?php
 		                        }
 		                    }

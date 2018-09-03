@@ -5,7 +5,7 @@
 			
 			} else {
 
-				$newsArgs = array( 'post_type' => 'eventos', 'posts_per_page' => 9, 'meta_key' => 'value_line_2', 'orderby' => 'meta_value_num', 'order' => 'ASC');
+				$newsArgs = array( 'post_type' => 'eventos', 'posts_per_page' => 9, 'meta_key' => 'meta_box-date', 'orderby' => 'meta_value_num', 'order' => 'ASC');
 			
 			}
 			
