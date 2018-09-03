@@ -1252,7 +1252,7 @@ function custom_meta_box_markup_2($object)
 		    </tr>
 		    <tr>
 		    	<td>
-		    		<h4>Endereço:</h4>
+		    		<h4>Bairro:</h4>
 		    	</td>
 		    	<td>
 		    		<?php 

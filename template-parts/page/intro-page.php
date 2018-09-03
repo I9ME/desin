@@ -11,7 +11,7 @@
 		<ul class="Navigation u-displayFlex u-flexDirectionColumn u-flexSwitchRow u-alignLeft">
 			<li class="Navigation-item u-displayFlex u-size12of24 u-paddingVertical">
 				<a href="<?php echo get_home_url(); ?>/comprar-ingresso/" class="Navigation-item-content u-paddingHorizontal--vrt--inter--px is-animating">
-					<h3 class="Navigation-item-title">QUERO<br /><em class="is-animating">COMPRAR</em><br />O MEU <br />INGRESSO</h3>
+					<h3 class="Navigation-item-title">QUERO<br /><em class="is-animating">COMPRAR</em><br />UM <br />INGRESSO</h3>
 				</a>
 			</li>
 			<li class="Navigation-item u-displayFlex u-size12of24 u-paddingVertical">
