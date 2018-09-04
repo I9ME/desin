@@ -2222,9 +2222,9 @@ if ( !isset( $_POST['user_phone'] ) || empty( $_POST['user_phone'] ) ) {
 return false;
 }
  
-update_usermeta($user_id, 'user_phone', $_POST['user_phone']);
-update_usermeta($user_id, 'user_cpf', $_POST['user_cpf']);
-update_usermeta($user_id, 'user_gender', $_POST['user_gender']);
+update_user_meta($user_id, 'user_phone', $_POST['user_phone']);
+update_user_meta($user_id, 'user_cpf', $_POST['user_cpf']);
+update_user_meta($user_id, 'user_gender', $_POST['user_gender']);
 }
 add_action('personal_options_update', 'save_extra_fields_user_profile');
 add_action('edit_user_profile_update', 'save_extra_fields_user_profile');
