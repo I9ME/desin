@@ -164,6 +164,11 @@
 											font-size: 20px;
 											font-weight: bold;
 											border-left: 1px solid $color_9;
+
+											& .Esgotado{
+												font-size: 13px;
+												color: $color_7;
+											}
 										}
 									}
 								}
@@ -294,6 +299,10 @@
 										}
 										&--offer{
 											font-size: 30px;
+											& .Esgotado{
+												font-size: 13px;
+												color: $color_7;
+											}
 										}
 									}
 								}

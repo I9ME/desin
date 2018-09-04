@@ -34,58 +34,6 @@
 		<div class="Section--destaque-thumbnail u-size14of24 u-lineHeight0">
 			<?php 
 
-				/*$promocao_id = get_the_id();
-				$promocao_title = get_the_title();
-
-				// MetaBoxes
-		      	$recorrencia = get_post_meta( get_the_ID(), 'var_tipo', true );
-		      	$data_inicial = get_post_meta( get_the_ID(), 'value_line_1', true );
-		      	$data_final = get_post_meta( get_the_ID(), 'value_line_2', true );
-		      	$quant_total = get_post_meta( get_the_ID(), 'value_line_3', true );
-		      	$quant_gerado = get_post_meta( get_the_ID(), 'value_line_4', true );
-		      	$valor_normal = get_post_meta( get_the_ID(), 'value_line_5', true );
-		      	$valor_promocional = get_post_meta( get_the_ID(), 'value_line_6', true );
-		      	$descricao = get_post_meta( get_the_ID(), 'value_line_7', true );
-		      	$regras_gerais = get_post_meta( get_the_ID(), 'value_line_8', true );
-		      	
-		      	// Tratando "DIAS RESTANTES"
-		      	$today = get_the_date('Y-m-d');
-
-			     $data_inicio = new DateTime($today);
-				 $data_fim = new DateTime($data_final);
-				   // Resgata diferença entre as datas
-				 $dateInterval = $data_inicio->diff($data_fim);
-				 $dias_rest = $dateInterval->days;
-
-
-
-		      
-
-		      	if( $dias_rest > 1 ) {
-		      		$dias_restantes = $dias_rest . ' dias';
-		      	} elseif( $dias_rest <= 1 ) {
-		      		$dias_restantes = '0 dia';	
-		      	}
-
-		      	
-
-
-		      	// Tratando "Percentual de desconto"
-		      	$desc = $valor_promocional / $valor_normal * 100 - $valor_normal;
-		      	$desco = explode('.', $desc);
-		      	$desconto = $desco[0] . '%';
-
-		      	// Tratando "Economia"
-		      	$economia = $valor_normal - $valor_promocional;
-
-		      	// Tratando "Quantidade Disponível"
-		      	$quant_rest = $quant_total - $quant_gerado;
-		      	if( $quant_rest > 0 ) {
-		      		$quantidade = $quant_rest;
-		      	} else {
-		      		$quantidade = 0;
-		      	}
-		      	*/
 
 				if ( has_post_thumbnail() ) {
 			
@@ -99,9 +47,11 @@
 				$urlThumbnail = get_template_directory_uri() . '/assets/images/lessThumbnail.png';
 				}
 
+				$data_evento = get_post_meta( get_the_ID(), 'meta_box-date', true ); 
 				
 			 ?>
 
+			 <span>
 			 <img class="u-maxSize100 u-minWith100" src="<?php echo $urlThumbnail ?>" alt="<?php echo get_the_title(); ?>">
 		</div>
 		<div class="Section--destaque-content u-size10of24">
@@ -111,58 +61,12 @@
 
 			<div class="Meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half u-marginBottom--inter u-marginVertical--inter--px">
 				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
-				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px">
-					
-					 <?php 
-					 	$valorArgs = array( 
-				      		'post_type' => 'ingresso',
-				      		'meta_query' => array(
-
-				      						'relation' => 'AND',
-		            					
-										    array(
-										        'key'   => 'meta_box-id_evento',
-										        'value' => get_the_ID(),
-										        'compare' => '='
-										    ),
-										    array(
-										        'key'   => 'meta_box-tipo_oferta',
-										        'value' => 1,
-										        'compare' => '='
-										    )
-										),
-				      		'posts_per_page' => 1,
-				      		 'meta_key' => 'meta_box-valor_ingresso',
-			           		 'orderby' => 'meta_value_num',
-							'order' => 'ASC');
-
-
-							$valorLoop = new WP_Query( $valorArgs );
-
-							if ( $valorLoop->have_posts() ): while ( $valorLoop->have_posts() ) : $valorLoop->the_post();
-
-								$menor_valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
-
-						
-
-						echo 'R$ ' . $menor_valor_ingresso;
-			  ?>
-			 <?php endwhile; ?>
-			<?php endif; wp_reset_postdata(); ?>
-
-			<?php 
-			// Continunando a Ler o Evento Corrente
-			
-			$data_evento = get_post_meta( get_the_ID(), 'meta_box-date', true ); 
-			
-			?>
-				</div>
+				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><?php echo menorPreco( get_the_ID() ); ?></div>
 			</div>			
 			<ul class="u-paddingVertical--inter--px">
 				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
 					<h4>DATA:</h4>
 					<p>
-						<span>
 							<?php
 								$date = date_create($data_evento);
 								echo date_format($date,"d/m/Y");
@@ -235,6 +139,14 @@
 
 						$tipos_ingresso = get_post_meta( get_the_ID(), 'meta_box-tipo_ingresso', true );
 						$valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
+
+						if( is_user_logged_in() ) {
+
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/negociacao?id=' . get_the_ID() . '/\');';
+						
+						} else {
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&url=' . get_permalink() . '\');';
+						}
 				 ?>				
 					<tr>
 						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter">
@@ -248,7 +160,7 @@
 							</span>
 						</td>
 						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter u-displayFlex u-flexAlignItemsCenter u-flexJustifyContentCenter">
-							<a href="#" class="Button Button--border Button--background style1 hover Button--mediumSize u-borderRadius5 is-animating">
+							<a href="<?php echo $link_cta; ?>" class="Button Button--border Button--background style1 hover Button--mediumSize u-borderRadius5 is-animating">
 								<?php if( wp_is_mobile() ) { echo 'IR'; } else { echo 'NEGOCIAR COM VENDEDOR'; } ?>
 							</a>
 						</td>

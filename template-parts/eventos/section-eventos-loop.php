@@ -1,11 +1,48 @@
 <?php 
+	
+	$currentCity_args = currentCity();
+	$id_city = $currentCity_args[0];
+
 			if(is_single()){
 				
-				$newsArgs = array( 'post_type' => 'eventos', 'posts_per_page' => 3, 'post__not_in' => array(get_the_ID()), 'meta_key' => 'value_line_2', 'orderby' => 'meta_value_num', 'order' => 'ASC'); 
+	
+					$newsArgs = array( 
+		      		'post_type' => 'eventos',
+		      		'post__not_in' => array(get_the_ID()),
+		      		'meta_query' => array(
+
+		      						'relation' => 'AND',
+            					
+								    array(
+								        'key'   => 'meta_box-cidade_evento',
+								        'value' => $id_city,
+								        'compare' => '='
+								    ),
+								),
+		      		'posts_per_page' => 3,
+		      		'meta_key' => 'meta_box-date',
+	           		 'orderby' => 'meta_value_num',
+					'order' => 'ASC');
 			
 			} else {
 
-				$newsArgs = array( 'post_type' => 'eventos', 'posts_per_page' => 9, 'meta_key' => 'meta_box-date', 'orderby' => 'meta_value_num', 'order' => 'ASC');
+
+				$newsArgs = array( 
+		      		'post_type' => 'eventos',
+		      		'meta_query' => array(
+
+		      						'relation' => 'AND',
+            					
+								    array(
+								        'key'   => 'meta_box-cidade_evento',
+								        'value' => $id_city,
+								        'compare' => '='
+								    ),
+								),
+		      		'posts_per_page' => 12,
+		      		'meta_key' => 'meta_box-date',
+	           		 'orderby' => 'meta_value_num',
+					'order' => 'ASC');
 			
 			}
 			
@@ -30,16 +67,6 @@
 				$urlThumbnail = '';
 			}
 
-			// MetaBoxes
-	      	$recorrencia = get_post_meta( get_the_ID(), 'var_tipo', true );
-	      	$data_inicial = get_post_meta( get_the_ID(), 'value_line_1', true );
-	      	$data_final = get_post_meta( get_the_ID(), 'value_line_2', true );
-	      	$quant_total = get_post_meta( get_the_ID(), 'value_line_3', true );
-	      	$quant_gerado = get_post_meta( get_the_ID(), 'value_line_4', true );
-	      	$valor_normal = get_post_meta( get_the_ID(), 'value_line_5', true );
-	      	$valor_promocional = get_post_meta( get_the_ID(), 'value_line_6', true );
-	      	$descricao = get_post_meta( get_the_ID(), 'value_line_7', true );
-	      	$regras_gerais = get_post_meta( get_the_ID(), 'value_line_8', true );
   		?>
 	
 		<li class="Section-items-item u-marginBottom--inter u-flex u-flexDirectionColumn u-alignCenter u-size7of24">
@@ -50,8 +77,8 @@
 					<div class="Section-items-item-texts u-paddingHorizontal--vrt--inter--half--px">
 						<h4 class="Section-items-item-title u-alignCenter u-positionRelative"><?php echo get_the_title(); ?></h4>
 						<div class="Section-items-item-meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half">
-							<div class="Price Price--natural u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">R$ <?php echo $valor_normal; ?></span></div>
-							<div class="Price Price--offer u-size12of24 u-alignCenter">R$ <?php echo $valor_promocional ; ?></div>
+							<div class="Price u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
+							<div class="Price Price--offer u-size12of24 u-alignCenter"><?php echo menorPreco( get_the_ID() ); ?></div>
 						</div>
 					</div>		
 			</a>

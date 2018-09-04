@@ -940,6 +940,10 @@
 							color: $color_12;
 							font-size: 20px;
 							font-weight: bold;
+							& .Esgotado{
+								font-size: 14px;
+								color: $color_7;
+							}
 						}
 					}
 				}

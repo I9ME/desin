@@ -1931,3 +1931,364 @@ add_action("save_post", "save_custom_meta_box_3", 10, 3);
 
 
 
+
+
+//==========================
+// FRONT
+// =========================
+
+
+function menorPreco($id){
+
+	if( isset($id) ) {
+		$id_post = $id;
+	} else {
+		$id_post = '';
+	}
+
+	$valorArgs = array( 
+  		'post_type' => 'ingresso',
+  		'meta_query' => array(
+
+  						'relation' => 'AND',
+					
+					    array(
+					        'key'   => 'meta_box-id_evento',
+					        'value' => $id_post,
+					        'compare' => '='
+					    ),
+					    array(
+					        'key'   => 'meta_box-tipo_oferta',
+					        'value' => 1,
+					        'compare' => '='
+					    )
+					),
+  		'posts_per_page' => 1,
+  		 'meta_key' => 'meta_box-valor_ingresso',
+   		 'orderby' => 'meta_value_num',
+		'order' => 'ASC');
+
+
+		//$valorLoop = new WP_Query( $valorArgs );
+		
+		$valorLoop = get_posts( $valorArgs );
+
+		if( $valorLoop ) {
+
+			foreach( $valorLoop as $valor ) {
+
+				$menor_valor_ingresso = get_post_meta( $valor->ID, 'meta_box-valor_ingresso', true );		
+				
+			}
+			return  'R$ ' . $menor_valor_ingresso;
+		} else {
+			return  '<span class="Esgotado">Esgotado</span>';	
+		}
+
+		
+}
+
+	
+		//=====================
+		//Escolha da cidade
+		//=====================
+		
+		//Sessions PHP
+		
+		if( ! session_id() ){
+
+			session_start();
+
+		}
+	
+		if( !empty( $_GET['city'] ) && isset( $_GET['city'] ) ) {
+
+			$_SESSION['city'] = $_GET['city'];
+		
+		} elseif(empty( $_GET['city'] ) && empty($_SESSION['city']) || !isset( $_GET['city'] ) && !isset($_SESSION['city']) ) {
+
+			$_SESSION['city'] = 'fortaleza-ce';
+
+		}
+
+		// Função que imprime o nome da Cidade
+		
+		function cidadeEvento(){
+
+			switch ($_SESSION['city']) {
+				case 'fortaleza':
+					return 'Fortaleza, CE';
+					break;
+			}
+
+		}
+
+		function currentCity(){
+			// Nome da Cidade Escolhida
+			$the_slug = $_SESSION['city'];
+			$args = array(
+			  'name'        => $the_slug,
+			  'post_type'   => 'cidade',
+			  'post_status' => 'publish',
+			  'numberposts' => 1
+			);
+			$my_posts = get_posts($args);
+			if( $my_posts ) :
+				$id_city = $my_posts[0]->ID;
+				$slug_city = $my_posts[0]->post_name;
+			  	$title_city = $my_posts[0]->post_title;
+			  	
+
+			  return array($id_city, $slug_city, $title_city);
+
+			endif;
+		}
+
+
+//===================================
+// Herdado da page anterior
+// ==================================
+		
+
+// a simple WordPress frontend login implementation
+// written by Arūnas Liuiza | tinyStudio | wp.tribuna.lt
+// Usage: use [tiny_login] shortcode or get_tiny_login_form()/the_tiny_login_form() template tags
+// Arguments: one (optional) argument 'redirect': pass url where to redirect after successful login (default: false);
+// Localization: replace 'theme' with your text domain string.
+// login action hook - catches form submission and acts accordingly
+add_action('init','tiny_login');
+function tiny_login() {
+  global $tiny_error;
+  $tiny_error = false;
+  if (isset($_POST['username']) && isset($_POST['password'])) {
+    $creds = array();
+    $creds['user_login'] = $_POST['username'];
+    $creds['user_password'] = $_POST['password'];
+    //$creds['remember'] = false;
+    $user = wp_signon( $creds );
+    if ( is_wp_error($user) ) {
+      $tiny_error = $user->get_error_message();
+    } else {
+      if (isset($_POST['redirect']) && $_POST['redirect']) {
+        wp_redirect($_POST['redirect']);
+      }
+    }
+  }
+}
+
+// shows error message
+function the_tiny_error() {
+  echo get_tiny_error();
+}
+function get_tiny_error() {
+  global $tiny_error;
+  if ($tiny_error) {
+    $return = $tiny_error;
+    $tiny_error = false;
+    return $return;
+  } else {
+    return false;
+  }
+}
+// shows login form (or a message, if user already logged in)
+function get_tiny_login_form($redirect=false) {
+  if (!is_user_logged_in()) {
+    $return = "<form action=\"\" method=\"post\" class=\"tiny_form tiny_login\">\r\n";
+    $error = get_tiny_error();
+    if ($error)
+      $return .= "<p class=\"error\">{$error}</p>\r\n";
+    $return .= "  <p>
+      <label for=\"tiny_username\">".__('Username','theme')."</label>
+      <input type=\"text\" id=\"tiny_username\" name=\"username\" value=\"".(isset($_POST['username'])?$_POST['username']:"")."\"/>
+    </p>\r\n";
+    $return .= "  <p>
+      <label for=\"tiny_password\">".__('Password','theme')."</label>
+      <input type=\"password\" id=\"tiny_password\" name=\"password\"/>
+    </p>\r\n";
+    if ($redirect)
+      $return .= "  <input type=\"hidden\" name=\"redirect\" value=\"{$redirect}\">\r\n";
+    $return .= "  <button type=\"submit\">".__('Login','theme')."</button>\r\n";
+    $return .= "</form>\r\n";
+  } else {
+    $return = "<p>".__('User is already logged in','theme')."</p>";
+  }
+  return $return;
+}
+function the_tiny_login_form($redirect=false) {
+  echo get_tiny_login_form($redirect);
+}
+// adds a handy [tiny_login] shortcode to use in posts/pages
+add_shortcode('tiny_login','tiny_login_shortcode');
+function tiny_login_shortcode ($atts,$content=false) {
+  $atts = shortcode_atts(array(
+    'redirect' => false
+  ), $atts);
+  return get_tiny_login_form($atts['redirect']);
+}
+
+
+// Removendo itens do menu Admin
+// 
+function remove_menus(){
+  
+  remove_menu_page( 'index.php' );                  //Dashboard
+  //remove_menu_page( 'jetpack' );                    //Jetpack* 
+  //remove_menu_page( 'upload.php' );                 //Media
+  remove_menu_page( 'edit.php' );                     //Posts
+  remove_menu_page( 'post-new.php' );                 //Posts
+  //remove_menu_page( 'edit.php?post_type=page');       //Pages
+  //remove_menu_page( 'post-new.php?post_type=page');    //Pages
+  remove_menu_page( 'post-new.php?post_type=coupons'); //Cupons
+  remove_menu_page( 'edit-comments.php' );             //Comments
+  //remove_menu_page( 'themes.php' );                    //Appearance
+  //	remove_menu_page( 'plugins.php' );                   //Plugins
+  //remove_menu_page( 'users.php' );                   //Users
+  remove_menu_page( 'tools.php' );                     //Tools
+  //remove_menu_page( 'options-general.php' );           //Settings
+  
+}
+add_action( 'admin_menu', 'remove_menus' );
+
+
+// removendo links dos posts listados no admin
+add_filter( 'post_row_actions', 'remove_row_actions', 10, 1 );
+function remove_row_actions( $actions )
+{
+    if( get_post_type() === 'coupons' )
+        unset( $actions['edit'] );
+        unset( $actions['view'] );
+       //unset( $actions['trash'] );
+        unset( $actions['inline hide-if-no-js'] );
+    return $actions;
+}
+
+
+/**
+** Adiciona novos campos ao perfil de usuario
+** By wptotal.com.br
+**/
+ 
+function add_extra_fields_user_profile($user) {
+ 
+$user_phone = isset($_POST['user_phone']) ? $_POST['user_phone'] : get_the_author_meta('user_phone', $user->ID);
+$user_cpf = isset($_POST['user_cpf']) ? $_POST['user_cpf'] : get_the_author_meta('user_cpf', $user->ID);
+$user_gender = isset($_POST['user_gender']) ? $_POST['user_gender'] : get_the_author_meta('user_gender', $user->ID);
+?>
+ 
+<h3>Dados para Contato</h3>
+<table class="form-table">
+<tbody>
+<tr>
+<th><label for="user_phone">Telefone<span class="description">(obrigatório)</span></label></th>
+<td><input type="text" name="user_phone" id="user_phone" value="<?php echo esc_attr($user_phone) ?>" required="required" class="regular-text" /></td>
+</tr>
+<tr>
+<th><label for="user_endereco">CPF<span class="description">(obrigatório)</span></label></th>
+<td>
+<input type="text" name="user_cpf" id="user_cpf" value="<?php echo esc_attr($user_cpf) ?>" required="required" class="regular-text" />
+</td>
+</tr>
+<tr>
+<th><label for="user_cep">Gênero<span class="description">(obrigatório)</span></label></th>
+<td>
+ <select class="Form-input Form-input--select Form-select" name="user_gender" required="required" id="user_gender">
+    <option>Escolha</option>
+    <option value="masculino" <?php if(  esc_attr($user_gender) === 'masculino' ) { echo 'selected="selected"'; } ?>>Masculino</option>
+    <option value="feminino" <?php if(  esc_attr($user_gender) === 'feminino' ) { echo 'selected="selected"'; } ?>>Feminino</option>
+</select>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+<?php
+}
+add_action('show_user_profile', 'add_extra_fields_user_profile');
+add_action('edit_user_profile', 'add_extra_fields_user_profile');
+
+
+/**
+** Grava os dados dos novos campos de usuários no banco de dados
+** Obs: É necessário validar os campos obrigatórios antes de gravar as alterações.
+** By wptotal.com.br
+**/
+function save_extra_fields_user_profile($user_id) {
+ 
+if (!current_user_can('edit_user', $user_id))
+return false;
+ 
+// Validando o campo obrigatorio
+if ( !isset( $_POST['user_phone'] ) || empty( $_POST['user_phone'] ) ) {
+return false;
+}
+ 
+update_usermeta($user_id, 'user_phone', $_POST['user_phone']);
+update_usermeta($user_id, 'user_cpf', $_POST['user_cpf']);
+update_usermeta($user_id, 'user_gender', $_POST['user_gender']);
+}
+add_action('personal_options_update', 'save_extra_fields_user_profile');
+add_action('edit_user_profile_update', 'save_extra_fields_user_profile');
+
+
+/**
+** Valida e Mostra a(s) mensagem(s) de erro(s) dos novos campos de usuário
+** By wptotal.com.br
+**/
+function validate_fields_in_user_profile(&$errors,$is_update) {
+ 
+if ( ! $is_update ) {
+return true;
+}
+ 
+// Somente exibe a mensagem de erro.
+if ( ! isset( $_POST['user_phone'] ) || empty( $_POST['user_phone'] ) ) {
+$errors->add( 'user_phone', '<strong>ERRO</strong>: Digite um telefone do usuário.' );
+}
+
+// Somente exibe a mensagem de erro.
+if ( ! isset( $_POST['user_cpf'] ) || empty( $_POST['user_cpf'] ) ) {
+$errors->add( 'user_cpf', '<strong>ERRO</strong>: Digite um número de CPF.' );
+}
+
+// Somente exibe a mensagem de erro.
+if ( ! isset( $_POST['user_gender'] ) || empty( $_POST['user_gender'] ) ) {
+$errors->add( 'user_gender', '<strong>ERRO</strong>: escolha um gênero.' );
+}
+
+}
+add_action( 'user_profile_update_errors', 'validate_fields_in_user_profile',10,2);
+
+// Customizando as colunas de listagem de usuários
+
+function new_contact_methods( $contactmethods ) {
+    $contactmethods['user_cpf'] = 'CPF';
+    return $contactmethods;
+}
+add_filter( 'user_contactmethods', 'new_contact_methods', 10, 1 );
+
+
+function new_modify_user_table( $column ) {
+    $column['user_cpf'] = 'CPF';
+    return $column;
+}
+add_filter( 'manage_users_columns', 'new_modify_user_table' );
+
+function new_modify_user_table_row( $val, $column_name, $user_id ) {
+    switch ($column_name) {
+        case 'user_cpf' :
+            return get_the_author_meta( 'user_cpf', $user_id );
+            break;
+        default:
+    }
+    return $val;
+}
+add_filter( 'manage_users_custom_column', 'new_modify_user_table_row', 10, 3 );
+
+add_filter('manage_users_columns','remove_users_columns');
+function remove_users_columns($column_headers) {
+    if (current_user_can('administrator')) {
+      unset($column_headers['posts']);
+    }
+ 
+    return $column_headers;
+}
