@@ -145,7 +145,7 @@
 							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/negociacao?id=' . get_the_ID() . '/\');';
 						
 						} else {
-							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&url=' . get_permalink() . '\');';
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociacao&url=' . get_permalink() . '\');';
 						}
 				 ?>				
 					<tr>

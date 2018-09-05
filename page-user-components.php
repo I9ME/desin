@@ -95,6 +95,46 @@ if( isset( $_GET['component']) ) {
 				</div>
 		</div>
 
+		<?php 
+			} elseif( $component == 'negociacao' ) {
+		?>
+
+		<div class="Section Section--loginCadastro u-displayFlex u-flexAlignItemsCenter u-paddingHorizontal--inter u-absoluteTopCenter u-sizeFull">
+			<div class="Section-content u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow u-FlexFustifyContentSpaceBetween u-sizeFull">
+
+				<div class="Section-subSection u-positionRelative u-sizeFull u-paddingVertical--inter--px">
+					<header class="Section-subSection-header u-marginBottom--inter u-alignCenter">
+						<h4 class="Section-subSection-header-title">
+							Você está prestes a negociar um <em>Ingresso</em><br />
+							do evento "Nome do Evento".
+						</h4>
+
+					</header>
+					<div class="Section-subSection-content">
+						<p class="u-alignCenter">Lorem Ipsum desc é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.</p>
+						<?php  //echo do_shortcode( '[custom-login-form]', $ignore_html = false ) ?>
+						<form class="Form Form--style1 u-sizeFull">
+							<fieldset class="Form-fieldset">
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half">
+										<input class="Form-input Form-input--text u-sizeFull" type="text" name="username" placeholder="Seu nome de usuário ou e-mail" />
+									</div>
+								
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half">
+										<input class="Form-input Form-input--text u-sizeFull" type="password" name="password" placeholder="Sua senha" />
+									</div>
+								</div>
+								<div class="Form-row u-displayFlex">
+									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
+										<input class="Form-input Form-input--submit u-sizeFull" type="submit" value="LOGAR" />
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+		</div>
+
 <?php } else { ?>
 	
 	<!-- Futuras outras opções -->
