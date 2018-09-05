@@ -658,7 +658,7 @@ strong {
 }
 
 .Section--style1 {
-  color: #1e95d1;
+  color: #555555;
 }
 
 .Section--style1 .Section-header-title {
@@ -1101,6 +1101,11 @@ strong {
   font-weight: bold;
 }
 
+.Section--promocoes .Section-items-item-meta .Price--offer .Esgotado {
+  font-size: 14px;
+  color: #f08b13;
+}
+
 @media screen and (min-width: 768px) {
   .Section--promocoes .Section-items-item {
     margin-right: 4.16667%;
@@ -1315,6 +1320,11 @@ body.single .Site-header {
   border-left: 1px solid #999999;
 }
 
+.SiteMain-main .Article--promocoes .Section--destaque-content .Meta .Price--offer .Esgotado {
+  font-size: 13px;
+  color: #f08b13;
+}
+
 .SiteMain-main .Article--promocoes .Section-subSection--cta .Button--background {
   background: #009045;
   color: #FFFFFF;
@@ -1392,6 +1402,10 @@ body.single .Site-header {
   }
   .SiteMain-main .Article--promocoes .Section--destaque-content .Meta .Price--offer {
     font-size: 30px;
+  }
+  .SiteMain-main .Article--promocoes .Section--destaque-content .Meta .Price--offer .Esgotado {
+    font-size: 13px;
+    color: #f08b13;
   }
   .SiteMain-main .Article--promocoes .Section-subSection--cta .Button--background {
     background: #009045;
@@ -6448,10 +6462,6 @@ input[type="submit"] {
   .Form--style4 {
     margin: 0px 0 0 2.5% !important;
   }
-}
-
-.Form-row {
-  max-width: 350px;
 }
 
 .Form-row--email:before {

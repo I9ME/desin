@@ -2172,6 +2172,7 @@ function add_extra_fields_user_profile($user) {
  
 $user_phone = isset($_POST['user_phone']) ? $_POST['user_phone'] : get_the_author_meta('user_phone', $user->ID);
 $user_cpf = isset($_POST['user_cpf']) ? $_POST['user_cpf'] : get_the_author_meta('user_cpf', $user->ID);
+$user_address = isset($_POST['user_address']) ? $_POST['user_address'] : get_the_author_meta('user_address', $user->ID);
 $user_gender = isset($_POST['user_gender']) ? $_POST['user_gender'] : get_the_author_meta('user_gender', $user->ID);
 ?>
  
@@ -2186,6 +2187,12 @@ $user_gender = isset($_POST['user_gender']) ? $_POST['user_gender'] : get_the_au
 <th><label for="user_endereco">CPF<span class="description">(obrigatório)</span></label></th>
 <td>
 <input type="text" name="user_cpf" id="user_cpf" value="<?php echo esc_attr($user_cpf) ?>" required="required" class="regular-text" />
+</td>
+</tr>
+<tr>
+<th><label for="user_address">Endereço<span class="description">(Bairro)</span></label></th>
+<td>
+<input type="text" name="user_address" id="user_address" value="<?php echo esc_attr($user_address); ?>" class="regular-text" />
 </td>
 </tr>
 <tr>
@@ -2224,6 +2231,7 @@ return false;
  
 update_user_meta($user_id, 'user_phone', $_POST['user_phone']);
 update_user_meta($user_id, 'user_cpf', $_POST['user_cpf']);
+update_user_meta($user_id, 'user_address', $_POST['user_address']);
 update_user_meta($user_id, 'user_gender', $_POST['user_gender']);
 }
 add_action('personal_options_update', 'save_extra_fields_user_profile');
