@@ -1846,6 +1846,41 @@ function custom_meta_box_markup_3($object)
 
 		    		</td>
 		    </tr>
+		     <tr>
+        		<td width="25%">
+            		<h4>Termos de uso</h4>
+        		</td>
+        		<td>
+        			<?php 
+        			if( ( get_post_meta($object->ID, "meta_box-return_terms", true) ) != '' ) {
+	        			$meta_box_return_terms = get_post_meta($object->ID, "meta_box-return_terms", true);
+	        			
+	        			if( $meta_box_return_terms != '' ){
+	        				
+	        				$returnTerms = 'Eu aceito';
+	        			
+	        			} else {
+	        			
+	        				$returnTerms = '';
+	        			
+	        			}
+        			
+        			} else {
+
+        				$meta_box_return_terms = '';
+        				$returnTerms = '';
+
+        			}
+
+        			echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
+    					
+			      		echo '<p>LINK: <a href="' .  get_home_url() . '/termos-de-uso/" target="_blank">TERMOS DE USO</a></p>'."\n";
+			      		echo '<p><strong>Respota:</strong> ' . $returnTerms .'</p>'."\n"; 
+			      		echo '<input type="hidden" name="meta_box-return_terms" id="meta_box-return_terms" value="' . $meta_box_return_terms . '" />';
+        			 ?>
+        		</td>
+        	</tr>
+
 		    <tr>
         		<td width="25%">
             		<h4>Status do Ingresso:</h4>
@@ -1920,6 +1955,7 @@ function save_custom_meta_box_3($post_id, $post, $update)
     $meta_box_vendedor_ingresso = "";
     $meta_box_radio_comprador_autenticado = "";
     $meta_box_comprador_ingresso_value = "";
+    $meta_box_return_terms = "";
     $meta_box_status_ingresso = "";
 
 
@@ -1987,6 +2023,15 @@ function save_custom_meta_box_3($post_id, $post, $update)
 	    update_post_meta($post_id, "meta-box-comprador_ingresso", $meta_box_comprador_ingresso_value);   
 
 	}
+
+	
+
+	 if(isset($_POST["meta_box-return_terms"]))
+    {
+        $meta_box_return_terms = $_POST["meta_box-return_terms"];
+    }   
+    update_post_meta($post_id, "meta_box-return_terms", $meta_box_return_terms);
+
 
 
      if(isset($_POST["meta_box-status_ingresso"]))
@@ -2383,7 +2428,7 @@ add_action( 'wp_ajax_custom_action', 'custom_action' );
 add_action( 'wp_ajax_nopriv_custom_action', 'custom_action' );
 function custom_action() {
     // A default response holder, which will have data for sending back to our js file
-    $response = array(
+    /*$response = array(
     	'error' => false,
     );
 
@@ -2398,12 +2443,25 @@ function custom_action() {
 
     	// Exit here, for not processing further because of the error
     	exit(json_encode($response));
-    }
+    }*/
 
     // ... Do some code here, like storing inputs to the database, but don't forget to properly sanitize input data!
-    
-    	$name = $_POST['name'];
-	 	$email = $_POST['email'];
+
+    	$comprador_ingresso_aut = $_POST['meta_box-comprador_autenticado'];
+
+	 	if( $comprador_ingresso_aut == 1 ) {
+
+	 		$comprador_ingresso = $_POST['meta-box-comprador_ingresso'];
+
+	 	} else {
+
+	 		$name = $_POST['name'];
+	 		$email = $_POST['email'];
+
+ 			$comprador_ingresso = array("name" => $name, "email" => $email);
+
+	 	}
+
 	 	$id_ingresso = $_POST['id_ingresso'];
 	 	$id_evento = get_post_meta($id_ingresso, "meta_box-id_evento", true);
 	 	$valor_ingresso = get_post_meta($id_ingresso, "meta_box-valor_ingresso", true);
@@ -2411,29 +2469,18 @@ function custom_action() {
  		
 		$date_negociacao =  date('Y-m-d');
 
-	 	//$date_negociacao = date('d/m/Y');
-	 	//
 	 	$vendedor_ingresso = get_post_meta($id_ingresso, "meta-box-vendedor_ingresso", true);
-
-	 	if( is_user_logged_in() ) {
-
-	 		$comprador_ingresso_aut = 1;
-	 		$comprador_ingresso = get_current_user_id();
-
-	 		} else {
-	 			$comprador_ingresso_aut = 2;
-	 			$comprador_ingresso = array("name" => $name, "email" => $email);
-	 		}
-
-	 	$comprador_ingresso = array("name" => $name, "email" => $email);
 	 	
+	 	$meta_box_return_terms = $_POST['meta_box-return_terms'];
+
 	 	$status_ingresso = 1;
+
 
 
         $ingresso_title = get_the_title( $id_ingresso );
 		$post_author_id = get_post_field( 'post_author', $id_ingresso );
 		$display_name = get_the_author_meta('display_name', $post_author_id);
-		$titulo_negociacao = 'Ingresso do ' . $ingresso_title . ', vendido por: ' . $display_name;
+		$titulo_negociacao = 'Ingresso do ' . $ingresso_title . ', ofertado por: ' . $display_name;
 
 
 
@@ -2457,10 +2504,10 @@ function custom_action() {
 
        	update_post_meta($post_id, 'meta-box-comprador_ingresso', $comprador_ingresso);
 
+       	update_post_meta($post_id, 'meta_box-return_terms', $meta_box_return_terms);
+
        	update_post_meta($post_id, 'meta_box-status_ingresso', $status_ingresso);
        
-
-
 
 
     // Don't forget to exit at the end of processing

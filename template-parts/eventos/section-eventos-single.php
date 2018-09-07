@@ -142,7 +142,7 @@
 
 						if( is_user_logged_in() ) {
 
-							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociacao&id=' . get_the_ID() . '\');';
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=autenticado&id=' . get_the_ID() . '\');';
 						
 						} else {
 							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociar&id=' . get_the_ID() . '\');';

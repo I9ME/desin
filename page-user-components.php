@@ -33,6 +33,12 @@ if( isset( $_GET['component']) ) {
 		} else {
 			$id_post = '';
 		}
+
+		if( is_user_logged_in() ) {
+			$comprador_ingresso_aut = 1;
+		} else {
+			$comprador_ingresso_aut = 2;
+		}
 ?>
 	<!-- Caso o conteúdo seja Login e Cadastro -->
 	<?php
@@ -122,30 +128,6 @@ if( isset( $_GET['component']) ) {
 
 		?>
 
-		<style type="text/css">
-			article footer  .post-like{
-    margin-top:1em
-}
- 
-article footer .like{
-    width: 15px;
-    height: 16px;
-    display: block;
-    float:left;
-    margin-right: 4px;
-    -moz-transition: all 0.2s ease-out 0.1s;
-    -webkit-transition: all 0.2s ease-out 0.1s;
-    -o-transition: all 0.2s ease-out 0.1s
-}
- 
-article footer .post-like a:hover .like{
-    background-position:-16px 0;
-}
- 
-article footer .voted .like, article footer .post-like.alreadyvoted{
-    background-position:-32px 0;
-}
-		</style>
 
 		<script type="text/javascript">
 			/*jQuery('#negociar').submit(function(event){
@@ -187,8 +169,6 @@ jQuery(document).ready(function($) {
 
 });
 
-
-		
 		</script>
 
 		<div id="modalSystem" class="Section Section--loginCadastro u-displayFlex u-flexAlignItemsCenter u-paddingHorizontal--inter u-absoluteTopCenter u-sizeFull">
@@ -211,8 +191,12 @@ jQuery(document).ready(function($) {
 
 
 						<form id="negociar" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
+							
 							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
+							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $comprador_ingresso_aut; ?>" />
+							
 							<input type="hidden" name="action" value="custom_action">
+
 							<fieldset class="Form-fieldset">
 								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
 									
@@ -225,10 +209,17 @@ jQuery(document).ready(function($) {
 
 									</div>
 								</div>
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter u-flexSwitchRow">
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignLeft">
+										<p>Por favor, <strong>leia</strong> e <strong>aceite</strong> os nossos <strong><a href="<?php get_home_url(); ?>/termos-de-uso/" target="_blank">termos de uso</a></strong> para prosseguir com a negociação. </p>
+									</div>
+
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignLeft u-flexAlignItemsCenter u-displayFlex">
+										<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="eu-aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
+										<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+									</div>
+								</div>
 								<div class="Form-row u-displayFlex">
-
-									
-
 									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
 										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="NEGOCIAR COM VENDEDOR" />
 									</div>
@@ -241,8 +232,45 @@ jQuery(document).ready(function($) {
 		</div>
 
 		<?php 
-			} elseif( $component == 'negociacao' ) {
+			} elseif( $component == 'autenticado' ) {
 		?>
+
+		<?php 
+			$ingresso_title = get_the_title( $id_post );
+			$post_author_id = get_post_field( 'post_author', $id_post );
+			$display_name = get_the_author_meta('display_name', $post_author_id);
+			$user_email = get_the_author_meta('user_email', $post_author_id);
+			$user_phone = get_the_author_meta('user_phone', $post_author_id);
+			$user_address = get_the_author_meta('user_address', $post_author_id);
+		 ?>
+
+<script type="text/javascript">
+		
+jQuery(document).ready(function($) {
+	
+	$('#autenticado').on('submit', function(e) {
+		e.preventDefault();
+
+		var $form = $(this);
+
+		$.post($form.attr('action'), $form.serialize(), function(data) {
+			//alert('This is data returned from the server ' + data);
+			
+			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { vendedor_name: "<?php echo $display_name; ?>", vendedor_email: "<?php echo $user_email; ?>", vendedor_phone: "<?php echo $user_phone; ?>", vendedor_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
+			        .done(function(result){
+			            jQuery('#modalSystem .Section-content').html(result);
+			            //alert('OK');
+			        })
+			        .fail(function(){
+			           alert('Error loading page');
+			        })
+			
+		}, 'json');
+	});
+
+});
+
+		</script>
 
 		<div id="modalSystem" class="Section Section--style1 Section--loginCadastro u-displayFlex u-flexAlignItemsCenter u-paddingHorizontal--inter u-absoluteTopCenter u-sizeFull">
 			<div class="Section-content u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow u-FlexFustifyContentSpaceBetween u-sizeFull">
@@ -259,40 +287,31 @@ jQuery(document).ready(function($) {
 						<p class="u-alignCenter">Lorem Ipsum desc é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.</p>
 						<?php  //echo do_shortcode( '[custom-login-form]', $ignore_html = false ) ?>
 						<div class="u-marginTop--inter">
-							<?php 
-								$post_author_id = get_post_field( 'post_author', $id_post );
-								$display_name = get_the_author_meta('display_name', $post_author_id);
-								$user_phone = get_the_author_meta('user_phone', $post_author_id);
-								$user_email = get_the_author_meta('user_email', $post_author_id);
-								$user_address = get_the_author_meta('user_address', $post_author_id);
-							 ?>
-							<h4 class="Section-header-title Section-header-title--beforeTitleLine u-paddingBottom--inter--half u-alignCenter u-marginBottom--inter--half"><strong>Dados do Vendedor</strong></h4>
-							<table width="100%">
-								<tbody>
-									<tr>
-										<td><strong>VENDEDOR</strong></td>
-										<td><?php echo $display_name; ?></td>
-									</tr>
-									<tr>
-										<td><strong>CELULAR</strong></td>
-										<td><?php echo $user_phone; ?></td>
-									</tr>
-									<tr>
-										<td><strong>E-MAIL</strong></td>
-										<td><?php echo $user_email; ?></td>
-									</tr>
-									<tr>
-										<td><strong>BAIRRO</strong></td>
-										<td><?php echo $user_address; ?></td>
-									</tr>
 
-								</tbody>
-							</table>
-							<div class="u-positionRelative u-displayBlock u-alignCenter">
-								<a target="_blank" href="https://api.whatsapp.com/send?phone=55<?php echo $user_phone; ?>&text=Olá! Eu me interessei pelo seu anúncio no DESINGRESSANDO.COM" class="Form-input u-marginTop--inter u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1">
-									CHAME O VENDEDOR NO WHATSAPP
-								</a>
-							</div>
+
+							<form id="autenticado" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
+							
+							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
+							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $comprador_ingresso_aut; ?>" />
+							<input type="hidden" name="meta-box-comprador_ingresso" id="meta-box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
+							<input type="hidden" name="action" value="custom_action">
+
+							<fieldset class="Form-fieldset">
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter u-flexSwitchRow">
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+										<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="Eu aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
+										<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+									</div>
+								</div>
+								<div class="Form-row u-displayFlex">
+
+									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="NEGOCIAR COM VENDEDOR" />
+									</div>
+
+								</div>
+							</fieldset>
+						</form>
 						</div>
 					</div>
 				</div>
