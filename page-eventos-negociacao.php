@@ -9,7 +9,7 @@
  <div class="Section-subSection u-positionRelative u-sizeFull u-paddingVertical--inter--px">
 					<header class="Section-subSection-header u-marginBottom--inter u-alignCenter">
 						<h4 class="Section-subSection-header-title">
-							Você está negociando:<br />
+							Você está negociando:<br />	
 							<?php echo  $id_ingresso;  ?> | <?php echo get_home_url(); ?> | <em><?php echo get_the_title( $id_ingresso ); ?></em>.
 						</h4>
 
