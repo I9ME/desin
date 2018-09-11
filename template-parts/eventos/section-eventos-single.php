@@ -110,6 +110,14 @@
 				<tbody>
 				<?php 
 
+				if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) && $_GET['filter'] == 'sale' ) {
+
+					$tipo_oferta = 2;
+				
+				} else {
+					$tipo_oferta = 1;
+				}
+
 					$newsArgs = array( 
 		      		'post_type' => 'ingresso',
 		      		'meta_query' => array(
@@ -123,7 +131,7 @@
 								    ),
 								    array(
 								        'key'   => 'meta_box-tipo_oferta',
-								        'value' => 1,
+								        'value' => $tipo_oferta,
 								        'compare' => '='
 								    )
 								),
@@ -139,6 +147,19 @@
 
 						$tipos_ingresso = get_post_meta( get_the_ID(), 'meta_box-tipo_ingresso', true );
 						$valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
+
+						$hasExistFilter = hasExistFilter();
+						
+						if( !wp_is_mobile() ) {
+							
+							if( $hasExistFilter['filter'] === true ) {
+								$label_button = 'FALAR COM O COMPRADOR';
+							} else {
+								$label_button = 'FALAR COM O VENDEDOR';
+							}
+						} else {
+							$label_button = 'FALAR';	
+						}
 
 						if( is_user_logged_in() ) {
 
@@ -161,7 +182,7 @@
 						</td>
 						<td class="u-paddingHorizontal--vrt--inter--half--px u-alignCenter u-displayFlex u-flexAlignItemsCenter u-flexJustifyContentCenter">
 							<a href="<?php echo $link_cta; ?>" class="Button Button--border Button--background style1 hover Button--mediumSize u-borderRadius5 is-animating">
-								<?php if( wp_is_mobile() ) { echo 'IR'; } else { echo 'NEGOCIAR COM VENDEDOR'; } ?>
+								<?php echo $label_button; ?>
 							</a>
 						</td>
 					</tr>
@@ -173,7 +194,16 @@
 				<p class="u-paddingBottom--inter--half">
 					Você não gostou dos preços?
 				</p>
-				<a href="#" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
+				<?php 
+					if( is_user_logged_in() ) {
+
+						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=ofertar-preco&id=' . get_the_ID() . '\');';
+					
+					} else {
+						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&context=oferta-preco\');';
+					}
+				 ?>
+				<a href="<?php echo $link_cta; ?>" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
 					ADICIONE UMA OFERTA DE COMPRA!
 				</a>
 			</div>
