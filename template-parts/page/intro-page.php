@@ -15,7 +15,7 @@
 				</a>
 			</li>
 			<li class="Navigation-item u-displayFlex u-size12of24 u-paddingVertical">
-				<a href="<?php echo get_home_url(); ?>/vender-ingresso/" class="Navigation-item-content u-paddingHorizontal--vrt--inter--px is-animating">
+				<a href="<?php echo get_home_url(); ?>/vender-ingresso/?filter=sale" class="Navigation-item-content u-paddingHorizontal--vrt--inter--px is-animating">
 					<h3 class="Navigation-item-title">QUERO<br /><em class="is-animating">VENDER</em><br />O MEU <br />INGRESSO</h3>
 				</a>
 			</li>

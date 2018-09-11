@@ -6135,6 +6135,7 @@ img.aligncenter {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
@@ -6226,23 +6227,6 @@ input[type="submit"] {
   top: 3px;
 }
 
-.Form--style1 .Form-input {
-  /* &[type="submit"]{
-				color: $color_1;
-				height: $sizeColumns_px * 1.5;
-				border: 0px;
-				-moz-background: linear-gradient(to bottom right, $color_2, $color_14);
-				-webkit-background: linear-gradient(to bottom right, $color_2, $color_14);
-				background: linear-gradient(to bottom right, $color_2, $color_14);
-				&:hover{
-					//background: $color_11;
-					-moz-background: linear-gradient(to bottom right, $color_14, $color_2);
-				-webkit-background: linear-gradient(to bottom right, $color_14, $color_2);
-				background: linear-gradient(to bottom right, $color_14, $color_2);
-				}
-			} */
-}
-
 .Form--style1 .Form-input--textarea {
   height: inherit !important;
   padding-top: 25px;
@@ -6283,8 +6267,10 @@ input[type="submit"] {
 
 .Form--style1 .Form-input[type="text"],
 .Form--style1 .Form-input[type="tel"],
-.Form--style1 .Form-input[type="email"] {
-  height: 75px;
+.Form--style1 .Form-input[type="email"],
+.Form--style1 .Form-input[type="number"],
+.Form--style1 .Form-input--select {
+  height: 62.5px;
 }
 
 .Form--style1 ._form-thank-you {
