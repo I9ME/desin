@@ -1318,10 +1318,20 @@ function custom_meta_box_markup_2($object)
 		    	</td>
 		    </tr>
 		     <tr>
-		    	<td><h4>Vendedor:</h4>
+		    	<td><h4>Autor da Oferta:</h4>
 		    		<td>
 		    			<?php 
-		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
+		    			//$meta_box_tipo_oferta_  = get_post_meta($object->ID, "meta_box-tipo_oferta", true);
+		    				if( $meta_box_tipo_oferta_ == 1 ) {
+
+		    					$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
+
+		    				} else {
+
+		    					$meta_box_idUser  = get_post_meta($object->ID, "meta-box-comprador_ingresso", true);
+
+		    				}
+		    				
 
 		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
 		    					$edit_field = $_GET[ 'edit_field' ];
@@ -2303,9 +2313,9 @@ $user_gender = isset($_POST['user_gender']) ? $_POST['user_gender'] : get_the_au
 <td><input type="text" name="user_phone" id="user_phone" value="<?php echo esc_attr($user_phone) ?>" required="required" class="regular-text" /></td>
 </tr>
 <tr>
-<th><label for="user_endereco">CPF<span class="description">(obrigatório)</span></label></th>
+<th><label for="user_endereco">CPF</label></th>
 <td>
-<input type="text" name="user_cpf" id="user_cpf" value="<?php echo esc_attr($user_cpf) ?>" required="required" class="regular-text" />
+<input type="text" name="user_cpf" id="user_cpf" value="<?php echo esc_attr($user_cpf) ?>" class="regular-text" />
 </td>
 </tr>
 <tr>
@@ -2371,11 +2381,11 @@ return true;
 if ( ! isset( $_POST['user_phone'] ) || empty( $_POST['user_phone'] ) ) {
 $errors->add( 'user_phone', '<strong>ERRO</strong>: Digite um telefone do usuário.' );
 }
-
+/*
 // Somente exibe a mensagem de erro.
 if ( ! isset( $_POST['user_cpf'] ) || empty( $_POST['user_cpf'] ) ) {
 $errors->add( 'user_cpf', '<strong>ERRO</strong>: Digite um número de CPF.' );
-}
+}*/
 
 // Somente exibe a mensagem de erro.
 if ( ! isset( $_POST['user_gender'] ) || empty( $_POST['user_gender'] ) ) {
@@ -2423,6 +2433,7 @@ function remove_users_columns($column_headers) {
 
 ////////////////////////////////
 
+//Function Save Forms of the Negociação
 
 add_action( 'wp_ajax_custom_action', 'custom_action' );
 add_action( 'wp_ajax_nopriv_custom_action', 'custom_action' );
@@ -2442,71 +2453,127 @@ function custom_action() {
 
 
     	// Exit here, for not processing further because of the error
-    	exit(json_encode($response));
+    	exit(json_encode($response)); 
     }*/
 
     // ... Do some code here, like storing inputs to the database, but don't forget to properly sanitize input data!
+    // 
+    	//Se for um uma oferta de valor vinda do comprador
+    	
+    	if( !empty( $_POST['meta_box-tipo_oferta'] ) && isset( $_POST['meta_box-tipo_oferta'] ) && $_POST['meta_box-tipo_oferta'] == 2 ) {
 
-    	$comprador_ingresso_aut = $_POST['meta_box-comprador_autenticado'];
+    		
+    		$meta_box_tipo_oferta = 2;
 
-	 	if( $comprador_ingresso_aut == 1 ) {
+    		$meta_box_id_evento = $_POST['meta_box-id_evento'];
 
-	 		$comprador_ingresso = $_POST['meta-box-comprador_ingresso'];
+		 	$comprador_ingresso_aut = $_POST['meta_box-comprador_autenticado'];
 
-	 	} else {
+		 	$comprador_ingresso = $_POST['meta-box-comprador_ingresso'];
 
-	 		$name = $_POST['name'];
-	 		$email = $_POST['email'];
+		 	$meta_box_tipo_ingresso = $_POST['meta_box-tipo_ingresso'];
 
- 			$comprador_ingresso = array("name" => $name, "email" => $email);
+		 	$meta_box_valor_ingresso = $_POST['meta_box-valor_ingresso'];
 
-	 	}
+		 	$meta_box_endereco_ingresso = $_POST['meta_box-endereco_ingresso'];
 
-	 	$id_ingresso = $_POST['id_ingresso'];
-	 	$id_evento = get_post_meta($id_ingresso, "meta_box-id_evento", true);
-	 	$valor_ingresso = get_post_meta($id_ingresso, "meta_box-valor_ingresso", true);
- 		
- 		
-		$date_negociacao =  date('Y-m-d');
+		 	$meta_box_return_terms = $_POST['meta_box-return_terms'];
 
-	 	$vendedor_ingresso = get_post_meta($id_ingresso, "meta-box-vendedor_ingresso", true);
-	 	
-	 	$meta_box_return_terms = $_POST['meta_box-return_terms'];
-
-	 	$status_ingresso = 1;
+		 	$metabox_status_ingresso = 1;
 
 
+		 	$current_user = wp_get_current_user();
 
-        $ingresso_title = get_the_title( $id_ingresso );
-		$post_author_id = get_post_field( 'post_author', $id_ingresso );
-		$display_name = get_the_author_meta('display_name', $post_author_id);
-		$titulo_negociacao = 'Ingresso do ' . $ingresso_title . ', ofertado por: ' . $display_name;
+	        $ingresso_title = get_the_title( $meta_box_id_evento );
+			$display_name = $current_user->display_name;
+			$titulo_ingresso = 'Oferta de compra de ' . $ingresso_title . ', feita por: ' . $display_name;
 
 
 
 
-       $args = array(
-         'post_type' => 'negociacao',
-         'post_status'=>'publish',
-         'post_title'=> $titulo_negociacao,
-       );
+	       $args = array(
+	         'post_type' => 'ingresso',
+	         'post_status'=>'publish',
+	         'post_title'=> $titulo_ingresso,
+	       );
+
+	       $post_id = wp_insert_post($args);
+	       
+	        update_post_meta($post_id, 'meta_box-tipo_oferta', $meta_box_tipo_oferta);
+	       	update_post_meta($post_id, 'meta_box-id_evento', $meta_box_id_evento);
+	       	update_post_meta($post_id, 'meta_box-tipo_ingresso', $meta_box_tipo_ingresso);
+	       	update_post_meta($post_id, 'meta_box-valor_ingresso', $meta_box_valor_ingresso);
+	       	update_post_meta($post_id, 'meta_box-comprador_autenticado', $comprador_ingresso_aut);
+	       	update_post_meta($post_id, 'meta-box-comprador_ingresso', $comprador_ingresso);
+	       	update_post_meta($post_id, 'meta_box-endereco_ingresso', $meta_box_endereco_ingresso);
+	       	update_post_meta($post_id, 'meta_box-return_terms', $meta_box_return_terms);
+	       	update_post_meta($post_id, 'meta_box-status_ingresso', $metabox_status_ingresso);
+	       	
+
+    	// Se for uma negociação
+    	} else {
+
+	    	$comprador_ingresso_aut = $_POST['meta_box-comprador_autenticado'];
+
+		 	if( $comprador_ingresso_aut == 1 ) {
+
+		 		$comprador_ingresso = $_POST['meta-box-comprador_ingresso'];
+
+		 	} else {
+
+		 		$name = $_POST['name'];
+		 		$email = $_POST['email'];
+
+	 			$comprador_ingresso = array("name" => $name, "email" => $email);
+
+		 	}
+
+		 	$id_ingresso = $_POST['id_ingresso'];
+		 	$id_evento = get_post_meta($id_ingresso, "meta_box-id_evento", true);
+		 	$valor_ingresso = get_post_meta($id_ingresso, "meta_box-valor_ingresso", true);
+	 		
+	 		
+			$date_negociacao =  date('Y-m-d');
+
+		 	$vendedor_ingresso = get_post_meta($id_ingresso, "meta-box-vendedor_ingresso", true);
+		 	
+		 	$meta_box_return_terms = $_POST['meta_box-return_terms'];
+
+		 	$status_ingresso = 1;
 
 
-       $post_id = wp_insert_post($args);
 
-       	update_post_meta($post_id, 'meta_box-id_evento', $id_evento);
-       	update_post_meta($post_id, 'meta_box-id_ingresso', $id_ingresso);
-       	update_post_meta($post_id, 'meta_box-valor_ingresso', $valor_ingresso);
-       	update_post_meta($post_id, 'meta_box-date_negociacao', $date_negociacao);
-       	update_post_meta($post_id, 'meta-box-vendedor_ingresso', $vendedor_ingresso);
+	        $ingresso_title = get_the_title( $id_ingresso );
+			$post_author_id = get_post_field( 'post_author', $id_ingresso );
+			$display_name = get_the_author_meta('display_name', $post_author_id);
+			$titulo_negociacao = 'Ingresso do ' . $ingresso_title . ', ofertado por: ' . $display_name;
 
-       	update_post_meta($post_id, 'meta_box-comprador_autenticado', $comprador_ingresso_aut);
 
-       	update_post_meta($post_id, 'meta-box-comprador_ingresso', $comprador_ingresso);
 
-       	update_post_meta($post_id, 'meta_box-return_terms', $meta_box_return_terms);
 
-       	update_post_meta($post_id, 'meta_box-status_ingresso', $status_ingresso);
+	       $args = array(
+	         'post_type' => 'negociacao',
+	         'post_status'=>'publish',
+	         'post_title'=> $titulo_negociacao,
+	       );
+
+
+	       $post_id = wp_insert_post($args);
+
+	       	update_post_meta($post_id, 'meta_box-id_evento', $id_evento);
+	       	update_post_meta($post_id, 'meta_box-id_ingresso', $id_ingresso);
+	       	update_post_meta($post_id, 'meta_box-valor_ingresso', $valor_ingresso);
+	       	update_post_meta($post_id, 'meta_box-date_negociacao', $date_negociacao);
+	       	update_post_meta($post_id, 'meta-box-vendedor_ingresso', $vendedor_ingresso);
+
+	       	update_post_meta($post_id, 'meta_box-comprador_autenticado', $comprador_ingresso_aut);
+
+	       	update_post_meta($post_id, 'meta-box-comprador_ingresso', $comprador_ingresso);
+
+	       	update_post_meta($post_id, 'meta_box-return_terms', $meta_box_return_terms);
+
+	       	update_post_meta($post_id, 'meta_box-status_ingresso', $status_ingresso);
+	       }
        
 
 
@@ -2514,4 +2581,16 @@ function custom_action() {
     exit(json_encode($response));
 }
 
+
+function hasExistFilter(){
+
+	if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) ) {
+		global $wp;
+
+		//$wp_request = home_url( $wp->request );
+		$url_whit_filter = 'filter=' . $_GET['filter'];
+
+		return array("filter" => true, "filter_value" => $url_whit_filter);
+	}
+}
 
