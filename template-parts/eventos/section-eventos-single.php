@@ -15,6 +15,17 @@
 		if (have_posts()) :
   		 while (have_posts()) :
   		 	  the_post();
+
+  		 	  $hasExistFilter = hasExistFilter();
+							
+			if( $hasExistFilter['filter'] === true ) {
+				$tipo_de_oferta = 2;
+				$label_valor = 'PAGO ATÉ';
+			} else {
+				$tipo_de_oferta = 1;
+				$label_valor = 'A PARTIR DE';
+			}
+
 	?>
 <article id="post-<?php the_ID(); ?>" class="Article Article--promocoes u-positionRelative u-displayFlex u-flexDirectionColumn  u-paddingBottom--inter u-borderRadius5">
 	
@@ -33,7 +44,7 @@
 		
 		<div class="Section--destaque-thumbnail u-size14of24 u-lineHeight0">
 			<?php 
-
+				
 
 				if ( has_post_thumbnail() ) {
 			
@@ -48,6 +59,32 @@
 				}
 
 				$data_evento = get_post_meta( get_the_ID(), 'meta_box-date', true ); 
+
+				// Identifica se Há Filtros via GET e cria as srtings de conteúdo para cada situação
+
+				if( !wp_is_mobile() ) {
+							
+					if( $hasExistFilter['filter'] === true ) {
+						$title_lopp = 'OFERTAS DE COMPRA';
+						$label_thead = 'Negociar com o Comprador';
+						$label_button = 'FALAR COM O COMPRADOR';
+						$label_text_add = 'Você não gostou dos preços?';
+						$label_button_add = 'ADICIONAR UMA OFERTA DE VENDA';
+					} else {
+						$title_lopp = 'INGRESSOS DISPONÍVEIS';
+						$label_thead = 'Negociar com o Vendedor';
+						$label_button = 'FALAR COM O VENDEDOR';
+						$label_text_add = 'Você não gostou dos preços?';
+						$label_button_add = 'ADICIONAR UMA OFERTA DE COMPRA';
+					}
+				} else {
+					$title_lopp = 'INGRESSOS DISPONÍVEIS';
+					$label_thead = 'Negociar';
+					$label_button = 'FALAR';
+					$label_text_add = 'Você não gostou dos preços?';
+					$label_button_add = 'ADICIONAR UMA OFERTA DE COMPRA';	
+				}
+
 				
 			 ?>
 
@@ -60,8 +97,8 @@
 			</header><!-- .entry-header -->
 
 			<div class="Meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half u-marginBottom--inter u-marginVertical--inter--px">
-				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
-				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><?php echo menorPreco( get_the_ID() ); ?></div>
+				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px"><?php echo $label_valor; ?></span></div>
+				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><?php echo menorPreco( get_the_ID(), $tipo_de_oferta ); ?></div>
 			</div>			
 			<ul class="u-paddingVertical--inter--px">
 				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
@@ -91,7 +128,7 @@
 		</div>
 	</section>
 	<section class="Section Section--dataBar u-paddingBottom--inter--half u-paddingTop--inter--half">
-		<h4>INGRESSOS DISPONÍVEIS</h4>
+		<h4><?php echo $title_lopp; ?></h4>
 	</section>
 
 	<section class="Section Section--texts">
@@ -104,11 +141,13 @@
 							<strong><?php if( wp_is_mobile() ) { echo 'Tipos'; } else { echo 'Tipos de Ingresso'; } ?></strong>
 						</h4></td>
 						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter"><strong>Valor</strong></h4></td>
-						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter"><strong>Negociar com o Vendedor</strong></h4></td>
+						<td class="u-paddingHorizontal--vrt--inter--half--px"><h4 class="u-alignCenter"><strong><?php echo $label_thead; ?></strong></h4></td>
 					</tr>
 				</thead>
 				<tbody>
 				<?php 
+
+
 
 				if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) && $_GET['filter'] == 'sale' ) {
 
@@ -148,25 +187,20 @@
 						$tipos_ingresso = get_post_meta( get_the_ID(), 'meta_box-tipo_ingresso', true );
 						$valor_ingresso = get_post_meta( get_the_ID(), 'meta_box-valor_ingresso', true );
 
-						$hasExistFilter = hasExistFilter();
 						
-						if( !wp_is_mobile() ) {
-							
-							if( $hasExistFilter['filter'] === true ) {
-								$label_button = 'FALAR COM O COMPRADOR';
-							} else {
-								$label_button = 'FALAR COM O VENDEDOR';
-							}
-						} else {
-							$label_button = 'FALAR';	
-						}
-
+						
 						if( is_user_logged_in() ) {
 
 							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=autenticado&id=' . get_the_ID() . '\');';
 						
 						} else {
-							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociar&id=' . get_the_ID() . '\');';
+							if( $hasExistFilter['filter'] === true ) {
+								$filter_add = '&filter=sale';
+							} else {
+								$filter_add = '';
+							}
+
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociar&id=' . get_the_ID() . $filter_add . '\');';
 						}
 				 ?>				
 					<tr>
@@ -192,7 +226,7 @@
 			</table>
 			<div class="u-displayFlex u-flexDirectionColumn u-positionRelative u-marginTop--inter u-flexAlignItemsCenter u-flexJustifyContentCenter">
 				<p class="u-paddingBottom--inter--half">
-					Você não gostou dos preços?
+					<?php echo $label_text_add; ?>
 				</p>
 				<?php 
 					if( is_user_logged_in() ) {
@@ -204,7 +238,7 @@
 					}
 				 ?>
 				<a href="<?php echo $link_cta; ?>" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
-					ADICIONE UMA OFERTA DE COMPRA!
+					<?php echo $label_button_add; ?>
 				</a>
 			</div>
 		</div>
