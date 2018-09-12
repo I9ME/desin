@@ -27,6 +27,7 @@
 			} else {
 				$tipo_de_oferta = 1;
 				$label_valor = 'A PARTIR DE';
+				$filter_value_uri = '';
 			}
 
 	?>

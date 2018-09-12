@@ -80,6 +80,8 @@
 			$hasExistFilter = hasExistFilter();
 			if ( $hasExistFilter['filter_value'] != '' ){
 				$filter_value_uri = '?' . $hasExistFilter['filter_value'];
+			} else {
+				$filter_value_uri = '';
 			}
 
   		?>
