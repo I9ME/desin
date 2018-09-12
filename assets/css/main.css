@@ -1193,17 +1193,16 @@ body.single .Site-header {
   background-image: url("../images/Intro--bg--mobile.png");
   background-position: top center;
   background-size: cover;
-}
-
-.Intro--home:after {
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 100px;
-  content: "";
-  left: 0px;
-  bottom: 0px;
-  background: linear-gradient(rgba(31, 149, 208, 0), #1f95d0);
+  /* &:after{
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100px;
+			content:"";
+			left: 0px;
+			bottom: 0px;
+			background: linear-gradient(rgba(31,149,208,0), rgba(31,149,208,1) );
+		} */
 }
 
 @media screen and (min-width: 768px) {
