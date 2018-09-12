@@ -100,16 +100,16 @@ if( isset( $_GET['component']) ) {
 		</div>
 
 		<?php 
+			
 			} elseif( $component == 'negociar' ) {
 
 
-        $ingresso_title = get_the_title( $id_post );
-		$post_author_id = get_post_field( 'post_author', $id_post );
-		$display_name = get_the_author_meta('display_name', $post_author_id);
-		$user_email = get_the_author_meta('user_email', $post_author_id);
-		$user_phone = get_the_author_meta('user_phone', $post_author_id);
-		$user_address = get_the_author_meta('user_address', $post_author_id);
-
+		        $ingresso_title = get_the_title( $id_post );
+				$post_author_id = get_post_field( 'post_author', $id_post );
+				$display_name = get_the_author_meta('display_name', $post_author_id);
+				$user_email = get_the_author_meta('user_email', $post_author_id);
+				$user_phone = get_the_author_meta('user_phone', $post_author_id);
+				$user_address = get_the_author_meta('user_address', $post_author_id);
 
 		?>
 
@@ -117,29 +117,29 @@ if( isset( $_GET['component']) ) {
 		<script type="text/javascript">
 
 
-jQuery(document).ready(function($) {
-	
-	$('#negociar').on('submit', function(e) {
-		e.preventDefault();
+			jQuery(document).ready(function($) {
+				
+				$('#negociar').on('submit', function(e) {
+					e.preventDefault();
 
-		var $form = $(this);
+					var $form = $(this);
 
-		$.post($form.attr('action'), $form.serialize(), function(data) {
-			//alert('This is data returned from the server ' + data);
-			
-			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { tipo_oferta: "<?php echo $tipo_oferta; ?>", author_name: "<?php echo $display_name; ?>", author_email: "<?php echo $user_email; ?>", author_phone: "<?php echo $user_phone; ?>", author_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
-			        .done(function(result){
-			            jQuery('#modalSystem .Section-content').html(result);
-			            //alert('OK');
-			        })
-			        .fail(function(){
-			           alert('Error loading page');
-			        })
-			
-		}, 'json');
-	});
+					$.post($form.attr('action'), $form.serialize(), function(data) {
+						//alert('This is data returned from the server ' + data);
+						
+						 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { tipo_oferta: "<?php echo $tipo_oferta; ?>", author_name: "<?php echo $display_name; ?>", author_email: "<?php echo $user_email; ?>", author_phone: "<?php echo $user_phone; ?>", author_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
+						        .done(function(result){
+						            jQuery('#modalSystem .Section-content').html(result);
+						            //alert('OK');
+						        })
+						        .fail(function(){
+						           alert('Error loading page');
+						        })
+						
+					}, 'json');
+				});
 
-});
+			});
 
 		</script>
 
@@ -164,10 +164,13 @@ jQuery(document).ready(function($) {
 
 						<form id="negociar" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
 							
+							<input type="hidden" name="meta_box-tipo_operacao" value="post_negociacao" />
+							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
+
 							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
 							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $user_autenticado; ?>" />
 
-							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
+							
 							
 							<input type="hidden" name="action" value="custom_action">
 
@@ -268,28 +271,30 @@ jQuery(document).ready(function($) {
 
 
 							<form id="autenticado" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
-							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
-							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
-							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="1" />
-							<input type="hidden" name="meta_box-comprador_ingresso" id="meta_box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
-							<input type="hidden" name="action" value="custom_action">
+								
+								<input type="hidden" name="meta_box-tipo_operacao" value="post_negociacao" />
+								<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
 
-							<fieldset class="Form-fieldset">
-								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter u-flexSwitchRow">
-									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
-										<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="Eu aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
-										<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+								<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
+								<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="1" />
+								<input type="hidden" name="meta_box-comprador_ingresso" id="meta_box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
+								<input type="hidden" name="action" value="custom_action">
+
+								<fieldset class="Form-fieldset">
+									<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter u-flexSwitchRow">
+										<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+											<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="Eu aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
+											<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+										</div>
 									</div>
-								</div>
-								<div class="Form-row u-displayFlex">
+									<div class="Form-row u-displayFlex">
 
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
-										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="NEGOCIAR COM VENDEDOR" />
+										<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+											<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="<?php echo $label_button_negociar; ?>" />
+										</div>
 									</div>
-
-								</div>
-							</fieldset>
-						</form>
+								</fieldset>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -352,6 +357,9 @@ jQuery(document).ready(function($) {
 
 
 				<form id="ofertar-preco" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
+
+							<input type="hidden" name="meta_box-tipo_operacao" value="post_ingresso" />
+							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="2" />
 							
 							<input type="hidden" name="meta_box-id_evento" id="meta_box-id_evento" value="<?php echo $id_post; ?>" />
 
@@ -359,7 +367,6 @@ jQuery(document).ready(function($) {
 
 							<input type="hidden" name="meta_box-author_ingresso" id="meta_box-author_ingresso" value="<?php echo get_current_user_id(); ?>" />
 
-							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="2" />
 
 							<input type="hidden" name="action" value="custom_action">
 
@@ -411,6 +418,136 @@ jQuery(document).ready(function($) {
 								<div class="Form-row u-displayFlex">
 									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
 										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="OFERTAR PREÇO" />
+									</div>
+
+								</div>
+							</fieldset>
+						</form>
+
+					</div>
+				</div>
+		</div>
+	
+	<?php 
+			} elseif( $component == 'ofertar-ingresso' ) {
+
+	        $evento_title = get_the_title( $id_post );
+			
+			$meta_box_tipo_oferta = 1;
+
+			$current_user = wp_get_current_user();
+			$display_name = $current_user->display_name;
+
+
+	?>
+
+		<script type="text/javascript">
+
+			jQuery(document).ready(function($) {
+				
+				$('#ofertar-preco').on('submit', function(e) {
+					e.preventDefault();
+
+					var $form = $(this);
+
+					$.post($form.attr('action'), $form.serialize(), function(data) {
+						//alert('This is data returned from the server ' + data);
+						
+						 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { meta_box_tipo_oferta: "<?php echo $meta_box_tipo_oferta; ?>", evento_title: "<?php echo $evento_title; ?>", comprador_name: "<?php echo $display_name; ?>" })
+						        .done(function(result){
+						            jQuery('#modalSystem .Section-content').html(result);
+						            //alert('OK');
+						        })
+						        .fail(function(){
+						           alert('Error loading page');
+						        })
+						
+					}, 'json');
+				});
+
+			});
+
+		</script>
+
+		<div id="modalSystem" class="Section Section--loginCadastro u-displayFlex u-flexAlignItemsCenter u-paddingHorizontal--inter u-absoluteTopCenter u-sizeFull">
+			<div class="Section-content u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow u-FlexFustifyContentSpaceBetween u-sizeFull">
+
+				<div class="Section-subSection u-positionRelative u-sizeFull u-paddingVertical--inter--px">
+					<header class="Section-subSection-header u-marginBottom--inter u-alignCenter">
+						<h4 class="Section-subSection-header-title">
+							Você está prestes a negociar: <br />
+							<em><?php echo get_the_title( $id_post ); ?></em>.
+						</h4>
+
+					</header>
+					<div class="Section-subSection-content">
+						<p class="u-alignCenter">Lorem Ipsum desc é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.</p>
+
+
+				<form id="ofertar-preco" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
+							
+							<input type="hidden" name="meta_box-tipo_operacao" value="post_ingresso" />
+
+							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="1" />
+
+							<input type="hidden" name="meta_box-id_evento" id="meta_box-id_evento" value="<?php echo $id_post; ?>" />
+
+							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="1" />
+
+							<input type="hidden" name="meta_box-author_ingresso" id="meta_box-author_ingresso" value="<?php echo get_current_user_id(); ?>" />
+
+							
+
+							<input type="hidden" name="action" value="custom_action">
+
+							<fieldset class="Form-fieldset">
+
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+									
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
+										<label>Tipo de Ingresso</label>
+										<select name="meta_box-tipo_ingresso" id="meta_box-tipo_ingresso" class="Form-input Form-input--select" required="required" style="width: 220px;">
+						            	<option>Selecione</option>
+							                <?php 
+							                    $option_values = array(1, 2, 3, 4, 5, 6, 7);
+
+							                    foreach($option_values as $key => $value) {
+
+							                   ?>
+							                     <option value="<?php echo $value; ?>"><?php echo tipos_de_ingresso($value); ?></option>
+
+							                <?php } ?>
+					            		</select>
+					            	</div>
+					            </div>
+
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+									
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
+										<label>Valor</label>
+										<input class="Form-input Form-input--text u-sizeFull" type="number" name="meta_box-valor_ingresso" id="meta_box-valor_ingresso" placeholder="Valor do Ingresso" required="required" />
+
+									</div>
+								
+									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
+										<label>Endereço (Bairro)</label>
+										<input class="Form-input Form-input--text u-sizeFull" type="text" id="meta_box-endereco_ingresso" name="meta_box-endereco_ingresso" placeholder="Seu bairro" />
+
+									</div>
+								</div>
+								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter">
+									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+										<p>Por favor, <strong>leia</strong> e <strong>aceite</strong> os nossos <strong><a href="<?php get_home_url(); ?>/termos-de-uso/" target="_blank">termos de uso</a></strong> para prosseguir com a negociação. </p>
+									</div>
+
+									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter u-flexAlignItemsCenter u-displayBlock">
+										<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="eu-aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
+										<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+									</div>
+								</div>
+								<div class="Form-row u-displayFlex">
+									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="OFERTAR INGRESSO" />
 									</div>
 
 								</div>
