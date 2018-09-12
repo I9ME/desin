@@ -39,6 +39,17 @@ if( isset( $_GET['component']) ) {
 		} else {
 			$comprador_ingresso_aut = 2;
 		}
+		// Identifica se Há Filtros via GET e cria as srtings de conteúdo para cada situação
+		$hasExistFilter = hasExistFilter();
+							
+			if( $hasExistFilter['filter'] === true ) {
+				$label_button_negociar = 'NEGOCIAR COM O COMPRADOR';
+				$tipo_oferta = 'venda';
+			} else {
+				$label_button_negociar = 'NEGOCIAR COM O VENDEDOR';
+				$tipo_oferta = 'compra';
+			}
+
 ?>
 	<!-- Caso o conteúdo seja Login e Cadastro -->
 	<?php
@@ -51,7 +62,7 @@ if( isset( $_GET['component']) ) {
 				if (!empty($_GET['context']) && isset($_GET['context'])) {
 
 					if( $_GET['context'] == 'oferta-preco' ){
-						$info_header = '<p>Para realizar uma <strong>proposta</strong>, você precisa está <strong>cadastrado</strong> e <strong>logado</strong>.</p>';
+						$info_header = '<p>Para <strong>prosseguir</strong> você precisa está <strong>cadastrado</strong> e <strong>logado</strong>.</p>';
 					} else {
 						$info_header = '';
 					}	
@@ -71,25 +82,6 @@ if( isset( $_GET['component']) ) {
 					</header>
 					<div class="Section-subSection-content">
 						<?php  echo do_shortcode( '[custom-login-form]', $ignore_html = false ) ?>
-						<!-- <form class="Form Form--style1">
-							<fieldset class="Form-fieldset">
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--text u-sizeFull" type="text" name="username" placeholder="Seu nome de usuário ou e-mail" />
-									</div>
-								</div>
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--text u-sizeFull" type="password" name="password" placeholder="Sua senha" />
-									</div>
-								</div>
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--submit u-sizeFull" type="submit" value="LOGAR" />
-									</div>
-								</div>
-							</fieldset>
-						</form> -->
 					</div>
 				</div>
 
@@ -103,26 +95,6 @@ if( isset( $_GET['component']) ) {
 					<div class="Section-subSection-content">
 						<p class="Section-subSection-resume u-displayBlock">Cadastre-se para aproveitar todas as nossas promoções.</p>
 						<a class="Button Button--border Button--largeSize style1 u-borderRadius5 is-animating hover u-marginTop--inter u-alignCenter u-displayBlock" href="<?php echo get_home_url(); ?>/member-register/" target="_blank">CADASTRE-SE!</a>
-						<?php // echo do_shortcode( '[custom-register-form]', $ignore_html = false ) ?>
-						<!-- <form class="Form Form--style1">
-							<fieldset class="Form-fieldset">
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--text u-sizeFull" type="text" name="username" placeholder="Seu nome de usuário ou e-mail" />
-									</div>
-								</div>
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--text u-sizeFull" type="password" name="password" placeholder="Sua senha" />
-									</div>
-								</div>
-								<div class="Form-row u-displayFlex">
-									<div class="Form-coll u-sizeFull u-marginBottom--inter--half">
-										<input class="Form-input Form-input--submit u-sizeFull" type="submit" value="LOGAR" />
-									</div>
-								</div>
-							</fieldset>
-						</form> -->
 					</div>
 				</div>
 		</div>
@@ -143,19 +115,6 @@ if( isset( $_GET['component']) ) {
 
 
 		<script type="text/javascript">
-			/*jQuery('#negociar').submit(function(event){
-			    var data = jQuery(this).serialize();
-			    jQuery.post('<?php // echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', data)
-			        .done(function(result){
-			            jQuery('.Section-subSection-content').html(result);
-			            //alert('OK');
-			        })
-			        .fail(function(){
-			           alert('Error loading page');
-			        })
-			    return false;
-			});*/
-
 
 
 jQuery(document).ready(function($) {
@@ -168,7 +127,7 @@ jQuery(document).ready(function($) {
 		$.post($form.attr('action'), $form.serialize(), function(data) {
 			//alert('This is data returned from the server ' + data);
 			
-			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { vendedor_name: "<?php echo $display_name; ?>", vendedor_email: "<?php echo $user_email; ?>", vendedor_phone: "<?php echo $user_phone; ?>", vendedor_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
+			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { tipo_oferta: "<?php echo $tipo_oferta; ?>", author_name: "<?php echo $display_name; ?>", author_email: "<?php echo $user_email; ?>", author_phone: "<?php echo $user_phone; ?>", author_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
 			        .done(function(result){
 			            jQuery('#modalSystem .Section-content').html(result);
 			            //alert('OK');
@@ -207,6 +166,8 @@ jQuery(document).ready(function($) {
 							
 							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
 							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $comprador_ingresso_aut; ?>" />
+
+							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
 							
 							<input type="hidden" name="action" value="custom_action">
 
@@ -223,18 +184,22 @@ jQuery(document).ready(function($) {
 									</div>
 								</div>
 								<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexJustifyContentCenter u-flexSwitchRow">
-									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignLeft">
-										<p>Por favor, <strong>leia</strong> e <strong>aceite</strong> os nossos <strong><a href="<?php get_home_url(); ?>/termos-de-uso/" target="_blank">termos de uso</a></strong> para prosseguir com a negociação. </p>
-									</div>
+									
 
-									<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignLeft u-flexAlignItemsCenter u-displayFlex">
-										<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="eu-aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
-										<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
-									</div>
+									<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn">
+										<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+											<p>Por favor, <strong>leia</strong> e <strong>aceite</strong> os nossos <strong><a href="<?php get_home_url(); ?>/termos-de-uso/" target="_blank">termos de uso</a></strong> para prosseguir com a negociação. </p>
+										</div>
+										<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+											<input type="checkbox" id="meta_box-return_terms" name="meta_box-return_terms" value="Eu aceito" value="eu-aceito" required="required" style="cursor: pointer;" />
+											<label for="meta_box-return_terms" style="cursor: pointer;"><strong>Eu Aceito</strong></label>
+										</div>
+								</div>
+
 								</div>
 								<div class="Form-row u-displayFlex">
 									<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
-										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="NEGOCIAR COM VENDEDOR" />
+										<input id="submitNegociacao" class="Form-input u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1" type="submit" value="<?php echo $label_button_negociar; ?>" />
 									</div>
 
 								</div>

@@ -1641,7 +1641,7 @@ function custom_meta_box_markup_3($object)
 		   
 		    <tr>
 		    	<td>
-		    		<h4>Valor do Ingresso:</h4>
+		    		<h4>Valor da Oferta:</h4>
 		    	</td>
 		    	<td>
 		    		<?php 
@@ -1710,53 +1710,121 @@ function custom_meta_box_markup_3($object)
 		    		<?php } ?>
 		    	</td>
 		    </tr>
+		    <?php 
+
+		    	//Identifica o tipo de Oferta do Ingresso
+		    	$tipo_oferta_ingresso  = get_post_meta( $meta_box_id_ingresso, 'meta_box-tipo_oferta', true );
+
+		    ?>
 		     <tr>
 		    	<td><h4>Vendedor:</h4>
 		    		<td>
 		    			<?php 
-		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
 
-		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
-		    					$edit_field = $_GET[ 'edit_field' ];
-		    				} else {
-		    					$edit_field = 'false';
-		    				}
+		    				//if ( $tipo_oferta_ingresso == 1 ){ 
 
-		    				if( $meta_box_idUser != '' && $edit_field != 'vendedor_ingresso'  ){
+		    				// Se a oferta for de Venda
+		    				
+		    				
 
-		    					$user_info = get_userdata($meta_box_idUser);
+			    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
 
-		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		    					
+			    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+			    					$edit_field = $_GET[ 'edit_field' ];
+			    				} else {
+			    					$edit_field = 'false';
+			    				}
 
-		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
-					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
-					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
-					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
-					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
-					      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
-					      		echo '</div>';
-					      		echo '<input type="hidden" name="meta-box-vendedor_ingresso" value="' . $meta_box_idUser . '" />';
+			    				if( $meta_box_idUser != '' && $edit_field != 'vendedor_ingresso'  ){
 
-		    				} elseif( $meta_box_idUser == '' || $edit_field == 'vendedor_ingresso' ) {
-		    					
-		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+			    					$user_info = get_userdata($meta_box_idUser);
 
-		    					echo '<select required="required" name="meta-box-vendedor_ingresso" style="width: 220px;" >';
-		    					echo '<option></option>';
+			    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-								foreach($option_values as $value){
-								        //print_r(get_user_meta ( $user_id->ID));
-								        if( $value->ID == get_post_meta($object->ID, "meta-box-vendedor_ingresso", true) ) {
+			    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+			    					if( $meta_box_radio_vendedor_autenticado == 1 ) {
+						      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+						      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
+						      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
+						      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+						      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
+						      		echo '<input type="hidden" name="meta-box-vendedor_ingresso" value="' . $meta_box_idUser . '" />';
+						      		} else {
+							      		echo '<p><strong>Nome:</strong> ' . $meta_box_vendedor_name           .'</p>'. "\n";
+							      		echo '<p><strong>E-mail:</strong> ' . $meta_box_vendedor_email           .'</p>'. "\n";
+							      	}
 
-								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
-								        
-								        } else {
-								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
-								       	}
-								    }
-								    echo '</select>';
-		    				}
+						      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
+						      		echo '</div>';
+
+
+			    				} elseif( $meta_box_idUser == '' || $edit_field == 'vendedor_ingresso' ) {
+			    					
+			    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+			    					?>
+
+			    					<strong>Vendedor Autenticado?</strong><br />
+					    			
+						    		 <input name="meta_box-vendedor_autenticado" type="radio" value="1" <?php if ( $meta_box_radio_vendedor_autenticado == 1 ) { echo 'checked'; } ?> />
+						    		 <label>Sim</label>
+						    		 <br />
+						    		 <input name="meta_box-vendedor_autenticado" type="radio" value="2" <?php if ( $meta_box_radio_vendedor_autenticado == 2 ) { echo 'checked'; } ?> />
+						    		 <label>Não</label>
+					    			<br />
+					    			<input type="text" name="meta_box-vendedor_name" id="meta_box-vendedor_name" value="<?php if( $meta_box_radio_vendedor_autenticado == 2 ) { echo $meta_box_vendedor_name; } ?>" placeholder="Nome do Vendedor" />
+					    			<input type="email" name="meta-box-comprador_email" id="meta_box-vendedor_email" value="<?php if( $meta_box_radio_vendedor_autenticado == 2 ) { echo $meta_box_vendedor_email; } ?>" placeholder="E-mail do Vendedor" />
+
+					    			<?php
+
+
+			    					echo '<select required="required" name="meta-box-vendedor_ingresso" style="width: 220px;" >';
+			    					echo '<option></option>';
+
+									foreach($option_values as $value){
+									        //print_r(get_user_meta ( $user_id->ID));
+									        if( $value->ID == get_post_meta($object->ID, "meta-box-vendedor_ingresso", true) ) {
+
+									        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+									        
+									        } else {
+									       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+									       	}
+									    }
+									    echo '</select>';
+			    				}
+			    			//} else {
+
+			    				//Se a oferta for de Compra
+			    				//
+			    				//echo 'COMPRAR';
+
+			    				/*$meta_box_radio_vendedor_autenticado =  get_post_meta($object->ID, "meta_box-vendedor_autenticado", true);
+			    				
+			    				$meta_box_id_vendedor  = get_post_meta( $object->ID, 'meta-box-vendedor_ingresso', true );
+
+
+			    				if( $meta_box_radio_vendedor_autenticado == 1 ) {
+			    					
+			    					$vendedorAutenticado = 'SIM';
+
+
+			    				} else {
+			    				
+				    				$vendedorAutenticado = 'NÃO';
+
+				    				$meta_box_vendedor_name = $meta_box_id_vendedor['name'];
+				    				$meta_box_vendedor_email = $meta_box_id_vendedor['email'];
+
+			    				}
+
+			    				echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
+			    					
+							      		echo '<p><strong>Nome:</strong> ' . $meta_box_vendedor_name           .'</p>'. "\n";
+							      		echo '<p><strong>E-mail:</strong> ' . $meta_box_vendedor_email           .'</p>'. "\n";
+							      	
+						      		echo '</div>';*/
+
+			    			//}
 		    			 ?>						 
 		    		</td>
 		    </tr>
@@ -1766,91 +1834,99 @@ function custom_meta_box_markup_3($object)
 		    		<td>
 		    			<?php 
 
-		    				$meta_box_radio_comprador_autenticado =  get_post_meta($object->ID, "meta_box-comprador_autenticado", true);
-		    				
-		    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-comprador_ingresso', true );
+		    				if ( $tipo_oferta_ingresso == 1 ){ 
+
+		    					// Se a oferta for de Venda
+
+			    				$meta_box_radio_comprador_autenticado =  get_post_meta($object->ID, "meta_box-comprador_autenticado", true);
+			    				
+			    				$meta_box_idUser  = get_post_meta( $object->ID, 'meta-box-comprador_ingresso', true );
 
 
-		    				if( $meta_box_radio_comprador_autenticado == 1 ) {
-		    					
-		    					$compradorAutenticado = 'SIM';
+			    				if( $meta_box_radio_comprador_autenticado == 1 ) {
+			    					
+			    					$compradorAutenticado = 'SIM';
 
 
-		    				} else {
-		    				
-			    				$compradorAutenticado = 'NÃO';
+			    				} else {
+			    				
+				    				$compradorAutenticado = 'NÃO';
 
-			    				$meta_box_comprador_name = $meta_box_idUser['name'];
-			    				$meta_box_comprador_email = $meta_box_idUser['email'];
+				    				$meta_box_comprador_name = $meta_box_idUser['name'];
+				    				$meta_box_comprador_email = $meta_box_idUser['email'];
 
-		    				}
+			    				}
 
-		    			
+			    			
 
-		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
-		    					$edit_field = $_GET[ 'edit_field' ];
-		    				} else {
-		    					$edit_field = 'false';
-		    				}
+			    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
+			    					$edit_field = $_GET[ 'edit_field' ];
+			    				} else {
+			    					$edit_field = 'false';
+			    				}
 
-		    				if( $meta_box_idUser != '' && $edit_field != 'comprador_ingresso'  ){
+			    				if( $meta_box_idUser != '' && $edit_field != 'comprador_ingresso'  ){
 
-		    					$user_info = get_userdata($meta_box_idUser);
+			    					$user_info = get_userdata($meta_box_idUser);
 
-		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		    					
+			    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			    					
 
-		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
-		    					if( $meta_box_radio_comprador_autenticado == 1 ) {
-					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
-					      		echo '<p><strong>Comprador Autenticado?</strong> ' . $compradorAutenticado .'</p>'."\n"; 
-					      		echo '<p><strong>Nome:</strong>   ' . $user_info->user_firstname       .'</p>'. "\n";
-					      		echo '<p><strong>Usuário:</strong> ' . $user_info->user_login           .'</p>'. "\n";
-					      		echo '<p><strong>Tipo:</strong>   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
-					      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
-					      		echo '</div>';
-					      		echo '<input type="hidden" name="meta-box-comprador_ingresso" value="' . $meta_box_idUser . '" />';
+			    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
+			    					if( $meta_box_radio_comprador_autenticado == 1 ) {
+						      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
+						      		echo '<p><strong>Comprador Autenticado?</strong> ' . $compradorAutenticado .'</p>'."\n"; 
+						      		echo '<p><strong>Nome:</strong>   ' . $user_info->user_firstname       .'</p>'. "\n";
+						      		echo '<p><strong>Usuário:</strong> ' . $user_info->user_login           .'</p>'. "\n";
+						      		echo '<p><strong>Tipo:</strong>   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+						      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
+						      		echo '</div>';
+						      		echo '<input type="hidden" name="meta-box-comprador_ingresso" value="' . $meta_box_idUser . '" />';
 
-						      	} else {
-						      		echo '<p><strong>Nome:</strong> ' . $meta_box_comprador_name           .'</p>'. "\n";
-						      		echo '<p><strong>E-mail:</strong> ' . $meta_box_comprador_email           .'</p>'. "\n";
-						      	}
-					      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
-					      		echo '</div>';
+							      	} else {
+							      		echo '<p><strong>Nome:</strong> ' . $meta_box_comprador_name           .'</p>'. "\n";
+							      		echo '<p><strong>E-mail:</strong> ' . $meta_box_comprador_email           .'</p>'. "\n";
+							      	}
+						      		echo '<p><a href="' . $current_url_uri . '&edit_field=comprador_ingresso">Editar este campo</a>'. "\n";
+						      		echo '</div>';
 
-		    				} elseif( $meta_box_idUser == '' || $edit_field == 'comprador_ingresso' ) {
-		    					
-		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
-		    					?>
+			    				} elseif( $meta_box_idUser == '' || $edit_field == 'comprador_ingresso' ) {
+			    					
+			    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+			    					?>
 
-		    					<strong>Comprador Autenticado?</strong><br />
-				    			
-					    		 <input name="meta_box-comprador_autenticado" type="radio" value="1" <?php if ( $meta_box_radio_comprador_autenticado == 1 ) { echo 'checked'; } ?> />
-					    		 <label>Sim</label>
-					    		 <br />
-					    		 <input name="meta_box-comprador_autenticado" type="radio" value="2" <?php if ( $meta_box_radio_comprador_autenticado == 2 ) { echo 'checked'; } ?> />
-					    		 <label>Não</label>
-				    			<br />
-				    			<input type="text" name="meta-box-comprador_name" id="meta-box-comprador_name" value="<?php if( $meta_box_radio_comprador_autenticado == 2 ) { echo $meta_box_comprador_name; } ?>" placeholder="Nome do Comprador" />
-				    			<input type="email" name="meta-box-comprador_email" id="meta-box-comprador_email" value="<?php if( $meta_box_radio_comprador_autenticado == 2 ) { echo $meta_box_comprador_email; } ?>" placeholder="E-mail do Comprador" />
+			    					<strong>Comprador Autenticado?</strong><br />
+					    			
+						    		 <input name="meta_box-comprador_autenticado" type="radio" value="1" <?php if ( $meta_box_radio_comprador_autenticado == 1 ) { echo 'checked'; } ?> />
+						    		 <label>Sim</label>
+						    		 <br />
+						    		 <input name="meta_box-comprador_autenticado" type="radio" value="2" <?php if ( $meta_box_radio_comprador_autenticado == 2 ) { echo 'checked'; } ?> />
+						    		 <label>Não</label>
+					    			<br />
+					    			<input type="text" name="meta-box-comprador_name" id="meta-box-comprador_name" value="<?php if( $meta_box_radio_comprador_autenticado == 2 ) { echo $meta_box_comprador_name; } ?>" placeholder="Nome do Comprador" />
+					    			<input type="email" name="meta-box-comprador_email" id="meta-box-comprador_email" value="<?php if( $meta_box_radio_comprador_autenticado == 2 ) { echo $meta_box_comprador_email; } ?>" placeholder="E-mail do Comprador" />
 
-				    			<?php
+					    			<?php
 
-		    					echo '<select required="required" name="meta-box-comprador_ingresso" style="width: 220px;" >';
-		    					echo '<option></option>';
+			    					echo '<select required="required" name="meta-box-comprador_ingresso" style="width: 220px;" >';
+			    					echo '<option></option>';
 
-								foreach($option_values as $value){
-								        //print_r(get_user_meta ( $user_id->ID));
-								        if( $value->ID == get_post_meta($object->ID, "meta-box-comprador_ingresso", true) ) {
+									foreach($option_values as $value){
+									        //print_r(get_user_meta ( $user_id->ID));
+									        if( $value->ID == get_post_meta($object->ID, "meta-box-comprador_ingresso", true) ) {
 
-								        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
-								        
-								        } else {
-								       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
-								       	}
-								    }
-								    echo '</select>';
-		    				}
+									        	echo '<option value="' . $value->ID . '" selected="selected">' . $value->display_name . '</option>';
+									        
+									        } else {
+									       		echo '<option value="' . $value->ID . '">' . $value->display_name . '</option>';
+									       	}
+									    }
+									    echo '</select>';
+			    				}
+			    			} else {
+			    				// Se a oferta for de Compra
+			    				echo 'COMPRA';
+			    			}
 		    			 ?>
 		    			 <br />
 
@@ -1963,6 +2039,7 @@ function save_custom_meta_box_3($post_id, $post, $update)
     $meta_box_valor_ingresso = "";
     $meta_box_date_negociacao = "";
     $meta_box_vendedor_ingresso = "";
+    $meta_box_radio_vendedor_autenticado = "";
     $meta_box_radio_comprador_autenticado = "";
     $meta_box_comprador_ingresso_value = "";
     $meta_box_return_terms = "";
@@ -2000,11 +2077,38 @@ function save_custom_meta_box_3($post_id, $post, $update)
     }   
     update_post_meta($post_id, "meta_box-date_negociacao", $meta_box_date_negociacao);
 
-    if(isset($_POST["meta-box-vendedor_ingresso"]))
+
+// Vendedor
+
+	if(isset($_POST["meta_box-vendedor_autenticado"]))
     {
-        $meta_box_vendedor_ingresso = $_POST["meta-box-vendedor_ingresso"];
-    }   
-    update_post_meta($post_id, "meta-box-vendedor_ingresso", $meta_box_vendedor_ingresso);
+        $meta_box_radio_vendedor_autenticado = $_POST["meta_box-vendedor_autenticado"];
+    }
+    update_post_meta($post_id, "meta_box-vendedor_autenticado", $meta_box_radio_vendedor_autenticado);  
+
+
+    if( isset( $_POST["meta_box-vendedor_autenticado"] ) && $_POST["meta_box-vendedor_autenticado"] == 2 ) {
+
+    	if(isset($_POST["meta_box-vendedor_name"]) && isset($_POST["meta_box-vendedor_email"]) ) {
+
+    		$meta_box_vendedor_ingresso_value = array( "name" => $_POST["meta_box-vendedor_name"], "email" => $_POST["meta_box-vendedor_email"]);
+	    }
+	    update_post_meta($post_id, "meta-box-vendedor_ingresso", $meta_box_vendedor_ingresso_value);  
+
+
+
+    } else {
+
+
+	    if(isset($_POST["meta-box-vendedor_ingresso"]))
+	    {
+	        $meta_box_vendedor_ingresso_value = $_POST["meta-box-vendedor_ingresso"];
+	    }
+	    update_post_meta($post_id, "meta-box-vendedor_ingresso", $meta_box_vendedor_ingresso_value);   
+
+	}
+   
+// Comprador
 
    	if(isset($_POST["meta_box-comprador_autenticado"]))
     {
@@ -2065,6 +2169,21 @@ add_action("save_post", "save_custom_meta_box_3", 10, 3);
 //==========================
 // FRONT
 // =========================
+
+// Identifica a existência de um filtro de conteúdo via metodo GET
+function hasExistFilter(){
+
+	if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) ) {
+		global $wp;
+
+		//$wp_request = home_url( $wp->request );
+		$url_whit_filter = 'filter=' . $_GET['filter'];
+
+		return array("filter" => true, "filter_value" => $url_whit_filter);
+	}
+}
+
+
 
 
 function menorPreco($id){
@@ -2521,9 +2640,10 @@ function custom_action() {
 
 		 	} else {
 
+		 		$meta_box_tipo_oferta = $_POST['meta_box-tipo_oferta'];
+
 		 		$name = $_POST['name'];
 		 		$email = $_POST['email'];
-
 	 			$comprador_ingresso = array("name" => $name, "email" => $email);
 
 		 	}
@@ -2579,18 +2699,5 @@ function custom_action() {
 
     // Don't forget to exit at the end of processing
     exit(json_encode($response));
-}
-
-
-function hasExistFilter(){
-
-	if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) ) {
-		global $wp;
-
-		//$wp_request = home_url( $wp->request );
-		$url_whit_filter = 'filter=' . $_GET['filter'];
-
-		return array("filter" => true, "filter_value" => $url_whit_filter);
-	}
 }
 
