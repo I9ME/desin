@@ -3,6 +3,16 @@
 	$currentCity_args = currentCity();
 	$id_city = $currentCity_args[0];
 
+	 $hasExistFilter = hasExistFilter();
+							
+			if( $hasExistFilter['filter'] === true ) {
+				$tipo_de_oferta = 2;
+				$label_valor = 'PAGO ATÉ';
+			} else {
+				$tipo_de_oferta = 1;
+				$label_valor = 'A PARTIR DE';
+			}
+
 			if(is_single()){
 				
 	
@@ -79,8 +89,8 @@
 					<div class="Section-items-item-texts u-paddingHorizontal--vrt--inter--half--px">
 						<h4 class="Section-items-item-title u-alignCenter u-positionRelative"><?php echo get_the_title(); ?></h4>
 						<div class="Section-items-item-meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half">
-							<div class="Price u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
-							<div class="Price Price--offer u-size12of24 u-alignCenter"><?php echo menorPreco( get_the_ID() ); ?></div>
+							<div class="Price u-size12of24 u-alignCenter"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px"><?php echo $label_valor; ?></span></div>
+							<div class="Price Price--offer u-size12of24 u-alignCenter"><?php echo menorPreco( get_the_ID(), $tipo_de_oferta ); ?></div>
 						</div>
 					</div>		
 			</a>

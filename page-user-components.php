@@ -35,19 +35,19 @@ if( isset( $_GET['component']) ) {
 		}
 
 		if( is_user_logged_in() ) {
-			$comprador_ingresso_aut = 1;
+			$user_autenticado = 1;
 		} else {
-			$comprador_ingresso_aut = 2;
+			$user_autenticado = 2;
 		}
 		// Identifica se Há Filtros via GET e cria as srtings de conteúdo para cada situação
 		$hasExistFilter = hasExistFilter();
 							
 			if( $hasExistFilter['filter'] === true ) {
 				$label_button_negociar = 'NEGOCIAR COM O COMPRADOR';
-				$tipo_oferta = 'venda';
+				$tipo_oferta = 'compra';
 			} else {
 				$label_button_negociar = 'NEGOCIAR COM O VENDEDOR';
-				$tipo_oferta = 'compra';
+				$tipo_oferta = 'venda';
 			}
 
 ?>
@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
 						<form id="negociar" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
 							
 							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
-							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $comprador_ingresso_aut; ?>" />
+							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $user_autenticado; ?>" />
 
 							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
 							
@@ -215,7 +215,7 @@ jQuery(document).ready(function($) {
 
 		<?php 
 			$ingresso_title = get_the_title( $id_post );
-			$post_author_id = get_post_field( 'post_author', $id_post );
+			$post_author_id = get_post_meta($id_post, "meta_box-author_ingresso", true);
 			$display_name = get_the_author_meta('display_name', $post_author_id);
 			$user_email = get_the_author_meta('user_email', $post_author_id);
 			$user_phone = get_the_author_meta('user_phone', $post_author_id);
@@ -234,7 +234,7 @@ jQuery(document).ready(function($) {
 		$.post($form.attr('action'), $form.serialize(), function(data) {
 			//alert('This is data returned from the server ' + data);
 			
-			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { vendedor_name: "<?php echo $display_name; ?>", vendedor_email: "<?php echo $user_email; ?>", vendedor_phone: "<?php echo $user_phone; ?>", vendedor_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
+			 		jQuery.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-negociacao.php', { tipo_oferta: "<?php echo $tipo_oferta; ?>", author_name: "<?php echo $display_name; ?>", author_email: "<?php echo $user_email; ?>", author_phone: "<?php echo $user_phone; ?>", author_address: "<?php echo $user_address; ?>", ingresso: "<?php echo $ingresso_title; ?>" })
 			        .done(function(result){
 			            jQuery('#modalSystem .Section-content').html(result);
 			            //alert('OK');
@@ -268,10 +268,10 @@ jQuery(document).ready(function($) {
 
 
 							<form id="autenticado" class="Form Form--style1 u-marginTop--inter u-sizeFull"  method="post" action="<?php echo admin_url('admin-ajax.php'); ?>">
-							
+							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="<?php echo $tipo_oferta; ?>" />
 							<input type="hidden" name="id_ingresso" id="id_ingresso" value="<?php echo $id_post; ?>" />
-							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="<?php echo $comprador_ingresso_aut; ?>" />
-							<input type="hidden" name="meta-box-comprador_ingresso" id="meta-box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
+							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="1" />
+							<input type="hidden" name="meta_box-comprador_ingresso" id="meta_box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
 							<input type="hidden" name="action" value="custom_action">
 
 							<fieldset class="Form-fieldset">
@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
 
 							<input type="hidden" name="meta_box-comprador_autenticado" id="meta_box-comprador_autenticado" value="1" />
 
-							<input type="hidden" name="meta-box-comprador_ingresso" id="meta-box-comprador_ingresso" value="<?php echo get_current_user_id(); ?>" />
+							<input type="hidden" name="meta_box-author_ingresso" id="meta_box-author_ingresso" value="<?php echo get_current_user_id(); ?>" />
 
 							<input type="hidden" name="meta_box-tipo_oferta" id="meta_box-tipo_oferta" value="2" />
 

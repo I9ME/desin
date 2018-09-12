@@ -63,11 +63,11 @@ if ( !empty( $_POST['meta_box_tipo_oferta'] ) && isset( $_POST['meta_box_tipo_of
 	 $endereco = $_POST['author_address'];
 	 $ingresso = $_POST['ingresso'];
 
-	 if( $tipo_oferta == 'compra' ){
+	 if( $tipo_oferta == 'venda' ){
 	 	
 	 	$label_user_type = 'VENDEDOR';
 
-	 } elseif( $tipo_oferta == 'venda' ){
+	 } elseif( $tipo_oferta == 'compra' ){
 
 	 	$label_user_type = 'COMPRADOR';
 

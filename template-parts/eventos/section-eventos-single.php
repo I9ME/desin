@@ -15,6 +15,17 @@
 		if (have_posts()) :
   		 while (have_posts()) :
   		 	  the_post();
+
+  		 	  $hasExistFilter = hasExistFilter();
+							
+			if( $hasExistFilter['filter'] === true ) {
+				$tipo_de_oferta = 2;
+				$label_valor = 'PAGO ATÉ';
+			} else {
+				$tipo_de_oferta = 1;
+				$label_valor = 'A PARTIR DE';
+			}
+
 	?>
 <article id="post-<?php the_ID(); ?>" class="Article Article--promocoes u-positionRelative u-displayFlex u-flexDirectionColumn  u-paddingBottom--inter u-borderRadius5">
 	
@@ -50,7 +61,6 @@
 				$data_evento = get_post_meta( get_the_ID(), 'meta_box-date', true ); 
 
 				// Identifica se Há Filtros via GET e cria as srtings de conteúdo para cada situação
-				$hasExistFilter = hasExistFilter();
 
 				if( !wp_is_mobile() ) {
 							
@@ -87,8 +97,8 @@
 			</header><!-- .entry-header -->
 
 			<div class="Meta u-displayFlex u-flexDirectionRow u-flexAlignItemsCenter u-flexJustifyContentCenter u-marginTop--inter--half u-marginBottom--inter u-marginVertical--inter--px">
-				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px">A PARTIR DE</span></div>
-				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><?php echo menorPreco( get_the_ID() ); ?></div>
+				<div class="Price u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><span class="u-positionRelative u-displayInlineBlock u-paddingVertical--inter--half--px"><?php echo $label_valor; ?></span></div>
+				<div class="Price Price--offer u-size12of24 u-alignCenter u-paddingHorizontal--vrt--inter--half--px"><?php echo menorPreco( get_the_ID(), $tipo_de_oferta ); ?></div>
 			</div>			
 			<ul class="u-paddingVertical--inter--px">
 				<li class="u-marginHorizontal--inter--half u-paddingVertical--inter--half">
