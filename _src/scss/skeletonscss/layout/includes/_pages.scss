@@ -11,7 +11,7 @@
 		background-size: cover;
 		//background-attachment: fixed;
 
-		&:after{
+		/* &:after{
 			position: absolute;
 			display: block;
 			width: 100%;
@@ -20,7 +20,7 @@
 			left: 0px;
 			bottom: 0px;
 			background: linear-gradient(rgba(31,149,208,0), rgba(31,149,208,1) );
-		}
+		} */
 
 		@media screen and (min-width: $break-sm){
 			background-image: url('../images/Intro--bg.png');

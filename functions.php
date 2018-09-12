@@ -2656,12 +2656,11 @@ function custom_action() {
 
     // ... Do some code here, like storing inputs to the database, but don't forget to properly sanitize input data!
     // 
-    	//Se for um uma oferta de valor vinda do comprador
+    	//Se for um Ingresso de valor vinda do comprador
     	
-    	if( !empty( $_POST['meta_box-tipo_oferta'] ) && isset( $_POST['meta_box-tipo_oferta'] ) && $_POST['meta_box-tipo_oferta'] == 2 ) {
-
+    	if( !empty( $_POST['meta_box-tipo_operacao'] ) && isset( $_POST['meta_box-tipo_operacao'] ) && $_POST['meta_box-tipo_operacao'] == 'post_ingresso' ) {
     		
-    		$meta_box_tipo_oferta = 2;
+    		$meta_box_tipo_oferta = $_POST['meta_box-tipo_oferta'];
 
     		$meta_box_id_evento = $_POST['meta_box-id_evento'];
 
@@ -2711,7 +2710,7 @@ function custom_action() {
     	// Se for uma negociação
     	//=================================
     	//
-    	} else {
+    	} elseif( !empty( $_POST['meta_box-tipo_operacao'] ) && isset( $_POST['meta_box-tipo_operacao'] ) && $_POST['meta_box-tipo_operacao'] == 'post_negociacao' ) {
 
     		if( isset( $_POST['meta_box-tipo_oferta'] ) && !empty( $_POST['meta_box-tipo_oferta'] ) ){
 

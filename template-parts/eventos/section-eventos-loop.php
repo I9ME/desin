@@ -78,11 +78,16 @@
 			}
 
 			$hasExistFilter = hasExistFilter();
+			if ( $hasExistFilter['filter_value'] != '' ){
+				$filter_value_uri = '?' . $hasExistFilter['filter_value'];
+			} else {
+				$filter_value_uri = '';
+			}
 
   		?>
 	
 		<li class="Section-items-item u-marginBottom--inter u-flex u-flexDirectionColumn u-alignCenter u-size7of24">
-			<a href="<?php echo get_permalink() . '?' . $hasExistFilter['filter_value']; ?>" class="Section-items-item-content  u-size24of24 u-positionRelative u-displayFlex u-flexDirectionColumn u-flexJustifyContentCenter">
+			<a href="<?php echo get_permalink() . $filter_value_uri; ?>" class="Section-items-item-content  u-size24of24 u-positionRelative u-displayFlex u-flexDirectionColumn u-flexJustifyContentCenter">
 					<figure class="Section-items-item-figure u-lineHeight0 u-positionRelative u-displayFlex u-flexJustifyContentCenter u-overflowHidden">
 						<img class="Section-items-item-figure-src u-heightAuto u-minWith100 u-objectFitCover is-animating" src="<?php echo $urlThumbnail; ?>" alt="<?php echo get_the_title(); ?>" title="<?php echo get_the_title(); ?>" />
 					</figure>

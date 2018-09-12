@@ -21,9 +21,13 @@
 			if( $hasExistFilter['filter'] === true ) {
 				$tipo_de_oferta = 2;
 				$label_valor = 'PAGO ATÉ';
+				
+				$filter_value_uri = '&' . $hasExistFilter['filter_value'];
+				
 			} else {
 				$tipo_de_oferta = 1;
 				$label_valor = 'A PARTIR DE';
+				$filter_value_uri = '';
 			}
 
 	?>
@@ -191,7 +195,7 @@
 						
 						if( is_user_logged_in() ) {
 
-							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=autenticado&id=' . get_the_ID() . '\');';
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=autenticado' . $filter_value_uri . '&id=' . get_the_ID() . '\');';
 						
 						} else {
 							if( $hasExistFilter['filter'] === true ) {
@@ -229,11 +233,16 @@
 					<?php echo $label_text_add; ?>
 				</p>
 				<?php 
-					if( is_user_logged_in() ) {
+					if( is_user_logged_in() && $tipo_de_oferta == 1 ) {
 
 						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=ofertar-preco&id=' . get_the_ID() . '\');';
 					
+					} elseif( is_user_logged_in() && $tipo_de_oferta == 2 ) {
+
+						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=ofertar-ingresso&id=' . get_the_ID() . '\');';
+					
 					} else {
+
 						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&context=oferta-preco\');';
 					}
 				 ?>
