@@ -2851,6 +2851,10 @@ function custom_action() {
 
 	    	
 
+	       } elseif( !empty( $_POST['meta_box-tipo_operacao'] ) && isset( $_POST['meta_box-tipo_operacao'] ) && $_POST['meta_box-tipo_operacao'] == 'post_evento' ) {
+
+	       	
+
 	       }
        
 
