@@ -741,7 +741,33 @@ function custom_meta_box_markup($object)
 		    	<td><h4>Usuário:</h4>
 		    		<td>
 		    			<?php 
+		    				$usuario_autenticado  = get_post_meta( $object->ID, 'meta_box-usuario_autenticado', true );
+
+		    				if( !empty( $usuario_autenticado ) ){
+		    					$meta_box_usuario_autenticado =  get_post_meta($object->ID, "meta_box-usuario_autenticado", true);
+		    				} else {
+		    					$meta_box_usuario_autenticado = 0;
+		    					$meta_box_usuario_name = '';
+			    				$meta_box_usuario_email = '';	
+		    				}
+		    				
 		    				$meta_box_idUser_evento  = get_post_meta( $object->ID, 'meta_box-usuario_evento', true );
+
+
+		    				if( $meta_box_usuario_autenticado == 1 ) {
+		    					
+		    					$usuarioAutenticado = 'SIM';
+
+
+		    				} elseif( $meta_box_usuario_autenticado == 2 ) {
+		    				
+			    				$usuarioAutenticado = 'NÃO';
+
+			    				$meta_box_usuario_name = $meta_box_idUser_evento['name'];
+			    				$meta_box_usuario_email = $meta_box_idUser_evento['email'];
+
+		    				}
+		    				
 		    				
 		    				if( !empty( $_GET[ 'edit_field' ] ) && isset( $_GET[ 'edit_field' ] ) ) {
 		    					$edit_field = $_GET[ 'edit_field' ];
@@ -754,20 +780,81 @@ function custom_meta_box_markup($object)
 		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 		    					$user_info = get_userdata($meta_box_idUser_evento);
-		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
+
+
+
+					      		echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
+		    					if( $meta_box_usuario_autenticado == 1 ) {
 					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
-					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
-					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
-					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
-					      		echo '<p><a href="' . $current_url_uri . '&edit_field=true">Editar este campo</a>'. "\n";
-					      		echo '</div>';
+					      		echo '<p><strong>Comprador Autenticado?</strong> ' . $usuarioAutenticado .'</p>'."\n"; 
+					      		echo '<p><strong>Nome:</strong>   ' . $user_info->user_firstname       .'</p>'. "\n";
+					      		echo '<p><strong>Usuário:</strong> ' . $user_info->user_login           .'</p>'. "\n";
+					      		echo '<p><strong>Tipo:</strong>   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
+					      		echo '<input type="hidden" name="meta_box-usuario_autenticado" value="1" />';
 					      		echo '<input type="hidden" name="meta_box-usuario_evento" value="' . $meta_box_idUser_evento . '" />';
+					      		
 
-		    				} else {
-		    					
-		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+						      	} elseif( $meta_box_usuario_autenticado == 2 ) {
+						      		echo '<p><strong>Nome:</strong> ' . $meta_box_usuario_name           .'</p>'. "\n";
+						      		echo '<p><strong>E-mail:</strong> ' . $meta_box_usuario_email           .'</p>'. "\n";
+						      		echo '<input type="hidden" name="meta_box-usuario_autenticado" value="2" />';
+						      		echo '<input type="hidden" name="meta_box-usuario_name" value="' . $meta_box_usuario_name . '" />';
+						      		echo '<input type="hidden" name="meta_box-usuario_email" value="' . $meta_box_usuario_email . '" />';
+						      	}
+					      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
+					      		echo '</div>';
 
-		    					echo '<select required="required" name="meta_box-usuario_evento" style="width: 220px;" >';
+
+								} else {
+
+								$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
+
+								?>
+		    				<style type="text/css">
+		    					.is-hideField{
+		    						display: none;
+		    					}
+		    				</style>
+
+							<script type="text/javascript">
+								jQuery(document).ready(function() {
+								    jQuery("input[name=meta_box-usuario_autenticado]").on( "change", function() {
+
+								         var valueRadio = jQuery(this).val();
+								         jQuery(".is-hideField").hide();
+								         jQuery(".is-hideField.value-"+valueRadio).show();
+
+								    } );
+
+								  
+									        if ( jQuery('input[name=meta_box-usuario_autenticado]:checked').val()?true:false ) {
+									            // append goes here
+									            // 
+									            var valueChecked = jQuery('input[name=meta_box-usuario_autenticado]:checked').val();
+
+									            jQuery('.is-hideField.value-'+valueChecked).show();
+									        }
+									    
+
+							});
+							</script>
+
+							<strong>Usuário Autenticado?</strong><br />
+				    			
+					    		 <input name="meta_box-usuario_autenticado" id="meta_box-usuario_autenticado" type="radio" value="1" <?php if ( $meta_box_usuario_autenticado == 1 ) { echo 'checked'; } ?> />
+					    		 <label>Sim</label>
+					    		 <br />
+					    		 <input name="meta_box-usuario_autenticado" id="meta_box-usuario_autenticado" type="radio" value="2" <?php if ( $meta_box_usuario_autenticado == 2 ) { echo 'checked'; } ?> />
+					    		 <label>Não</label>
+				    			<br />
+				    			<br />
+				    			<input type="text" name="meta_box-usuario_name" id="meta_box-usuario_name" class="is-hideField value-2" value="<?php if( $meta_box_usuario_autenticado == 2 ) { echo $meta_box_usuario_name; } ?>" placeholder="Nome do Usuário" />
+
+				    			<input type="email" name="meta_box-usuario_email" id="meta_box-usuario_email" class="is-hideField value-2" value="<?php if( $meta_box_usuario_autenticado == 2 ) { echo $meta_box_usuario_email; } ?>" placeholder="E-mail do Usuário" />
+
+				    			<?php
+
+		    					echo '<select name="meta_box-usuario_evento" class="is-hideField value-1"  style="width: 220px;" >';
 		    					echo '<option></option>';
 
 								foreach($option_values as $value){
@@ -815,7 +902,10 @@ function save_custom_meta_box($post_id, $post, $update)
     $meta_box_radio_meia_value = "";
     $meta_box_status_evento_value = "";
     if( get_current_post_type() == 'eventos-usuario' ){ 
+    	
+    	$meta_box_usuario_autenticado = "";
     	$meta_box_idUser_evento_ = "";
+
     }
 
     if(isset($_POST["meta_box-cidade_evento"]))
@@ -848,11 +938,35 @@ function save_custom_meta_box($post_id, $post, $update)
     }   
     update_post_meta($post_id, "meta_box-tipo_evento", $meta_box_tipo_evento_value);
 
-     if(isset($_POST["meta_box-usuario_evento"]))
+     
+     
+     if(isset($_POST["meta_box-usuario_autenticado"]))
     {
-        $meta_box_idUser_evento_ = $_POST["meta_box-usuario_evento"];
+        $meta_box_usuario_autenticado = $_POST["meta_box-usuario_autenticado"];
     }   
-    update_post_meta($post_id, "meta_box-usuario_evento", $meta_box_idUser_evento_);
+    update_post_meta($post_id, "meta_box-usuario_autenticado", $meta_box_usuario_autenticado);
+
+
+    if ($meta_box_usuario_autenticado == 1){
+
+    	if(isset($_POST["meta_box-usuario_evento"]))
+	    {
+	        $meta_box_idUser_evento_ = $_POST["meta_box-usuario_evento"];
+	    }   
+	    update_post_meta($post_id, "meta_box-usuario_evento", $meta_box_idUser_evento_);
+
+    } elseif($meta_box_usuario_autenticado == 2){
+
+    	if(isset($_POST["meta_box-usuario_name"]) && isset($_POST["meta_box-usuario_email"]) ) {
+
+    		$meta_box_usuario_evento_value = array( "name" => $_POST["meta_box-usuario_name"], "email" => $_POST["meta_box-usuario_email"]);
+	    }
+	    update_post_meta($post_id, "meta_box-usuario_evento", $meta_box_usuario_evento_value);  
+
+    }
+
+
+     
 
 }
 
@@ -1763,16 +1877,6 @@ function custom_meta_box_markup_3($object)
 
 		    					$current_url_uri = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		    					
-/*
-		    					echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>";
-					      		echo '<h4>ID:    ' . $user_info->ID                   .'</h4>'."\n";
-					      		echo '<p>Nome:   ' . $user_info->user_firstname       .'</p>'. "\n";
-					      		echo '<p>Usuário: ' . $user_info->user_login           .'</p>'. "\n";
-					      		echo '<p>Tipo:   ' . implode(', ', $user_info->roles) .'</p>'. "\n";
-					      		echo '<p><a href="' . $current_url_uri . '&edit_field=vendedor_ingresso">Editar este campo</a>'. "\n";
-					      		echo '</div>';
-					      		echo '<input type="hidden" name="meta_box-vendedor_ingresso" value="' . $meta_box_idUser . '" />';*/
-
 
 					      		echo "<div style='border:1px solid #ccc;padding: 0 10px;background: #e4e4e4;'>"; 
 		    					if( $meta_box_radio_vendedor_autenticado == 1 ) {
@@ -1798,8 +1902,9 @@ function custom_meta_box_markup_3($object)
 		    				} elseif( $meta_box_idUser == '' || $edit_field == 'vendedor_ingresso' ) {
 		    					
 		    					$option_values = get_users( array( 'fields' => array( 'ID', 'display_name' ) ) );
-		    					?>
-		    						<style type="text/css">
+		    				
+		    				?>
+		    				<style type="text/css">
 		    					.is-hideField{
 		    						display: none;
 		    					}
@@ -2853,7 +2958,57 @@ function custom_action() {
 
 	       } elseif( !empty( $_POST['meta_box-tipo_operacao'] ) && isset( $_POST['meta_box-tipo_operacao'] ) && $_POST['meta_box-tipo_operacao'] == 'post_evento' ) {
 
-	       	
+	      		$titulo_evento = $_POST['titulo_evento'];
+	      		$tipo_evento = $_POST['meta_box-tipo_evento'];
+	      		$status_evento = $_POST['meta_box-status_evento'];
+	      		$cidade_evento = $_POST['meta_box-cidade_evento'];
+	      		$meta_box_date = $_POST['meta_box-date'];
+	      		$ingresso_meia = $_POST['meta_box-ingresso_meia'];
+	      		
+	      		$usuario_autenticado = $_POST['meta_box-usuario_autenticado'];
+	      		
+	      		if( $usuario_autenticado == 1) {
+	      			$usuario_evento = $_POST['meta_box-usuario_evento'];
+	      		} elseif( $usuario_autenticado == 2) {
+	      			$usuario_evento = array("name" => $_POST['name'], "email" => $_POST['email']);
+	      		} else {
+					$usuario_autenticado = '';	      			
+	      		}
+	      		
+	      		$masculino = $_POST['masculino'];
+	      		$feminino = $_POST['feminino'];
+	      		$pista = $_POST['pista'];
+	      		$front = $_POST['front'];
+	      		$vip = $_POST['vip'];
+	      		$camarote = $_POST['camarote'];
+	      		$geral = $_POST['geral'];
+
+
+	      		$args = array(
+			         'post_type' => 'eventos-usuario',
+			         'post_status'=>'publish',
+			         'post_title'=> $titulo_evento,
+			       );
+
+	      		 $post_id = wp_insert_post($args);
+
+			       	update_post_meta($post_id, 'meta_box-tipo_evento', $tipo_evento);
+			       	update_post_meta($post_id, 'meta_box-id_ingresso', $id_ingresso);
+			       	update_post_meta($post_id, 'meta_box-status_evento', $status_evento);
+			       	update_post_meta($post_id, 'meta_box-cidade_evento', $cidade_evento);
+			       	update_post_meta($post_id, 'meta_box-date', $meta_box_date);
+			       	update_post_meta($post_id, 'meta_box-ingresso_meia', $ingresso_meia);
+			       	update_post_meta($post_id, 'meta_box-usuario_autenticado', $usuario_autenticado);
+			       	update_post_meta($post_id, 'meta_box-usuario_evento', $usuario_evento);
+
+			       	update_post_meta($post_id, 'masculino', $masculino);
+			       	update_post_meta($post_id, 'feminino', $feminino);
+			       	update_post_meta($post_id, 'pista', $pista);
+			       	update_post_meta($post_id, 'front', $front);
+			       	update_post_meta($post_id, 'vip', $vip);
+			       	update_post_meta($post_id, 'camarote', $camarote);
+			       	update_post_meta($post_id, 'geral', $geral);
+
 
 	       }
        

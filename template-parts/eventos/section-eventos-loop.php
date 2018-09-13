@@ -108,7 +108,7 @@
 				<p class="u-paddingBottom--inter--half">
 					Você não encontrou o seu evento?
 				</p>
-				<a href="<?php echo 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=cadastrar-evento\');'; ?>" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
+				<a href="<?php echo get_home_url(); ?>/cadastro-de-eventos/" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
 					ADICIONE UM EVENTO!
 				</a>
 			</div>

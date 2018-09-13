@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
 		$.post($form.attr('action'), $form.serialize(), function(data) {
 			//alert('This is data returned from the server ' + data);
 			
-			 		$.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-thankyou.php', { value_1: "VALOR 1", value_2: "VALOR 2" })
+			 		$.post('<?php echo get_template_directory_uri(); ?>/template-parts/eventos/eventos-thankyou.php', { value_1: "VALOR 1" })
 			        .done(function(result){
 			        	$('.Form-container').fadeOut();
 			        	$('.thank_you').show();
@@ -67,11 +67,11 @@ jQuery(document).ready(function($) {
 
 					<fieldset class="Form-fieldset">
 
-						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow u-flexJustifyContentCenter">
 							
 							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
 								<select id="meta_box-cidade_evento" class="Form-input Form-input--select u-sizeFull" name="meta_box-cidade_evento" required="required">
-					    				<option>Selecione</option>
+					    				<option>Selecione a Cidade</option>
 									<?php 
 										$args = array( 'post_type' => 'cidade', 'order' => 'ASC');
 										
@@ -92,7 +92,14 @@ jQuery(document).ready(function($) {
 								       ?>
 
 
-								   </select>
+								</select>
+							</div>
+						</div>
+
+						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+							
+							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px u-alignCenter">
+								<input class="Form-input Form-input--text u-sizeFull" name="titulo_evento" placeholder="Título do Evento" type="text" required="required" />
 								</div>
 								<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
 									<input class="Form-input Form-input--text u-sizeFull" name="meta_box-date" type="date" required="required" />
@@ -137,31 +144,38 @@ jQuery(document).ready(function($) {
 						<h4 class="u-displayBlock u-marginBottom--inter--half u-marginTop--inter">Tipos de Ingresso</h4>
 						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">	
 							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="masculino" id="masculino" value="yes" />Masculino
+								<input type="checkbox" name="masculino" id="masculino" value="yes" />
+								<label for="Masculino">Masculino</label>
 							</div>
 							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="feminino" id="feminino" value="yes" />Feminino
-							</div>
-						</div>
-						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
-							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								 <input type="checkbox" name="pista" id="pista" value="yes" />Pista
-							</div>
-							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="front" id="front" value="yes" />Front
+								<input type="checkbox" name="feminino" id="feminino" value="yes" />
+								<label for="feminino">Feminino</label>
 							</div>
 						</div>
 						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
 							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="vip" id="vip" value="yes" />Vip
+								 <input type="checkbox" name="pista" id="pista" value="yes" />
+								 <label for="pista">Pista</label>
 							</div>
 							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="camarote" id="camarote" value="yes" />Camarote
+								<input type="checkbox" name="front" id="front" value="yes" />
+								<label for="front">Front</label>
+							</div>
+						</div>
+						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
+							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
+								<input type="checkbox" name="vip" id="vip" value="yes" />
+								<label for="vip">Vip</label>
+							</div>
+							<div class="Form-coll u-size12of24 u-marginBottom--inter--half u-paddingVertical--inter--half--px">
+								<input type="checkbox" name="camarote" id="camarote" value="yes" />
+								<label for="camarote">Camarote</label>
 							</div>
 						</div>
 						<div class="Form-row u-displayFlex u-sizeFull u-flexDirectionColumn u-flexSwitchRow">
 							<div class="Form-coll u-sizeFull u-marginBottom--inter--half u-paddingVertical--inter--half--px">
-								<input type="checkbox" name="geral" id="geral" value="yes" />Geral (ingressos sem distinção de lugar ou gênero. ex: abadá, ...)
+								<input type="checkbox" name="geral" id="geral" value="yes" />
+								<label for="geral">Geral (ingressos sem distinção de lugar ou gênero. ex: abadá, ...)</label>
 							</div>
 						</div>
 						
