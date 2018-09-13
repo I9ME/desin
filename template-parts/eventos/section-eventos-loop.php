@@ -108,7 +108,7 @@
 				<p class="u-paddingBottom--inter--half">
 					Você não encontrou o seu evento?
 				</p>
-				<a href="#" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
+				<a href="<?php echo get_home_url(); ?>/cadastro-de-eventos/" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">
 					ADICIONE UM EVENTO!
 				</a>
 			</div>
