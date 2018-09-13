@@ -3,6 +3,7 @@ input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
+input[type="date"],
 input[type="search"],
 textarea,
 select{
@@ -132,6 +133,7 @@ $mainSelector: '.Form';
 		& #{$mainSelector}-input[type="text"],
 		& #{$mainSelector}-input[type="tel"],
 		& #{$mainSelector}-input[type="email"],
+		& #{$mainSelector}-input[type="date"],
 		& #{$mainSelector}-input[type="number"],
 		& #{$mainSelector}-input--select{
 			height: $sizeColumns_px * 1.25;
