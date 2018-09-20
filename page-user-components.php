@@ -109,7 +109,7 @@ if( isset( $_GET['component']) ) {
 				$display_name = get_the_author_meta('display_name', $post_author_id);
 				$user_email = get_the_author_meta('user_email', $post_author_id);
 				$user_phone = get_the_author_meta('user_phone', $post_author_id);
-				$user_address = get_the_author_meta('user_address', $post_author_id);
+				$user_address = get_post_meta($id_post, "meta_box-endereco_ingresso", true);
 
 		?>
 
@@ -222,7 +222,7 @@ if( isset( $_GET['component']) ) {
 			$display_name = get_the_author_meta('display_name', $post_author_id);
 			$user_email = get_the_author_meta('user_email', $post_author_id);
 			$user_phone = get_the_author_meta('user_phone', $post_author_id);
-			$user_address = get_the_author_meta('user_address', $post_author_id);
+			$user_address = get_post_meta($id_post, "meta_box-endereco_ingresso", true);
 		 ?>
 
 <script type="text/javascript">

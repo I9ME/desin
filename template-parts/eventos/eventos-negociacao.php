@@ -18,7 +18,7 @@ if ( !empty( $_POST['meta_box_tipo_oferta'] ) && isset( $_POST['meta_box_tipo_of
 					</header>
 
 					<div class="Section-subSection-content">
-						<p class="u-alignCenter">Lorem Ipsum desc é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.</p>
+						<p class="u-alignCenter">A pratica do cambismo é considerada crime, previsto na lei 1521/51.</p>
 						<p class="u-alignCenter">Obrigado, <strong><?php echo $comprador_name; ?></strong>.
 						<div class="u-marginTop--inter">
 							<!-- <h4 class="Section-header-title Section-header-title--beforeTitleLine u-paddingBottom--inter--half u-alignCenter u-marginBottom--inter--half"><strong>Dados do Vendedor</strong></h4> -->
@@ -85,8 +85,7 @@ if ( !empty( $_POST['meta_box_tipo_oferta'] ) && isset( $_POST['meta_box_tipo_of
 					</header>
 
 					<div class="Section-subSection-content">
-						<p class="u-alignCenter">Lorem Ipsum desc é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.</p>
-						<?php  //echo do_shortcode( '[custom-login-form]', $ignore_html = false ) ?>
+						<p class="u-alignCenter">A pratica do cambismo é considerada crime, previsto na lei 1521/51.</p>
 						<div class="u-marginTop--inter">
 							<h4 class="Section-header-title Section-header-title--beforeTitleLine u-paddingBottom--inter--half u-alignCenter u-marginBottom--inter--half"><strong>Dados do <?php echo $label_user_type; ?></strong></h4>
 							<table width="100%">
@@ -111,7 +110,7 @@ if ( !empty( $_POST['meta_box_tipo_oferta'] ) && isset( $_POST['meta_box_tipo_of
 								</tbody>
 							</table>
 							<div class="u-positionRelative u-displayBlock u-alignCenter">
-								<a target="_blank" href="https://api.whatsapp.com/send?phone=55<?php echo $phone; ?>&text=Olá! Eu me interessei pelo seu anúncio no DESINGRESSANDO.COM" class="Form-input u-marginTop--inter u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1">
+								<a target="_blank" href="https://api.whatsapp.com/send?phone=55<?php echo $phone; ?>&text=Olá! Eu me interessei pelo seu anúncio no *DESINGRESSANDO.COM*. Ainda está disponível?" class="Form-input u-marginTop--inter u-displayInlineBlock hover is-animating u-borderRadius5 Form-input--submit Button Button--border Button--largeSize Button--background style1">
 									CHAME O <?php echo $label_user_type; ?> NO WHATSAPP
 								</a>
 							</div>
