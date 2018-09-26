@@ -3017,3 +3017,39 @@ function custom_action() {
     // Don't forget to exit at the end of processing
     exit(json_encode($response));
 }
+
+function intepreta_labels($type, $value){
+	
+	if( $type == 'tipo_oferta'){
+		
+		switch ($value) {
+			case '1':
+				return 'VENDER INGRESSO';
+				break;
+
+			case '2':
+				return 'COMPRAR INGRESSO';
+				break;
+		}
+
+	}
+
+	if( $type == 'status_ingresso'){
+		
+		switch ($value) {
+    		case 1:
+    			return 'Disponível';
+			break;
+			case 2:
+    			return 'Vendido';
+			break;
+			case 3:
+    			return 'Suspenso';
+			break;
+			case 4:
+    			return 'Cancelado';
+			break;
+		}
+
+	}
+}

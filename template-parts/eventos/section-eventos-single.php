@@ -69,27 +69,25 @@
 				if( !wp_is_mobile() ) {
 							
 					if( $hasExistFilter['filter'] === true ) {
-						$title_lopp = 'OFERTAS DE COMPRA';
+						$title_lopp = 'Quanto as pessoas estão dispostas a pagar pelo seu ingresso';
 						$label_thead = 'Negociar com o Comprador';
 						$label_button = 'FALAR COM O COMPRADOR';
 						$label_text_add = 'Você não gostou dos preços?';
-						$label_button_add = 'ADICIONAR UMA OFERTA DE VENDA';
+						$label_button_add = 'ANUNCIE A VENDA DO SEU INGRESSO';
 					} else {
-						$title_lopp = 'INGRESSOS DISPONÍVEIS';
+						$title_lopp = 'INGRESSOS DISPONÍVEIS PARA VENDA';
 						$label_thead = 'Negociar com o Vendedor';
 						$label_button = 'FALAR COM O VENDEDOR';
 						$label_text_add = 'Você não gostou dos preços?';
-						$label_button_add = 'ADICIONAR UMA OFERTA DE COMPRA';
+						$label_button_add = 'DIGA QUANTO VOCÊ QUER PAGAR';
 					}
 				} else {
-					$title_lopp = 'INGRESSOS DISPONÍVEIS';
+					$title_lopp = 'INGRESSOS DISPONÍVEIS PARA VENDA';
 					$label_thead = 'Negociar';
 					$label_button = 'FALAR';
 					$label_text_add = 'Você não gostou dos preços?';
-					$label_button_add = 'ADICIONAR UMA OFERTA DE COMPRA';	
-				}
-
-				
+					$label_button_add = 'DIGA QUANTO VOCÊ QUER PAGAR';	
+				}				
 			 ?>
 
 			 <span>
@@ -156,9 +154,11 @@
 				if( !empty( $_GET['filter'] ) && isset( $_GET['filter'] ) && $_GET['filter'] == 'sale' ) {
 
 					$tipo_oferta = 2;
+					$order_lopp = 'DESC';
 				
 				} else {
 					$tipo_oferta = 1;
+					$order_lopp = 'ASC';
 				}
 
 					$newsArgs = array( 
@@ -181,7 +181,7 @@
 		      		'posts_per_page' => 1000,
 		      		'meta_key' => 'meta_box-valor_ingresso',
 	           		 'orderby' => 'meta_value_num',
-					'order' => 'ASC');
+					'order' => $order_lopp);
 
 
 					$newsLoop = new WP_Query( $newsArgs );
