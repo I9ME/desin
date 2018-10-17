@@ -2,8 +2,6 @@
  $name = $_POST['name'];
  $email = $_POST['email'];
  $id_ingresso = $_POST['id_ingresso'];
-
-
  ?>
 
  <div class="Section-subSection u-positionRelative u-sizeFull u-paddingVertical--inter--px">
