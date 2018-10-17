@@ -20,8 +20,7 @@ function skeleton_setup() {
 
 	
 
-	load_theme_textdomain( 'promo-vigno' );
-
+	load_theme_textdomain( 'desin' );
 
 
 	// Add default posts and comments RSS feed links to head.
@@ -65,8 +64,6 @@ add_action( 'after_setup_theme', 'skeleton_setup' );
 
 
 
-
-
 /**
  * Enqueue scripts and styles.
  */
@@ -79,7 +76,6 @@ function skeleton_scripts() {
 	// Theme stylesheet.
 	wp_enqueue_style('css-main', get_template_directory_uri() . '/assets/css/main.min.css', array(), $skeleton_version, 'all');
 	wp_enqueue_script( 'js-main', get_template_directory_uri() . '/assets/js/main.min.js', array(), $skeleton_version, true );
-
 
 
 ?>
@@ -3048,6 +3044,24 @@ function intepreta_labels($type, $value){
 			break;
 			case 4:
     			return 'Cancelado';
+			break;
+		}
+
+	}
+	if( $type == 'slug_status'){
+		
+		switch ($value) {
+    		case 1:
+    			return 'available';
+			break;
+			case 2:
+    			return 'sale';
+			break;
+			case 3:
+    			return 'suspended';
+			break;
+			case 4:
+    			return 'cancel';
 			break;
 		}
 
