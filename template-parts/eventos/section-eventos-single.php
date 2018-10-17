@@ -12,6 +12,10 @@
 
 ?>
 <?php
+
+global $wp;
+$getCurrentUrl = home_url( $wp->request );
+
 		if (have_posts()) :
   		 while (have_posts()) :
   		 	  the_post();
@@ -204,7 +208,7 @@
 								$filter_add = '';
 							}
 
-							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociar&id=' . get_the_ID() . $filter_add . '\');';
+							$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=negociar&id=' . get_the_ID() . $filter_add . '&url=' . $getCurrentUrl . '\');';
 						}
 				 ?>				
 					<tr>
@@ -239,11 +243,11 @@
 					
 					} elseif( is_user_logged_in() && $tipo_de_oferta == 2 ) {
 
-						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=ofertar-ingresso&id=' . get_the_ID() . '\');';
+						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=ofertar-ingresso&id=' . get_the_ID() . '&url=' . $getCurrentUrl . '\');';
 					
 					} else {
 
-						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&context=oferta-preco\');';
+						$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&context=oferta-preco&url=' . $getCurrentUrl . '\');';
 					}
 				 ?>
 				<a href="<?php echo $link_cta; ?>" class="Button Button--border Button--background u-alignCenter style1 hover Button--largeSize u-borderRadius5 is-animating">

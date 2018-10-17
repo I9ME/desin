@@ -11,14 +11,18 @@
 ?>
 
 
-<?php 
+<?php
+
+global $wp;
+$getCurrentUrl = home_url( $wp->request );
+
 if( is_user_logged_in() ) {
 
 		$link_cta = get_home_url() . '/member-account/';
 		$label = 'MINHA CONTA';
 	
 	} else {
-		$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&url=' . get_permalink() . '\');';
+		$link_cta = 'javascript:LightboxCall(\'' . get_home_url() . '/user-components?component=login_cadastro&url=' . $getCurrentUrl . '\');';
 		$label = 'LOGIN / CADASTRO';
 	}
  ?>
@@ -35,7 +39,7 @@ if( is_user_logged_in() ) {
 			<span class="u-onlyDesktop u-marginLeft--inter--half--px"><?php echo $label; ?></span>
 			</a>
 			<?php if( is_user_logged_in() ) { ?>
-			<a id="LoginNavigation" class="u-positionRelative u-displayFlex u-marginLeft--inter--half--px Button Button--border u-borderRadius50 is-animating hover style2 Button--responsiveSize u-flexAlignItemsCenter e-Toglle is-animating u-positionRelative u-isCollapsed u-hasIcon u-contentHide--button" href="<?php echo get_home_url(); ?>/wp-login.php?action=logout">
+			<a id="LoginNavigation" class="u-positionRelative u-displayFlex u-marginLeft--inter--half--px Button Button--border u-borderRadius50 is-animating hover style2 Button--responsiveSize u-flexAlignItemsCenter e-Toglle is-animating u-positionRelative u-isCollapsed u-hasIcon u-contentHide--button" href="<?php echo wp_logout_url() ?>">
 				<i class="u-inlineFlex u-positionRelative">
 					<svg class="iconClose NavigationButton-icon u-icon">
 						<use xlink:href="#iconClose"></use>
