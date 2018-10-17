@@ -180,6 +180,11 @@ $getCurrentUrl = home_url( $wp->request );
 								        'key'   => 'meta_box-tipo_oferta',
 								        'value' => $tipo_oferta,
 								        'compare' => '='
+								    ),
+								    array(
+								        'key'   => 'meta_box-status_ingresso',
+								        'value' => 1,
+								        'compare' => '='
 								    )
 								),
 		      		'posts_per_page' => 1000,
