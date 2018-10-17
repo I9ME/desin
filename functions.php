@@ -897,6 +897,8 @@ function save_custom_meta_box($post_id, $post, $update)
     $meta_box_checkbox_value = "";
     $meta_box_radio_meia_value = "";
     $meta_box_status_evento_value = "";
+    $meta_box_usuario_autenticado = "";
+
     if( get_current_post_type() == 'eventos-usuario' ){ 
     	
     	$meta_box_usuario_autenticado = "";
