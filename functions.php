@@ -2417,7 +2417,9 @@ function menorPreco($id, $tipo_oferta){
 
 		
 }
-
+	//Teronário
+	/*$idioma = 'pt_br';
+	return $idioma == 'pt_br' ? 'servicos' : 'services';*/
 	
 		//=====================
 		//Escolha da cidade

@@ -26,16 +26,13 @@
 </head>
 
 <body <?php body_class(); ?>>
-
-
-
 	
 <div id="page" class="Site">
 	<?php if( is_home() || is_front_page() ): ?>
-	<header id="masthead" class="Site-header u-alignCenter u-positionAbsolute u-sizeFull u-displayFlex u-flexJustifyContentCenter is-animating u-zIndex20">
+	<header id="masthead" class="Site-header u-alignCenter u-paddingVertical u-positionAbsolute u-sizeFull u-displayFlex is-animating u-zIndex20">
 		
 		<!-- Logo do site -->
-		<div class="Site-header-branding u-displayInlineBlock u-positionRelative u-alignCenter u-paddingHorizontal--inter--half"> 
+		<div class="Site-header-branding u-size4of24--px u-displayInlineFlex u-flexAlignItemsCenter u-positionRelative  u-paddingHorizontal--inter--half"> 
 			<?php  get_template_part('template-parts/header/header','branding');?>
 		</div>
 
@@ -46,14 +43,12 @@
 	
 	<?php  else: ?>
 
-	<header id="masthead" class="Site-header u-positionAbsolute u-sizeFull u-displayFlex is-animating u-zIndex20 u-paddingVertical">
+	<header id="masthead" class="Site-header u-positionAbsolute u-paddingVertical u-sizeFull u-displayFlex is-animating u-zIndex20 u-paddingVertical">
 		
 		<!-- Logo do site -->
-		<div class="Site-header-branding u-displayInlineBlock u-positionRelative u-alignCenter u-paddingHorizontal--inter--half"> 
+		<div class="Site-header-branding u-displayInlineBlock u-positionRelative u-paddingHorizontal--inter--half"> 
 			<?php  get_template_part('template-parts/header/header','branding');?>
 		</div>
-
-
 
 		<!-- LOGIN -->
 		<?php get_template_part( 'template-parts/header/header', 'login' ); ?>

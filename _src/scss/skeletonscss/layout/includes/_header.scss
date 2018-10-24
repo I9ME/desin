@@ -37,8 +37,12 @@
 
 
 .Branding{
+
 	&--img{
 	
+	}
+	@media screen and (min-width: $break-sm){
+		width: 300px !important; 
 	}
 	
 }
