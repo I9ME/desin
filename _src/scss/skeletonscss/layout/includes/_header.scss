@@ -7,6 +7,14 @@
 		height: $header_height;
 	}
 	
+	&-branding{
+
+		width: 200px;
+		@media screen and (min-width: $break-sm){
+			width: 400px !important; 
+		}
+		
+	}
 
 }
 
@@ -36,13 +44,4 @@
 
 
 
-.Branding{
 
-	&--img{
-	
-	}
-	@media screen and (min-width: $break-sm){
-		width: 300px !important; 
-	}
-	
-}

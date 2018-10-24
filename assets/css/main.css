@@ -1177,6 +1177,16 @@ strong {
   }
 }
 
+.Site-header-branding {
+  width: 200px;
+}
+
+@media screen and (min-width: 768px) {
+  .Site-header-branding {
+    width: 400px !important;
+  }
+}
+
 body.page .Site-header,
 body.single .Site-header {
   -moz-background: linear-gradient(to right, #1e95d1, #6536bf);
@@ -6138,6 +6148,7 @@ input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
+input[type="date"],
 input[type="search"],
 textarea,
 select {
@@ -6267,6 +6278,7 @@ input[type="submit"] {
 .Form--style1 .Form-input[type="text"],
 .Form--style1 .Form-input[type="tel"],
 .Form--style1 .Form-input[type="email"],
+.Form--style1 .Form-input[type="date"],
 .Form--style1 .Form-input[type="number"],
 .Form--style1 .Form-input--select {
   height: 62.5px;
